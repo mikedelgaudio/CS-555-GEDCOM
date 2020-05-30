@@ -4,3 +4,10 @@ _Paul Gurman, Shannon Hobby, Michael DelGaudio, Brandon Seidman_
 ## Languages used:
 * Python
 * SQLite
+
+## Packages used:
+* PrettyTable
+* PyTest
+
+### Branch naming convention:
+* Please review the issues tab and look for the ID# of the issue. The branch you should create would be similar to `005-user-story-name-here`

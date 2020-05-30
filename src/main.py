@@ -5,7 +5,6 @@
 from prettytable import PrettyTable
 import datetime
 
-
 months = {"JAN": 1, "FEB": 2, "MAR": 3, "APR": 4, "MAY": 5, "JUN": 6,
           "JUL": 7, "AUG": 8, "SEP": 9, "OCT": 10, "NOV": 11, "DEC": 12}
 
@@ -58,7 +57,7 @@ famTable.field_names = ["ID", "Married", "Divorced", "Husband ID",
                         "Husband Name", "Wife ID", "Wife Name", "Children"]
 
 
-f = open("Project01- Targaryon Family.ged", "r")
+f = open("input/gameOfThrones.ged", "r")
 
 first = False
 date = False
