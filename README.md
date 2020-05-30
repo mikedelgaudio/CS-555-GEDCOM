@@ -1,4 +1,4 @@
-# CS-555-GEDCOM
+# CS-555-GEDCOM ![PyTest Build](https://github.com/mikedelgaudio/CS-555-GEDCOM/workflows/PyTest%20Build/badge.svg)
 _Paul Gurman, Shannon Hobby, Michael DelGaudio, Brandon Seidman_ 
 
 # Debugging? 
