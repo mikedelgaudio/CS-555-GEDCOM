@@ -42,15 +42,11 @@ ifnIndex = {"ID": 0, "NAME": 1, "SEX": 2, "BIRT": 3, "AGE": 4,
             "ALIVE": 5, "DEAT": 6, "CHIL": 7, "MARR": 8, "HUSB": 8, "WIFE": 8, "DATES": ["BIRT", "MARR", "DEAT"]}
 # family field name index
 ffnindex = {"ID": 0, "MARR": 1, "DIV": 2, "HUSBID": 3, "HUSBNAME": 4, "WIFEID": 5,
-            "WIFENAME": 6, "CHIL": 7, "CHIL": 7}
+            "WIFENAME": 6,  "CHIL": 7}
 valid = "N"
 
 individual = ["N/A", "N/A", "N/A", "N/A",
               "N/A", "TRUE", "N/A", "N/A", "N/A"]
-family = ["N/A", "N/A", "N/A", "N/A",
-          "N/A", "N/A", "N/A", "N/A", "N/A"]
-individuals = []
-families = []
 
 indTable = PrettyTable()
 famTable = PrettyTable()
@@ -101,8 +97,6 @@ for x in f:
                             individual[ifnIndex["BIRT"]], individual[ifnIndex["DEAT"]])
                         indTable.add_row(individual)
                     individual[0] = tag
-                if arg == "FAM":
-                    famTable.add_row(family)
                 output[1] = arg
                 output[2] = tag
                 valid = "Y"
