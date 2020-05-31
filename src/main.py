@@ -9,6 +9,14 @@ months = {"JAN": 1, "FEB": 2, "MAR": 3, "APR": 4, "MAY": 5, "JUN": 6,
           "JUL": 7, "AUG": 8, "SEP": 9, "OCT": 10, "NOV": 11, "DEC": 12}
 
 
+def findIndividual(id, l):
+    for x in l:
+        if id in x:
+            return x[1]
+
+    return "N/A"
+
+
 def ageCalculator(birthday, deathDate):
     if birthday != "N/A":
         day = birthday.split()[0]
@@ -40,14 +48,12 @@ levels = {"0": ["HEAD", "TRLR", "NOTE"], "1": ["NAME", "SEX", "BIRT", "DEAT",
                                                "FAMC", "FAMS", "MARR", "HUSB", "WIFE", "CHIL", "DIV"], "2": ["DATE"], "SPEC": ["INDI", "FAM"]}
 # individual field name index
 ifnIndex = {"ID": 0, "NAME": 1, "SEX": 2, "BIRT": 3, "AGE": 4,
-            "ALIVE": 5, "DEAT": 6, "CHIL": 7, "MARR": 8, "HUSB": 8, "WIFE": 8, "DATES": ["BIRT", "MARR", "DEAT"]}
+            "ALIVE": 5, "DEAT": 6, "CHILDREN": 7, "SPOUCE": [{"MARR": 8, "HUSB": 8, "WIFE": 8}], "DATES": ["BIRT", "MARR", "DEAT"]}
 # family field name index
-ffnindex = {"ID": 0, "MARR": 1, "DIV": 2, "HUSBID": 3, "HUSBNAME": 4, "WIFEID": 5,
-            "WIFENAME": 6,  "CHIL": 7}
+ffnIndex = {"ID": 0, "MARR": 1, "DIV": 2, "HUSB": 3, "HUSBNAME": 4, "WIFE": 5,
+            "WIFENAME": 6,  "CHIL": 7, "DATES": ["MARR", "DIV"], "PPL": ["WIFE", "HUSB", "CHIL"]}
 valid = "N"
 
-individual = ["N/A", "N/A", "N/A", "N/A",
-              "N/A", "TRUE", "N/A", "N/A", "N/A"]
 
 indTable = PrettyTable()
 famTable = PrettyTable()
@@ -63,9 +69,17 @@ famTable.field_names = ["ID", "Married", "Divorced", "Husband ID",
 
 def run():
     f = open("gameOfThrones.ged", "r")
-
+    individuals = []
+    families = []
+    individual = ["N/A", "N/A", "N/A", "N/A",
+                  "N/A", "TRUE", "N/A", "N/A", "N/A"]
+    children = [[]]
+    firstf = False
     first = False
     date = False
+    datef = False
+    family = ["N/A", "N/A", "N/A", "N/A",
+              "N/A", "N/A", "N/A", ["N/A"]]
     dateType = ''
     for x in f:
         txt = x.split()
@@ -76,12 +90,15 @@ def run():
         if int(level) > 2:
             valid = "N"
             pass
+        elif tag == "DATE" and datef == True:
+            family[ffnIndex[dateType]] = arg
+            datef = False
         elif tag == "DATE" and date == True:
             individual[ifnIndex[dateType]] = arg
             date = False
         elif tag in levels[level]:
             valid = "Y"
-            if tag in ifnIndex:
+            if tag in ifnIndex and not firstf:
                 if tag in ifnIndex["DATES"]:
                     if tag == "DEAT" and arg != "N":
                         individual[ifnIndex["ALIVE"]] = "FALSE"
@@ -89,9 +106,37 @@ def run():
                     date = True
                 else:
                     individual[ifnIndex[tag]] = arg
-            first = True
+                    first = True
+            elif tag in ffnIndex:
+                if tag in ffnIndex["DATES"]:
+                    dateType = tag
+                    datef = True
+                    firstf = True
+                else:
+                    if tag == "CHIL":
+                        children += arg + " "
+                        firstf = True
+                    else:
+
+                        nameTag = tag + "NAME"
+                        family[ffnIndex[tag]] = arg
+                        family[ffnIndex[nameTag]] = findIndividual(
+                            arg, individuals)
+
+                        firstf = True
+
         elif tag == "TRLR":
-            indTable.add_row(individual)
+            if not firstf:
+                individuals += [individual]
+                individual = ["N/A", "N/A", "N/A", "N/A",
+                              "N/A", "TRUE", "N/A", "N/A", "N/A"]
+
+            else:
+                family[ffnIndex["CHIL"]] = '{' + \
+                    ''.join(children).strip() + '}'
+                families += [family]
+                family = ["N/A", "N/A", "N/A", "N/A",
+                          "N/A", "N/A", "N/A", ["N/A"]]
         else:
             if tag not in levels[level]:
                 if arg in levels["SPEC"]:
@@ -99,17 +144,51 @@ def run():
                         if first:
                             individual[ifnIndex["AGE"]] = ageCalculator(
                                 individual[ifnIndex["BIRT"]], individual[ifnIndex["DEAT"]])
-                            indTable.add_row(individual)
+                            individuals += [individual]
+                            individual = ["N/A", "N/A", "N/A", "N/A",
+                                          "N/A", "TRUE", "N/A", "N/A", "N/A"]
                         individual[0] = tag
+                    if arg == "FAM":
+                        if firstf:
+                            family[ffnIndex["CHIL"]
+                                   ] = '{' + ''.join(children).strip() + '}'
+                            families += [family]
+                            family = ["N/A", "N/A", "N/A", "N/A",
+                                      "N/A", "N/A", "N/A", ["N/A"]]
+                        family[0] = tag
+                        children = []
+
                     output[1] = arg
                     output[2] = tag
                     valid = "Y"
                 else:
                     valid = "N"
 
+    count = 0
+    for x in individuals:
+        for i in families:
+            if x[0] in i:
+                x[8] = i[0]
+            elif x[0] in i[7]:
+                x[7] = i[0]
+        count += 1
+
+    for x in individuals:
+        indTable.add_row(x)
+
+    for x in families:
+        famTable.add_row(x)
+
+    # TODO SORT: pretty table has a built in sort function but I think it's a little weird we may have to build our own
+    # example: this code will print the ids as : i9 i8 i7 i6 i5 i4 i3 i2 i1 i17 i16 i15 i14 i13 etc
+    # indTable.sortby = "ID"
+    # indTable.reversesort = True
+
+    print("Individuals")
     print(indTable)
+    print("Families")
     print(famTable)
 
 
 # Uncomment me for debugging!!
-# run()
+run()
