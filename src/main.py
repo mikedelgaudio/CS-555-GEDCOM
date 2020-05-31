@@ -9,6 +9,8 @@ months = {"JAN": 1, "FEB": 2, "MAR": 3, "APR": 4, "MAY": 5, "JUN": 6,
           "JUL": 7, "AUG": 8, "SEP": 9, "OCT": 10, "NOV": 11, "DEC": 12}
 
 
+# Finds an individual from list l using passed in id. Returns the name of that individual
+# does NOT work for family list
 def findIndividual(id, l):
     for x in l:
         if id in x:
@@ -17,6 +19,7 @@ def findIndividual(id, l):
     return "N/A"
 
 
+# calculates age either using todays date or death date if applicable
 def ageCalculator(birthday, deathDate):
     if birthday != "N/A":
         day = birthday.split()[0]
@@ -91,6 +94,7 @@ def run():
             valid = "N"
             pass
         elif tag == "DATE" and datef == True:
+            # if datef is true we know it's a family date like marr or div
             family[ffnIndex[dateType]] = arg
             datef = False
         elif tag == "DATE" and date == True:
@@ -98,6 +102,7 @@ def run():
             date = False
         elif tag in levels[level]:
             valid = "Y"
+            # if the tag falls under the individual fields names
             if tag in ifnIndex and not firstf:
                 if tag in ifnIndex["DATES"]:
                     if tag == "DEAT" and arg != "N":
@@ -107,17 +112,22 @@ def run():
                 else:
                     individual[ifnIndex[tag]] = arg
                     first = True
+            # if that tag falls under the family field names
             elif tag in ffnIndex:
                 if tag in ffnIndex["DATES"]:
+                    # If the tag is MAR or DIV we should save which tag and flag datef as true
                     dateType = tag
                     datef = True
                     firstf = True
                 else:
                     if tag == "CHIL":
+                        # if tag is CHIL add the argument to the children array
                         children += arg + " "
                         firstf = True
                     else:
-
+                        # anything else under fam is going to be husb or wife
+                        # First set Husband Id or Wife ID to the argument
+                        # Then find the full name of the individual using findIndividual
                         nameTag = tag + "NAME"
                         family[ffnIndex[tag]] = arg
                         family[ffnIndex[nameTag]] = findIndividual(
@@ -126,6 +136,8 @@ def run():
                         firstf = True
 
         elif tag == "TRLR":
+            # If we've reach the end of the file we should add the last individual
+            # Still doesn't seem to work as the last individual bug is still present
             if not firstf:
                 individuals += [individual]
                 individual = ["N/A", "N/A", "N/A", "N/A",
@@ -138,8 +150,11 @@ def run():
                 family = ["N/A", "N/A", "N/A", "N/A",
                           "N/A", "N/A", "N/A", ["N/A"]]
         else:
+            # If tag is either invalid or is a special case like INDI or FAM
             if tag not in levels[level]:
                 if arg in levels["SPEC"]:
+                    # Stores the individual's list into individuals array
+                    # Resets individual to default values
                     if arg == "INDI":
                         if first:
                             individual[ifnIndex["AGE"]] = ageCalculator(
@@ -148,6 +163,9 @@ def run():
                             individual = ["N/A", "N/A", "N/A", "N/A",
                                           "N/A", "TRUE", "N/A", "N/A", "N/A"]
                         individual[0] = tag
+                    # Stores family into families array
+                    # resets family to default value
+                    # transforms the children array into a string with the format {a b c d ...}
                     if arg == "FAM":
                         if firstf:
                             family[ffnIndex["CHIL"]
@@ -164,6 +182,9 @@ def run():
                 else:
                     valid = "N"
 
+    # This is for the spouse and child column of the Individual Table.
+    # Checks to see if invididual's id appears in any of the family lists
+    # if so -> have that family id populate either the child or spouse column
     count = 0
     for x in individuals:
         for i in families:
@@ -173,6 +194,7 @@ def run():
                 x[7] = i[0]
         count += 1
 
+    # Adds Both Lists to pretty table to be dispalyed
     for x in individuals:
         indTable.add_row(x)
 
@@ -191,4 +213,4 @@ def run():
 
 
 # Uncomment me for debugging!!
-run()
+# run()
