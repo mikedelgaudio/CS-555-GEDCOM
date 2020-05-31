@@ -86,13 +86,13 @@ def run():
               "N/A", "N/A", "N/A", ["N/A"]]
     dateType = ''
     for x in f:
-        print(family)
+
         txt = x.split()
         level = txt[0]
         tag = txt[1]
         arg = " ".join(txt[2:])
         output = [txt[0], txt[1], " ".join(txt[2:])]
-        print(arg)
+
         if int(level) > 2:
             valid = "N"
             pass
