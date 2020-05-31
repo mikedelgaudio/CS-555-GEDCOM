@@ -71,6 +71,7 @@ famTable.field_names = ["ID", "Married", "Divorced", "Husband ID",
 
 
 def run():
+
     f = open("gameOfThrones.ged", "r")
     individuals = []
     families = []
@@ -85,11 +86,13 @@ def run():
               "N/A", "N/A", "N/A", ["N/A"]]
     dateType = ''
     for x in f:
+
         txt = x.split()
         level = txt[0]
         tag = txt[1]
         arg = " ".join(txt[2:])
         output = [txt[0], txt[1], " ".join(txt[2:])]
+
         if int(level) > 2:
             valid = "N"
             pass
@@ -140,15 +143,12 @@ def run():
             # Still doesn't seem to work as the last individual bug is still present
             if not firstf:
                 individuals += [individual]
-                individual = ["N/A", "N/A", "N/A", "N/A",
-                              "N/A", "TRUE", "N/A", "N/A", "N/A"]
 
             else:
                 family[ffnIndex["CHIL"]] = '{' + \
                     ''.join(children).strip() + '}'
                 families += [family]
-                family = ["N/A", "N/A", "N/A", "N/A",
-                          "N/A", "N/A", "N/A", ["N/A"]]
+
         else:
             # If tag is either invalid or is a special case like INDI or FAM
             if tag not in levels[level]:
@@ -157,11 +157,13 @@ def run():
                     # Resets individual to default values
                     if arg == "INDI":
                         if first:
+
                             individual[ifnIndex["AGE"]] = ageCalculator(
                                 individual[ifnIndex["BIRT"]], individual[ifnIndex["DEAT"]])
                             individuals += [individual]
                             individual = ["N/A", "N/A", "N/A", "N/A",
                                           "N/A", "TRUE", "N/A", "N/A", "N/A"]
+
                         individual[0] = tag
                     # Stores family into families array
                     # resets family to default value
@@ -185,6 +187,12 @@ def run():
     # This is for the spouse and child column of the Individual Table.
     # Checks to see if invididual's id appears in any of the family lists
     # if so -> have that family id populate either the child or spouse column
+    family[ffnIndex["CHIL"]] = '{' + \
+        ''.join(children).strip() + '}'
+
+    individuals += [individual]
+    families += [family]
+
     count = 0
     for x in individuals:
         for i in families:
