@@ -2,7 +2,7 @@
 # https://github.com/mikedelgaudio/CS-555-GEDCOM
 # I pledge my honor that I have abided by the Stevens Honor System
 
-from prettytable import PrettyTable
+from Table import Table
 import datetime
 
 months = {"JAN": 1, "FEB": 2, "MAR": 3, "APR": 4, "MAY": 5, "JUN": 6,
@@ -49,20 +49,20 @@ valid = "N"
 individual = ["N/A", "N/A", "N/A", "N/A",
               "N/A", "TRUE", "N/A", "N/A", "N/A"]
 
-indTable = PrettyTable()
-famTable = PrettyTable()
+indTable = Table()
+famTable = Table()
 
-indTable.field_names = ["ID", "Name", "Gender",
-                        'Birthday', "Age", "Alive", "Death", "Child", "Spouse"]
+indTable.Set_Field_Names(["ID", "Name", "Gender",
+                          'Birthday', "Age", "Alive", "Death", "Child", "Spouse"])
 
-famTable.field_names = ["ID", "Married", "Divorced", "Husband ID",
-                        "Husband Name", "Wife ID", "Wife Name", "Children"]
+famTable.Set_Field_Names(["ID", "Married", "Divorced", "Husband ID",
+                          "Husband Name", "Wife ID", "Wife Name", "Children"])
 
 # Wrapped this in a run() function so that our pytest knows what to do
 
 
 def run():
-    f = open("gameOfThrones.ged", "r")
+    f = open("../gameOfThrones.ged", "r")
 
     first = False
     date = False
@@ -91,7 +91,7 @@ def run():
                     individual[ifnIndex[tag]] = arg
                     first = True
         elif tag == "TRLR":
-            indTable.add_row(individual)
+            indTable.Add_Row(individual)
         else:
             if tag not in levels[level]:
                 if arg in levels["SPEC"]:
@@ -99,7 +99,7 @@ def run():
                         if first:
                             individual[ifnIndex["AGE"]] = ageCalculator(
                                 individual[ifnIndex["BIRT"]], individual[ifnIndex["DEAT"]])
-                            indTable.add_row(individual)
+                            indTable.Add_Row(individual)
                         individual[0] = tag
                     output[1] = arg
                     output[2] = tag
@@ -107,9 +107,9 @@ def run():
                 else:
                     valid = "N"
 
-    print(indTable)
-    print(famTable)
+    indTable.Display_Table()
+    famTable.Display_Table()
 
 
 # Uncomment me for debugging!!
-# run()
+run()
