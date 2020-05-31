@@ -89,7 +89,7 @@ def run():
                     date = True
                 else:
                     individual[ifnIndex[tag]] = arg
-            first = True
+                    first = True
         elif tag == "TRLR":
             indTable.add_row(individual)
         else:
