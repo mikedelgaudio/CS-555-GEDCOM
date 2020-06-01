@@ -3,6 +3,7 @@
 # I pledge my honor that I have abided by the Stevens Honor System
 
 from Table import Table
+import re
 import datetime
 
 
@@ -194,6 +195,9 @@ def run():
     individuals += [individual]
     families += [family]
 
+    individuals = sortById(individuals)
+    families = sortById(families)
+
     count = 0
     for x in individuals:
         for i in families:
@@ -210,15 +214,21 @@ def run():
     for x in families:
         famTable.Add_Row(x)
 
-    # TODO SORT: pretty table has a built in sort function but I think it's a little weird we may have to build our own
-    # example: this code will print the ids as : i9 i8 i7 i6 i5 i4 i3 i2 i1 i17 i16 i15 i14 i13 etc
-    # indTable.sortby = "ID"
-    # indTable.reversesort = True
-
     print("Individuals")
     print(indTable)
     print("Families")
     print(famTable)
+
+
+# Resource cited:https://intellipaat.com/community/33368/does-python-have-a-built-in-function-for-string-natural-sort
+# This is known as natural sorting, almost like char sorts we did in 392
+def sortById(gedcomList):
+    def convert(text): return int(text) if text.isdigit() else text.lower()
+
+    def alphanum_key(key): return [convert(c)
+                                   for c in re.split('([0-9]+)', key)]
+    # returns a copy of the sorted list by index 0 which is the unique ID field
+    return sorted(gedcomList, key=lambda x: alphanum_key(x[0]))
 
 
 # Uncomment me for debugging!!
