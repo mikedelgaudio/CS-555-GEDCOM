@@ -107,8 +107,8 @@ def run():
                 else:
                     valid = "N"
 
-    indTable.Display_Table()
-    famTable.Display_Table()
+    print(indTable)
+    print(famTable)
 
 
 # Uncomment me for debugging!!

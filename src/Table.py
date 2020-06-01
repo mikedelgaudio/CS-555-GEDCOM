@@ -19,6 +19,8 @@ class Table:
     def Add_Row(self, row):
         self.Rows += [row]
         self.Table.add_row(row)
-
-    def Display_Table(self):
-        print(self.Table)
+        
+    def __repr__(self):
+        return self.Table.__repr__()
+    def __str__(self):
+        return self.Table.__str__()
