@@ -174,15 +174,6 @@
 1 DEAT Y
 2 DATE 5 JUL 1998
 1 FAMS @F4@
-0 @I17@ INDI
-1 NAME Duncan /Targaryon/
-2 GIVN Duncan
-2 SURN Targaryon
-2 _MARNM Targaryon
-1 SEX M
-1 BIRT
-2 DATE 3 JUL 1960
-1 FAMC @F4@
 0 @I18@ INDI
 1 NAME Daeron /Targaryon/
 2 GIVN Daeron
@@ -191,6 +182,15 @@
 1 SEX M
 1 BIRT
 2 DATE 5 APR 1964
+1 FAMC @F4@
+0 @I17@ INDI
+1 NAME Duncan /Targaryon/
+2 GIVN Duncan
+2 SURN Targaryon
+2 _MARNM Targaryon
+1 SEX M
+1 BIRT
+2 DATE 3 JUL 1960
 1 FAMC @F4@
 0 @F1@ FAM
 1 HUSB @I2@
