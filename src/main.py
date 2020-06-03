@@ -72,7 +72,6 @@ famTable.Set_Field_Names(["ID", "Married", "Divorced", "Husband ID",
 
 
 def run():
-
     f = open("../gameOfThrones.ged", "r")
     individuals = []
     families = []
