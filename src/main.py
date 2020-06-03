@@ -2,9 +2,10 @@
 # https://github.com/mikedelgaudio/CS-555-GEDCOM
 # I pledge my honor that I have abided by the Stevens Honor System
 
-from prettytable import PrettyTable
+from Table import Table
 import re
 import datetime
+
 
 months = {"JAN": 1, "FEB": 2, "MAR": 3, "APR": 4, "MAY": 5, "JUN": 6,
           "JUL": 7, "AUG": 8, "SEP": 9, "OCT": 10, "NOV": 11, "DEC": 12}
@@ -59,21 +60,20 @@ ffnIndex = {"ID": 0, "MARR": 1, "DIV": 2, "HUSB": 3, "HUSBNAME": 4, "WIFE": 5,
 valid = "N"
 
 
-indTable = PrettyTable()
-famTable = PrettyTable()
+indTable = Table()
+famTable = Table()
 
-indTable.field_names = ["ID", "Name", "Gender",
-                        'Birthday', "Age", "Alive", "Death", "Child", "Spouse"]
+indTable.Set_Field_Names(["ID", "Name", "Gender",
+                          'Birthday', "Age", "Alive", "Death", "Child", "Spouse"])
 
-famTable.field_names = ["ID", "Married", "Divorced", "Husband ID",
-                        "Husband Name", "Wife ID", "Wife Name", "Children"]
+famTable.Set_Field_Names(["ID", "Married", "Divorced", "Husband ID",
+                          "Husband Name", "Wife ID", "Wife Name", "Children"])
 
 # Wrapped this in a run() function so that our pytest knows what to do
 
 
 def run():
-
-    f = open("gameOfThrones.ged", "r")
+    f = open("../gameOfThrones.ged", "r")
     individuals = []
     families = []
     individual = ["N/A", "N/A", "N/A", "N/A",
@@ -208,10 +208,10 @@ def run():
 
     # Adds Both Lists to pretty table to be dispalyed
     for x in individuals:
-        indTable.add_row(x)
+        indTable.Add_Row(x)
 
     for x in families:
-        famTable.add_row(x)
+        famTable.Add_Row(x)
 
     print("Individuals")
     print(indTable)

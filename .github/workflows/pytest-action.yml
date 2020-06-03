@@ -12,7 +12,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    env:
+      working-directory: ./tests
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python 3.8
@@ -35,3 +36,4 @@ jobs:
       - name: Test with pytest
         run: |
           pytest
+        working-directory: ${{env.working-directory}}
