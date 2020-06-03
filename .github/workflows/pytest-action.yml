@@ -12,8 +12,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env: 
-      working-directory: ../src
+    env:
+      working-directory: ./src
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python 3.8
@@ -36,4 +36,4 @@ jobs:
       - name: Test with pytest
         run: |
           pytest
-        working-directory: $({env.working-directory})
+        working-directory: ${{env.working-directory}}
