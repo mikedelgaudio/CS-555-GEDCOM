@@ -230,5 +230,13 @@ def sortById(gedcomList):
     return sorted(gedcomList, key=lambda x: alphanum_key(x[0]))
 
 
+
+def us01DateAfterCurrentDate(date):
+    try:
+        pass
+    except expression as identifier:
+        pass
+
+
 # Uncomment me for debugging!!
-# run()
+run()
