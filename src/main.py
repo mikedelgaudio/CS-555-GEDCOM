@@ -100,21 +100,29 @@ def run():
         elif tag == "DATE" and datef == True:
             # if datef is true we know it's a family date like marr or div
             family[ffnIndex[dateType]] = arg
+            #print(family[ffnIndex[dateType]])
+            ##CALL VALIDATE DATE HERE!
+            us42ValidDate(family[ffnIndex[dateType]])
             datef = False
         elif tag == "DATE" and date == True:
             individual[ifnIndex[dateType]] = arg
+            #print(individual[ifnIndex[dateType]])
+            #CALL VALIDATE DATE HERE!
             date = False
         elif tag in levels[level]:
             valid = "Y"
             # if the tag falls under the individual fields names
             if tag in ifnIndex and not firstf:
                 if tag in ifnIndex["DATES"]:
+                    
                     if tag == "DEAT" and arg != "N":
                         individual[ifnIndex["ALIVE"]] = "FALSE"
                     dateType = tag
+                    
                     date = True
                 else:
                     individual[ifnIndex[tag]] = arg
+                    
                     first = True
             # if that tag falls under the family field names
             elif tag in ffnIndex:
@@ -158,7 +166,8 @@ def run():
                     # Resets individual to default values
                     if arg == "INDI":
                         if first:
-
+                           #print(individual[ifnIndex["DEAT"]])
+                            #IS HOW YOU CAN GET DEAT
                             individual[ifnIndex["AGE"]] = ageCalculator(
                                 individual[ifnIndex["BIRT"]], individual[ifnIndex["DEAT"]])
                             individuals += [individual]
@@ -228,6 +237,15 @@ def sortById(gedcomList):
                                    for c in re.split('([0-9]+)', key)]
     # returns a copy of the sorted list by index 0 which is the unique ID field
     return sorted(gedcomList, key=lambda x: alphanum_key(x[0]))
+
+#Takes in a date string and returns true or false if valid date
+def us42ValidDate(date):
+    try:
+        datetime.datetime.strptime(date, "%d %b %Y")
+        return True
+    except ValueError:
+        return False
+
 
 
 # Uncomment me for debugging!!
