@@ -102,6 +102,8 @@ def run():
             family[ffnIndex[dateType]] = arg
             datef = False
         elif tag == "DATE" and date == True:
+            print(individual[ifnIndex[dateType]])
+            us01DateAfterCurrentDate(individual[ifnIndex[dateType]])
             individual[ifnIndex[dateType]] = arg
             date = False
         elif tag in levels[level]:
@@ -158,7 +160,7 @@ def run():
                     # Resets individual to default values
                     if arg == "INDI":
                         if first:
-
+                            
                             individual[ifnIndex["AGE"]] = ageCalculator(
                                 individual[ifnIndex["BIRT"]], individual[ifnIndex["DEAT"]])
                             individuals += [individual]
@@ -230,12 +232,27 @@ def sortById(gedcomList):
     return sorted(gedcomList, key=lambda x: alphanum_key(x[0]))
 
 
-
+#Takes in a date string and returns True if date is before present day or False if not
 def us01DateAfterCurrentDate(date):
+    print("Param date: " + date)
     try:
-        pass
-    except expression as identifier:
-        pass
+        if(date == "N/A"):
+            print("it was N/A")
+            return True
+        else: 
+            #could implement check on us42 if the date is in correct format first
+            strippedDate = datetime.datetime.strptime(date, "%d %b %Y")
+            print("Stripped date: ", strippedDate)
+            print("Today is: ", datetime.datetime.today())
+            if(strippedDate < datetime.datetime.today()):
+                print(True)
+                return True
+            else:
+                print(False)
+                return False
+    except ValueError:
+        print("DATE PROVIDED IS INCORRECT FORMAT")
+
 
 
 # Uncomment me for debugging!!
