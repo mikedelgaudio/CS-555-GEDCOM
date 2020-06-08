@@ -152,5 +152,4 @@ def run():
     print(constants.famTable)
 
 
-# Uncomment me for debugging!!
-# run()
+run()
