@@ -15,3 +15,11 @@ def us01DateAfterCurrentDate(date):
                 return False
     except ValueError:
         print("DATE PROVIDED IS INCORRECT FORMAT")
+        
+#Takes in a date string and returns true or false if valid date
+def us42ValidDate(date):
+    try:
+        datetime.datetime.strptime(date, "%d %b %Y")
+        return True
+    except ValueError:
+        return False
