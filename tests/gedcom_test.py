@@ -22,5 +22,3 @@ def test_us02():
     assert dates.us02BirthBeforeMarraige("18 DEC 1999","18 NOV 1999") is False
     assert dates.us02BirthBeforeMarraige("25 NOV 1999","18 NOV 1999") is False
     assert dates.us02BirthBeforeMarraige("12 APR 2030","N/A") is True
-
-test_us02()
