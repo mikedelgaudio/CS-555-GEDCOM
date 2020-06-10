@@ -16,9 +16,9 @@ def test_us01():
     assert dates.us01DateAfterCurrentDate("N/A") is True
 
 def test_us02():
-    assert dates.us02BirthBeforeMarraige("18 NOV 1999","18 NOV 2019") is True
-    assert dates.us02BirthBeforeMarraige("18 NOV 1999","18 NOV 1999") is False #Might want to make true
-    assert dates.us02BirthBeforeMarraige("18 NOV 2000","18 NOV 1999") is False
-    assert dates.us02BirthBeforeMarraige("18 DEC 1999","18 NOV 1999") is False
-    assert dates.us02BirthBeforeMarraige("25 NOV 1999","18 NOV 1999") is False
-    assert dates.us02BirthBeforeMarraige("12 APR 2030","N/A") is True
+    assert dates.us02BirthBeforeMarriage("18 NOV 1999","18 NOV 2019") is True
+    assert dates.us02BirthBeforeMarriage("18 NOV 1999","18 NOV 1999") is False #Might want to make true
+    assert dates.us02BirthBeforeMarriage("18 NOV 2000","18 NOV 1999") is False
+    assert dates.us02BirthBeforeMarriage("18 DEC 1999","18 NOV 1999") is False
+    assert dates.us02BirthBeforeMarriage("25 NOV 1999","18 NOV 1999") is False
+    assert dates.us02BirthBeforeMarriage("12 APR 2030","N/A") is True

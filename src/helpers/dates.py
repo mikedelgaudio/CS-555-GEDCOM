@@ -16,7 +16,7 @@ def us01DateAfterCurrentDate(date):
     except ValueError:
         print("DATE PROVIDED IS INCORRECT FORMAT")
 
-def us02BirthBeforeMarraige(birth,marriage):
+def us02BirthBeforeMarriage(birth,marriage):
     try:
         if(marriage == "N/A"):
             return True
