@@ -5,12 +5,13 @@
 from Table import Table
 from helpers import ind, dates, fam, sorting
 import constants
+from modules import list_upcoming_dates, marriage_date_check
 
 # Wrapped this in a run() function so that our pytest knows what to do
 
 
 def run():
-    f = open("./gameOfThrones.ged", "r")
+    f = open("../gameOfThrones.ged", "r")
     individuals = []
     families = []
     individual = ["N/A", "N/A", "N/A", "N/A",
@@ -150,6 +151,16 @@ def run():
     print(constants.indTable)
     print("Families")
     print(constants.famTable)
+
+    # Create spouses list, the structure of each element in the lust is: [Husband Object, Wife Object, Family Object]
+    spouses = fam.families_to_spouses_list(families, individuals)
+
+    # For each spouse, make sure their death dates are before their marriage dates. If not, print anamoly message.
+    for s in spouses:
+        if not marriage_date_check.marriage_before_death(s[0][constants.ifnIndex["DEAT"]], s[1][constants.ifnIndex["DEAT"]], s[2][1]):
+            print("ANAMOLY: Marriage date cannot be after either spouse's death date. Marriage ID: {0}".format(s[2][0]))
+
+
 
 
 run()
