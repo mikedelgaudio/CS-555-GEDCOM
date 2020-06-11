@@ -166,4 +166,8 @@ def run():
             print("ANAMOLY: Divorce must come after a marriage. Marriage ID: {0}".format(s[2][0]))
 
 
+    #runs us01 and us42 on individuals and familes
+    dates.dateHelper(individuals, families)
+    
+
 run()
