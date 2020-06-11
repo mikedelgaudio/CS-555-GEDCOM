@@ -69,16 +69,25 @@ def dateHelper(individuals, families):
 
 
 def next30days(date):
-    today = datetime.datetime.now()
-    compare = today + datetime.timedelta(30)
-    day = date.split()[0]
-    month = date.split()[1]
-    date = datetime.datetime(int(today.year), months[month], int(day))
-    if(date == "N/A"):
-        return False
-    elif(compare >= date and today <= date):
-        return True
 
+<<<<<<< HEAD
     else:
         return False
 >>>>>>> 30 day helper and list upcoming birthdays in main
+=======
+    try:
+        today = datetime.datetime.now()
+        compare = today + datetime.timedelta(30)
+        day = date.split()[0]
+        month = date.split()[1]
+        date = datetime.datetime(int(today.year), months[month], int(day))
+        if(date == "N/A"):
+            return False
+        elif(compare >= date and today <= date):
+            return True
+
+        else:
+            return False
+    except ValueError:
+        return False
+>>>>>>> added test cases
