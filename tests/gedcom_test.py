@@ -32,3 +32,17 @@ def test_us42():
     assert dates.us42ValidDate("garbageText") is False
     assert dates.us42ValidDate("April 21st 2020") is False
     assert dates.us42ValidDate("20 FEB 2000") is True
+<<<<<<< HEAD
+=======
+
+def test_30dayhelp():
+    assert dates.next30days("7 JUL 2020") is True
+    assert dates.next30days("7 JUL 1000") is True
+    assert dates.next30days("10 DEC 2020") is False
+    assert dates.next30days("N/A") is False
+
+def test_us05():
+    assert marriage_date_check.marriage_before_death("10 OCT 2010", "7 SEP 2013", "1 JAN 1900") is True
+    assert marriage_date_check.marriage_before_death("10 OCT 2010", "7 SEP 2013", "1 JAN 2020") is False
+    assert marriage_date_check.marriage_before_death("10 OCT 2010", "10 OCT 2010", "10 OCT 2010") is False
+>>>>>>> 30 day helper and list upcoming birthdays in main

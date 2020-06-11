@@ -5,7 +5,11 @@
 from Table import Table
 from helpers import ind, dates, fam, sorting
 import constants
+<<<<<<< HEAD
 from modules import list_upcoming_dates, marriage_date_check
+=======
+from modules import list_upcoming_dates
+>>>>>>> 30 day helper and list upcoming birthdays in main
 
 # Wrapped this in a run() function so that our pytest knows what to do
 
@@ -152,6 +156,7 @@ def run():
     print("Families")
     print(constants.famTable)
 
+<<<<<<< HEAD
     # Create spouses list, the structure of each element in the lust is: [Husband Object, Wife Object, Family Object]
     spouses = fam.families_to_spouses_list(families, individuals)
 
@@ -166,8 +171,16 @@ def run():
             print("ANAMOLY: Divorce must come after a marriage. Marriage ID: {0}".format(s[2][0]))
 
 
+<<<<<<< HEAD
     #runs us01 and us42 on individuals and familes
     dates.dateHelper(individuals, families)
     
+=======
 
+=======
+    list_upcoming_dates.birthdays(individuals)
+>>>>>>> 30 day helper and list upcoming birthdays in main
+>>>>>>> 30 day helper and list upcoming birthdays in main
+
+# Uncomment me for debugging!!\
 run()
