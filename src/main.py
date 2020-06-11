@@ -161,6 +161,8 @@ def run():
             print("ANAMOLY: Marriage date cannot be after either spouse's death date. Marriage ID: {0}".format(s[2][0]))
 
 
-
+    #runs us01 and us42 on individuals and familes
+    dates.dateHelper(individuals, families)
+    
 
 run()
