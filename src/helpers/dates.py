@@ -32,7 +32,7 @@ def us42ValidDate(date):
         return True
     except ValueError:
         return False
-<<<<<<< HEAD
+
         
 def dateHelper(individuals, families):
     for i in range(len(individuals)):
@@ -60,16 +60,12 @@ def dateHelper(individuals, families):
             
         
         
-=======
+
 
 
 def next30days(date):
 
-<<<<<<< HEAD
-    else:
-        return False
->>>>>>> 30 day helper and list upcoming birthdays in main
-=======
+
     try:
         if(date == "N/A"):
             return False
@@ -86,4 +82,4 @@ def next30days(date):
             return False
     except ValueError:
         return False
->>>>>>> added test cases
+
