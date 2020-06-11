@@ -29,3 +29,19 @@ def marriage_before_death(death_date1, death_date2, marriage_date):
     except ValueError:
         print("marriage_before_death: DATE PROVIDED IS INCORRECT FORMAT")
 
+# Checks if marriage date is before divorce date
+def marriage_divorce_date_comparison(marriage_date, divorce_date):
+    try:
+        if marriage_date == "N/A" or divorce_date == "N/A":
+            return False
+        
+        m = datetime.datetime.strptime(marriage_date, "%d %b %Y")
+        d = datetime.datetime.strptime(divorce_date, "%d %b %Y")
+
+        if m >= d:
+            return False
+        else:
+            return True
+
+    except ValueError:
+        print("marriage_divorce_date_comparison: DATE PROVIDED IS INCORRECT FORMAT")
