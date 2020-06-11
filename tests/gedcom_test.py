@@ -38,8 +38,3 @@ def test_30dayhelp():
     assert dates.next30days("7 JUL 1000") is True
     assert dates.next30days("10 DEC 2020") is False
 
-def test_us05():
-    assert marriage_date_check.marriage_before_death("10 OCT 2010", "7 SEP 2013", "1 JAN 1900") is True
-    assert marriage_date_check.marriage_before_death("10 OCT 2010", "7 SEP 2013", "1 JAN 2020") is False
-    assert marriage_date_check.marriage_before_death("10 OCT 2010", "10 OCT 2010", "10 OCT 2010") is False
-
