@@ -170,4 +170,7 @@ def run():
     dates.dateHelper(individuals, families)
     
 
-run()
+    list_upcoming_dates.birthdays(individuals)
+
+# Uncomment me for debugging!!\
+# run()

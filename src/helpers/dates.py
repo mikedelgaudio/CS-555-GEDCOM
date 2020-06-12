@@ -1,13 +1,18 @@
 # Used for all helper functions related to dates
 import datetime
 
-#Takes in a date string and returns True if date is before present day or False if not
-def us01DateAfterCurrentDate(date):            
+months = {"JAN": 1, "FEB": 2, "MAR": 3, "APR": 4, "MAY": 5, "JUN": 6,
+          "JUL": 7, "AUG": 8, "SEP": 9, "OCT": 10, "NOV": 11, "DEC": 12}
+
+# Takes in a date string and returns True if date is before present day or False if not
+
+
+def us01DateAfterCurrentDate(date):
     try:
         if(date == "N/A"):
             return True
-        else: 
-            #could implement check on us42 if the date is in correct format first
+        else:
+            # could implement check on us42 if the date is in correct format first
             strippedDate = datetime.datetime.strptime(date, "%d %b %Y")
             if(strippedDate < datetime.datetime.today()):
                 return True
@@ -15,8 +20,10 @@ def us01DateAfterCurrentDate(date):
                 return False
     except ValueError:
         print("DATE PROVIDED IS INCORRECT FORMAT")
-        
-#Takes in a date string and returns true or false if valid date
+
+# Takes in a date string and returns true or false if valid date
+
+
 def us42ValidDate(date):
     try:
         if(date == "N/A"):
@@ -25,6 +32,7 @@ def us42ValidDate(date):
         return True
     except ValueError:
         return False
+
         
 def dateHelper(individuals, families):
     for i in range(len(individuals)):
@@ -52,3 +60,26 @@ def dateHelper(individuals, families):
             
         
         
+
+
+
+def next30days(date):
+
+
+    try:
+        if(date == "N/A"):
+            return False
+        today = datetime.datetime.now()
+        compare = today + datetime.timedelta(30)
+        day = date.split()[0]
+        month = date.split()[1]
+        date = datetime.datetime(int(today.year), months[month], int(day))
+        
+        if(compare >= date and today <= date):
+            return True
+
+        else:
+            return False
+    except ValueError:
+        return False
+

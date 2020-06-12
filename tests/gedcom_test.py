@@ -32,3 +32,8 @@ def test_us42():
     assert dates.us42ValidDate("garbageText") is False
     assert dates.us42ValidDate("April 21st 2020") is False
     assert dates.us42ValidDate("20 FEB 2000") is True
+
+def test_30dayhelp():
+    assert dates.next30days("7 JUL 2020") is True
+    assert dates.next30days("7 JUL 1000") is True
+    assert dates.next30days("10 DEC 2020") is False
