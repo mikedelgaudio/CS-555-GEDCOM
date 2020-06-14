@@ -3,7 +3,7 @@ sys.path.insert(0, '../src')
 
 import main
 from helpers import dates
-from modules import marriage_date_check
+from modules import marriage_date_check, list_upcoming_dates
 
 def test_compile():
     # Can the program compile with no errors
@@ -37,3 +37,10 @@ def test_30dayhelp():
     assert dates.next30days("7 JUL 2020") is True
     assert dates.next30days("7 JUL 1000") is True
     assert dates.next30days("10 DEC 2020") is False
+
+
+def test_us39():
+    assert list_upcoming_dates.anniversary([["1", "Ryan", "M", "N/A", "24", "TRUE", "N/A", "N/A", "N/A"],["2", "Linda", "F", "N/A", "24", "TRUE", "N/A", "N/A", "N/A"]], [["100", "10 JUN 2000", "N/A", "1", "Ryan", "2", "Linda", ["N/A"]]]) is "ANNIV: Ryan and Linda's anniversary is on Jun 10!"
+    assert list_upcoming_dates.anniversary([["1", "Ryan", "M", "N/A", "24", "FALSE", "3 JUN 2010", "N/A", "N/A"],["2", "Linda", "F", "N/A", "24", "TRUE", "N/A", "N/A", "N/A"]], [["100", "10 JUN 2000", "N/A", "1", "Ryan", "2", "Linda", ["N/A"]]]) is ""
+    assert list_upcoming_dates.anniversary([["1", "Ryan", "M", "N/A", "24", "TRUE", "N/A", "N/A", "N/A"],["2", "Linda", "F", "N/A", "24", "FALSE", "10 JUN 2013", "N/A", "N/A"]], [["100", "10 JUN 2000", "N/A", "1", "Ryan", "2", "Linda", ["N/A"]]]) is ""
+    assert list_upcoming_dates.anniversary([["1", "Ryan", "M", "N/A", "24", "TRUE", "N/A", "N/A", "N/A"],["2", "Linda", "F", "N/A", "24", "TRUE", "N/A", "N/A", "N/A"]], [["100", "10 JUN 2000", "15 JUN 2001", "1", "Ryan", "2", "Linda", ["N/A"]]]) is ""
