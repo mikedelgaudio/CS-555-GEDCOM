@@ -25,6 +25,8 @@ def anniversary(individuals, families):
                 month = x[1].split()[1]
                 
                 print("ANNIV: " + husband + " and " + wife + "'s anniversary is on " + month + " " + day + "!")
+                return True
+    return False
                     
 
      
