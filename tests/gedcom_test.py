@@ -39,8 +39,3 @@ def test_30dayhelp():
     assert dates.next30days("10 DEC 2020") is False
 
 
-def test_us39():
-    assert list_upcoming_dates.anniversary([["1", "Ryan", "M", "N/A", "24", "TRUE", "N/A", "N/A", "N/A"],["2", "Linda", "F", "N/A", "24", "TRUE", "N/A", "N/A", "N/A"]], [["100", "10 JUN 2000", "N/A", "1", "Ryan", "2", "Linda", ["N/A"]]]) is True
-    assert list_upcoming_dates.anniversary([["1", "Ryan", "M", "N/A", "24", "FALSE", "3 JUN 2010", "N/A", "N/A"],["2", "Linda", "F", "N/A", "24", "TRUE", "N/A", "N/A", "N/A"]], [["100", "10 JUN 2000", "N/A", "1", "Ryan", "2", "Linda", ["N/A"]]]) is False
-    assert list_upcoming_dates.anniversary([["1", "Ryan", "M", "N/A", "24", "TRUE", "N/A", "N/A", "N/A"],["2", "Linda", "F", "N/A", "24", "FALSE", "10 JUN 2013", "N/A", "N/A"]], [["100", "10 JUN 2000", "N/A", "1", "Ryan", "2", "Linda", ["N/A"]]]) is False
-    assert list_upcoming_dates.anniversary([["1", "Ryan", "M", "N/A", "24", "TRUE", "N/A", "N/A", "N/A"],["2", "Linda", "F", "N/A", "24", "TRUE", "N/A", "N/A", "N/A"]], [["100", "10 JUN 2000", "15 JUN 2001", "1", "Ryan", "2", "Linda", ["N/A"]]]) is False

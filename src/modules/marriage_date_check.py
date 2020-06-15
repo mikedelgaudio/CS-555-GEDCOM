@@ -23,9 +23,7 @@ def marriage_before_death(death_date1, death_date2, marriage_date):
         else:
             if d_1 > m and d_2 > m:
                 return True
-            else:
-                return False
-                
+        
     except ValueError:
         print("marriage_before_death: DATE PROVIDED IS INCORRECT FORMAT")
 
