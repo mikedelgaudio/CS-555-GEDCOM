@@ -159,7 +159,7 @@ def run():
     for s in filter(lambda s: s[2][constants.ffnIndex["MARR"]] != "N/A", spouses):
         if not marriage_date_check.marriage_before_death(s[0][constants.ifnIndex["DEAT"]], s[1][constants.ifnIndex["DEAT"]], s[2][1]):
             print("ANAMOLY: Marriage date cannot be after either spouse's death date. Marriage ID: {0}".format(s[2][0]))
-    
+
     # For each divorced couple, make sure they are divorced AFTER they are married
     for s in filter(lambda s: s[2][constants.ffnIndex["DIV"]] != "N/A", spouses):
         if not marriage_date_check.marriage_divorce_date_comparison(s[2][constants.ffnIndex["MARR"]], s[2][constants.ffnIndex["DIV"]]):
@@ -168,7 +168,7 @@ def run():
 
     #runs us01 and us42 on individuals and familes
     dates.dateHelper(individuals, families)
-    
+
 
     list_upcoming_dates.birthdays(individuals)
 

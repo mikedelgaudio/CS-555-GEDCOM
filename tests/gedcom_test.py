@@ -4,6 +4,7 @@ sys.path.insert(0, '../src')
 import main
 from helpers import dates
 from modules import marriage_date_check
+from modules import birth_date_check
 
 def test_compile():
     # Can the program compile with no errors
