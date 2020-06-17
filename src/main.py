@@ -11,7 +11,7 @@ from modules import list_upcoming_dates, marriage_date_check, birth_date_check
 
 
 def run():
-    f = open("./gameOfThrones.ged", "r")
+    f = open("./test.ged", "r")
     individuals = []
     families = []
     individual = ["N/A", "N/A", "N/A", "N/A",
@@ -184,4 +184,4 @@ def run():
     list_upcoming_dates.anniversary(individuals, families)
 
 # Uncomment me for debugging!!\
-# run()
+run()

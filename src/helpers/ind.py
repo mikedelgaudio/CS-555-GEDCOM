@@ -19,8 +19,8 @@ months = {"JAN": 1, "FEB": 2, "MAR": 3, "APR": 4, "MAY": 5, "JUN": 6,
 
 
 def ageCalculator(birthday, deathDate):
-    if(dates.us42ValidDate(birthday) and dates.us42ValidDate(deathDate)):
-        return "Invalid Date"
+    if(dates.us42ValidDate(birthday) == False):
+        return "Invalid Birth Date"
 
     if birthday != "N/A":
         day = birthday.split()[0]
@@ -29,6 +29,8 @@ def ageCalculator(birthday, deathDate):
     else:
         return "N/A"
     if deathDate != "N/A":
+        if(dates.us42ValidDate(deathDate) == False):
+            return "Invalid Death Date"
         deathday = deathDate.split()[0]
         deathmonth = deathDate.split()[1]
         deathyear = deathDate.split()[2]
