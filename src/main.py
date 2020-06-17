@@ -5,7 +5,7 @@
 from Table import Table
 from helpers import ind, dates, fam, sorting
 import constants
-from modules import list_upcoming_dates, marriage_date_check
+from modules import list_upcoming_dates, marriage_date_check, birth_date_check
 
 # Wrapped this in a run() function so that our pytest knows what to do
 
@@ -154,6 +154,16 @@ def run():
 
     # Create spouses list, the structure of each element in the lust is: [Husband Object, Wife Object, Family Object]
     spouses = fam.families_to_spouses_list(families, individuals)
+
+    # US02: Chck if birthday is before date of marriage
+    for s in filter(lambda s: s[2][constants.ffnIndex["MARR"]] != "N/A", spouses):
+        if not birth_date_check.birth_before_marriage(s[0][constants.ifnIndex["BIRT"]], s[1][constants.ifnIndex["BIRT"]], s[2][1]):
+            print("ANAMOLY: Marraige cannot be before either spouse's birth date. Marriage ID: {0}".format(s[2][0]))
+
+    # US03: Check if death is before birth
+    for s in individuals:
+        if not birth_date_check.birth_before_death(s[constants.ifnIndex["BIRT"]],s[constants.ifnIndex["DEAT"]]):
+            print("ANAMOLY: Death cannot come before birth. Individual ID: {0}".format(s[0]))
 
     # For each spouse, make sure their death dates are before their marriage dates. If not, print anamoly message.
     for s in filter(lambda s: s[2][constants.ffnIndex["MARR"]] != "N/A", spouses):
