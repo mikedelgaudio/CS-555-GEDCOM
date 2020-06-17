@@ -19,7 +19,7 @@ def us01DateAfterCurrentDate(date):
             else:
                 return False
     except ValueError:
-        print("DATE PROVIDED IS INCORRECT FORMAT")
+        pass
 
 # Takes in a date string and returns true or false if valid date
 
@@ -64,8 +64,8 @@ def dateHelper(individuals, families):
 
 
 def next30days(date):
-
-
+    if(not us42ValidDate(date)):
+        return False
     try:
         if(date == "N/A"):
             return False
