@@ -9,8 +9,9 @@ def birthdays(individuals):
             print("BDAY: " + x[1] + "'s birthday is on " + month + " " + day + "!")
 
 def anniversary(individuals, families):
+    error = 0
     for x in families:
-        if x[2] == "N/A":
+        if x[2] == "N/A" and x[1] != "N/A":
             if (dates.next30days(x[1])):
                 husbID= x[3]
                 husband=x[4]
@@ -19,14 +20,21 @@ def anniversary(individuals, families):
                 count=0
                 for i in individuals:
                     if i[0] == husbID or i[0] == wifeID:
-                        if i[6] != "N/A":
+                        if i[6] == "N/A":
                             count+=1
+                        else:
+                            error +=1
                 if count==2:
                     day = x[1].split()[0]
                     month = x[1].split()[1]
                     
                     print("ANNIV: " + husband + " and " + wife + "'s anniversary is on " + month + " " + day + "!")
-                    
+        else:
+            error += 1
+    if error > 0:
+        return False
+    else:
+        return True
     
                     
 
