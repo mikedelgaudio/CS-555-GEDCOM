@@ -1,6 +1,6 @@
 # Used for all helper functions related to individuals
 import datetime
-
+from helpers import dates
 
 # Finds an individual from list l using passed in id. Returns the name of that individual
 # does NOT work for family list
@@ -19,6 +19,9 @@ months = {"JAN": 1, "FEB": 2, "MAR": 3, "APR": 4, "MAY": 5, "JUN": 6,
 
 
 def ageCalculator(birthday, deathDate):
+    if(dates.us42ValidDate(birthday) and dates.us42ValidDate(deathDate)):
+        return "Invalid Date"
+
     if birthday != "N/A":
         day = birthday.split()[0]
         month = birthday.split()[1]
