@@ -181,6 +181,7 @@ def run():
 
 
     list_upcoming_dates.birthdays(individuals)
+    list_upcoming_dates.anniversary(individuals, families)
 
 # Uncomment me for debugging!!\
 # run()
