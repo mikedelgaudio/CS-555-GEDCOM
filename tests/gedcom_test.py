@@ -3,7 +3,7 @@ sys.path.insert(0, '../src')
 
 import main
 from helpers import dates
-from modules import marriage_date_check
+from modules import marriage_date_check, list_upcoming_dates
 
 def test_compile():
     # Can the program compile with no errors
@@ -37,3 +37,5 @@ def test_30dayhelp():
     assert dates.next30days("7 JUL 2020") is True
     assert dates.next30days("7 JUL 1000") is True
     assert dates.next30days("10 DEC 2020") is False
+
+
