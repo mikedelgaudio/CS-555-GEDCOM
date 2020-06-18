@@ -6,7 +6,7 @@ def birthdays(individuals):
         if(dates.next30days(x[3]) and x[6] == "N/A"):
             day = x[3].split()[0]
             month = x[3].split()[1]
-            print("BDAY: " + x[1] + "'s birthday is on " + month + " " + day + "!")
+            print("US38: BDAY: " + x[1] + "'s birthday is on " + month + " " + day + "!")
 
 def anniversary(individuals, families):
     error = 0
@@ -28,7 +28,7 @@ def anniversary(individuals, families):
                     day = x[1].split()[0]
                     month = x[1].split()[1]
                     
-                    print("ANNIV: " + husband + " and " + wife + "'s anniversary is on " + month + " " + day + "!")
+                    print("US39: ANNIV: " + husband + " and " + wife + "'s anniversary is on " + month + " " + day + "!")
         else:
             error += 1
     if error > 0:
