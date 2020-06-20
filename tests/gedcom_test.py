@@ -4,7 +4,13 @@ sys.path.insert(0, '../src')
 import main
 from helpers import dates
 from modules import birth_date_check
-from modules import marriage_date_check, list_upcoming_dates
+from modules import marriage_date_check, list_upcoming_dates, list_deceased
+import pytest
+from _pytest.compat import CaptureAndPassthroughIO
+from _pytest.compat import CaptureIO
+from _pytest.compat import TYPE_CHECKING
+from _pytest.config import Config
+from _pytest.fixtures import FixtureRequest
 
 def test_compile():
     # Can the program compile with no errors
@@ -65,3 +71,27 @@ def test_us39():
                           "Bob Thornton", "02", "Hannah Montana", "N/A"]]) is False
     assert list_upcoming_dates.anniversary([["01", "Bob Thornton", "M", "18 FEB 2000", "20","Y", "N/A" "N/A", "02"],["02", "Hannah Montana", "F", "18 FEB 2000", "20",  "Y", "N/A", "N/A", "01"]],[["001", "30 JUN 2019", "31 JUN 2019", "01",
                           "Bob Thornton", "02", "Hannah Montana", "N/A"]]) is False
+    
+def test_us29(capsys):
+    #normal date
+    list_deceased.us29ListDeceased(
+        [["01", "Bob Thornton", "M", "18 FEB 2000", "20","Y", "N/A" "N/A", "02"],["02", "Hannah Montana", "F", "18 FEB 2000", "20",  "N", "19 FEB 2000", "N/A", "01"]]
+    )
+    expected = "US29: DEAD: 02 Hannah Montana died on 19 FEB 2000.\n"
+    captured = capsys.readouterr()
+    assert captured.out == expected
+    #future date
+    list_deceased.us29ListDeceased(
+        [["01", "Bob Thornton", "M", "18 FEB 2000", "20","Y", "N/A" "N/A", "02"],["02", "Hannah Montana", "F", "18 FEB 2000", "20",  "N", "19 FEB 2025", "N/A", "01"]]
+    )
+    expected2 = ""
+    captured2 = capsys.readouterr()
+    assert captured2.out == expected2
+    # bad date
+    list_deceased.us29ListDeceased(
+        [["01", "Bob Thornton", "M", "18 FEB 2000", "20","Y", "FakeDeathString" "N/A", "02"],["02", "Hannah Montana", "F", "18 FEB 2000", "20",  "N", "19 FEB 2025", "N/A", "01"]]
+    )
+    expected3 = ""
+    captured3 = capsys.readouterr()
+    assert captured3.out == expected3
+    
