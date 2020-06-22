@@ -45,3 +45,25 @@ def marriage_divorce_date_comparison(marriage_date, divorce_date):
 
     except ValueError:
         print("marriage_divorce_date_comparison: DATE PROVIDED IS INCORRECT FORMAT")
+
+# Function to check if divorce date occurred before each spouse's death
+def divorce_date_before_death(divorce, death_1, death_2):
+    try:
+        if divorce == "N/A":
+            return False
+        elif death_1 == "N/A" and death_2 == "N/A":
+            return True
+        
+        res = True
+
+        div = datetime.datetime.strptime(divorce, "%d %b %Y")
+        if death_1 != "N/A":
+            d_1 = datetime.datetime.strptime(death_1, "%d %b %Y")
+            res = res and (div < d_1)
+        if death_2 != "N/A":
+            d_2 = datetime.datetime.strptime(death_2, "%d %b %Y")
+            res = res and (div < d_2)
+
+        return res
+    except ValueError:
+        print("divorce_date_before_death: DATE PROVIDED IS INCORRECT FORMAT")

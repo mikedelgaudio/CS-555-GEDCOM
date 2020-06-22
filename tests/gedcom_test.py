@@ -50,6 +50,14 @@ def test_us05():
     assert marriage_date_check.marriage_before_death("10 OCT 2010", "7 SEP 2013", "1 JAN 2020") is False
     assert marriage_date_check.marriage_before_death("10 OCT 2010", "10 OCT 2010", "10 OCT 2010") is False
 
+def test_us06():
+    assert marriage_date_check.divorce_date_before_death("10 OCT 2010", "N/A", "N/A") is True
+    assert marriage_date_check.divorce_date_before_death("N/A", "10 OCT 2000", "2 JAN 2011") is False
+    assert marriage_date_check.divorce_date_before_death("10 OCT 2013", "9 OCT 2013", "1 JAN 2014") is False
+    assert marriage_date_check.divorce_date_before_death("10 OCT 2005", "11 OCT 2005", "11 OCT 2005") is True
+    assert marriage_date_check.divorce_date_before_death("10 OCT 2005", "N/A", "11 OCT 2005") is True
+    assert marriage_date_check.divorce_date_before_death("10 OCT 2005", "11 OCT 2005", "N/A") is True
+
 def test_us42():
     assert dates.us42ValidDate("21 AUG 2019") is True
     assert dates.us42ValidDate("33 JUL 2011") is False
