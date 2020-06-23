@@ -165,16 +165,21 @@ def run():
         if not birth_date_check.birth_before_death(s[constants.ifnIndex["BIRT"]],s[constants.ifnIndex["DEAT"]]):
             print("US03: ANAMOLY: Death cannot come before birth. Individual ID: {0}".format(s[0]))
 
-    # For each spouse, make sure their death dates are before their marriage dates. If not, print anamoly message.
-    for s in filter(lambda s: s[2][constants.ffnIndex["MARR"]] != "N/A", spouses):
-        if not marriage_date_check.marriage_before_death(s[0][constants.ifnIndex["DEAT"]], s[1][constants.ifnIndex["DEAT"]], s[2][1]):
-            print("US05: ANAMOLY: Marriage date cannot be after either spouse's death date. Marriage ID: {0}".format(s[2][0]))
-
-    # For each divorced couple, make sure they are divorced AFTER they are married
+    # US04: For each divorced couple, make sure they are divorced AFTER they are married
     for s in filter(lambda s: s[2][constants.ffnIndex["DIV"]] != "N/A", spouses):
         if not marriage_date_check.marriage_divorce_date_comparison(s[2][constants.ffnIndex["MARR"]], s[2][constants.ffnIndex["DIV"]]):
             print("US04: ANAMOLY: Divorce must come after a marriage. Marriage ID: {0}".format(s[2][0]))
 
+    # US05: For each spouse, make sure their death dates are before their marriage dates. If not, print anamoly message.
+    for s in filter(lambda s: s[2][constants.ffnIndex["MARR"]] != "N/A", spouses):
+        if not marriage_date_check.marriage_before_death(s[0][constants.ifnIndex["DEAT"]], s[1][constants.ifnIndex["DEAT"]], s[2][1]):
+            print("US05: ANAMOLY: Marriage date cannot be after either spouse's death date. Marriage ID: {0}".format(s[2][0]))
+
+    # US06: For each divorced couple, make sure they are divorced BEFORE they have died
+    for s in filter(lambda couple: couple[2][constants.ffnIndex["DIV"]] != "N/A", spouses):
+        if not marriage_date_check.divorce_date_before_death(s[2][constants.ffnIndex["DIV"]], 
+        s[0][constants.ifnIndex["DEAT"]], s[1][constants.ifnIndex["DEAT"]]):
+            print("US06: ANAMOLY: Divorce date cannot be before either or both spouse's death date. Marriage ID: {0}".format(s[2][0]))
 
     #runs us01 and us42 on individuals and familes
     dates.dateHelper(individuals, families)
