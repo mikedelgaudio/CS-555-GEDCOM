@@ -52,10 +52,28 @@ def birth_before_marriage_of_parents(birth,mar,div):
         if div is None:
             return True
         else:
+            datetime.datetime.strptime(div, "%Y").year
             return #CHECK FOR 9 MONTHS
     else:
         return False
 
 #Child should be born before death of mother and before 9 months after death of father
-def birth_before_death_of_parents():
-    return
+def birth_before_death_of_parents(birth,mdeath,fdeath):
+    b = datetime.datetime.strptime(birth, "%d %b %Y")
+    md = None
+    fd = None
+    if mdeath != "N/A":
+        md = datetime.datetime.strptime(mdeath, "%d %b %Y")
+    if fdeath != "N/A":
+        fd = datetime.datetime.strptime(fdeath, "%d %b %Y")
+    if md is None and fd is None:
+        return True
+    if fd is None and md > b:
+        return True
+    if md is None:
+        return #CHECK FOR 9 MONTHS
+    else:
+        if md > b:
+            return #CHECK FOR 9 MONTHS
+        else:
+            return False
