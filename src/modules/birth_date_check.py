@@ -1,4 +1,5 @@
 import datetime
+from helpers import dates
 
 #Birth should occur before marriage of an individual
 def birth_before_marriage(birth1,birth2,marriage):
@@ -52,8 +53,10 @@ def birth_before_marriage_of_parents(birth,mar,div):
         if div is None:
             return True
         else:
-            datetime.datetime.strptime(div, "%Y").year
-            return #CHECK FOR 9 MONTHS
+            if diff90(d,b):
+                return True
+            else:
+                return False
     else:
         return False
 
@@ -71,9 +74,15 @@ def birth_before_death_of_parents(birth,mdeath,fdeath):
     if fd is None and md > b:
         return True
     if md is None:
-        return #CHECK FOR 9 MONTHS
+        if diff90(fd,b):
+            return True
+        else:
+            return False
     else:
         if md > b:
-            return #CHECK FOR 9 MONTHS
+            if diff90(fd,b):
+                return True
+            else:
+                return False
         else:
             return False
