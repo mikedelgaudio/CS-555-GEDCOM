@@ -48,7 +48,13 @@ def birth_before_marriage_of_parents(birth,mar,div):
     d = None
     if div != "N/A":
         d = datetime.datetime.strptime(div, "%d %b %Y")
-    return
+    if b > m:
+        if div is None:
+            return True
+        else:
+            return #CHECK FOR 9 MONTHS
+    else:
+        return False
 
 #Child should be born before death of mother and before 9 months after death of father
 def birth_before_death_of_parents():
