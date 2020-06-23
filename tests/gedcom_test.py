@@ -4,7 +4,7 @@ sys.path.insert(0, '../src')
 import main
 from helpers import dates
 from modules import birth_date_check
-from modules import marriage_date_check, list_upcoming_dates, list_deceased
+from modules import marriage_date_check, list_upcoming_dates, list_deceased, unique_id
 import pytest
 from _pytest.compat import CaptureAndPassthroughIO
 from _pytest.compat import CaptureIO
@@ -103,3 +103,17 @@ def test_us29(capsys):
     captured3 = capsys.readouterr()
     assert captured3.out == expected3
     
+def test_us22(capsys):
+    #normal duplicates case
+    unique_id.us22UniqueIds([["01", "Bob Thornton", "M", "18 FEB 2000", "20","Y", "N/A" "N/A", "02"],["01", "Hannah Montana", "F", "18 FEB 2000", "20",  "Y", "N/A", "N/A", "01"]],[['@F5@', '10 JUL 2001', 'N/A', '@I8@', 'Aerys /Targaryon/', '@I7@', 'Rhaella /Targaryon/', '{@I2@ @I9@ @I10@}'], ['@F5@', '10 JUL 2001', 'N/A', '@I8@', 'Aerys /Targaryon/', '@I7@', 'Rhaella /Targaryon/', '{@I2@ @I9@ @I10@}']])
+    
+    expected = "US22: ERROR: DUPID: Bob Thornton has a duplicate individual ID of 01.\n" + "US22: ERROR: DUPID: Hannah Montana has a duplicate individual ID of 01.\n" + "US22: ERROR: DUPID: Family ID @F5@.\n" + "US22: ERROR: DUPID: Family ID @F5@.\n"
+    captured = capsys.readouterr()
+    assert captured.out == expected
+    
+    #no duplicates case
+    unique_id.us22UniqueIds([["01", "Bob Thornton", "M", "18 FEB 2000", "20","Y", "N/A" "N/A", "02"],["02", "Hannah Montana", "F", "18 FEB 2000", "20",  "Y", "N/A", "N/A", "01"]],[['@F5@', '10 JUL 2001', 'N/A', '@I8@', 'Aerys /Targaryon/', '@I7@', 'Rhaella /Targaryon/', '{@I2@ @I9@ @I10@}'], ['@F3@', '10 JUL 2001', 'N/A', '@I8@', 'Aerys /Targaryon/', '@I7@', 'Rhaella /Targaryon/', '{@I2@ @I9@ @I10@}']])
+    
+    expected = ""
+    captured = capsys.readouterr()
+    assert captured.out == expected
