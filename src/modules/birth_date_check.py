@@ -1,5 +1,6 @@
 import datetime
 
+#Birth should occur before marriage of an individual
 def birth_before_marriage(birth1,birth2,marriage):
     try:
         if(marriage == "N/A"):
@@ -19,6 +20,7 @@ def birth_before_marriage(birth1,birth2,marriage):
     except ValueError:
         print("DATE PROVIDED IS INCORRECT FORMAT")
 
+#Birth should occur before death of an individual
 def birth_before_death(birth,death):
     try:
         if(death == "N/A"):
@@ -38,3 +40,11 @@ def birth_before_death(birth,death):
                 return False
     except ValueError:
         print("DATE PROVIDED IS INCORRECT FORMAT")
+
+#Children should be born after marriage of parents (and not more than 9 months after their divorce)
+def birth_before_marriage_of_parents:
+    return
+
+#Child should be born before death of mother and before 9 months after death of father
+def birth_before_death_of_parents:
+    return
