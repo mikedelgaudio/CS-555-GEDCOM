@@ -66,9 +66,9 @@ def test_us42():
     assert dates.us42ValidDate("20 FEB 2000") is True
 
 def test_30dayhelp():
-    assert dates.next30days("7 JUL 2020") is True
-    assert dates.next30days("7 JUL 1000") is True
-    assert dates.next30days("10 DEC 2020") is False
+    assert dates.dateChecker("7 JUL 2020", 30, True) is True
+    assert dates.dateChecker("7 JUL 1000", 30, True) is True
+    assert dates.dateChecker("10 DEC 2020", 30, True) is False
 
 def test_us39():
     assert list_upcoming_dates.anniversary([["01", "Bob Thornton", "M", "18 FEB 2000", "20", "Y", "N/A", "N/A", "02"],["02", "Hannah Montana", "F", "18 FEB 2000", "20", "Y", "N/A", "N/A", "01"]],[["001", "30 JUN 2019", "N/A", "01",
@@ -117,3 +117,10 @@ def test_us22(capsys):
     expected = ""
     captured = capsys.readouterr()
     assert captured.out == expected
+
+
+def test_us36():
+    assert dates.dateChecker("7 JUN 2020", -30, False) is True
+    assert dates.dateChecker("7 JUN 1000", -30, False) is False
+    assert dates.dateChecker("10 DEC 2020", -30, False) is False
+    assert dates.dateChecker("10 JUL 2020", -30, False) is False
