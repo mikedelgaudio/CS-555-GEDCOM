@@ -5,7 +5,7 @@
 from Table import Table
 from helpers import ind, dates, fam, sorting
 import constants
-from modules import list_upcoming_dates, marriage_date_check, birth_date_check, list_deceased, unique_id
+from modules import list_upcoming_dates, marriage_date_check, birth_date_check, list_deceased, unique_id, list_recent
 
 # Wrapped this in a run() function so that our pytest knows what to do
 
@@ -189,6 +189,7 @@ def run():
 
     list_upcoming_dates.birthdays(individuals)
     list_upcoming_dates.anniversary(individuals, families)
+    list_recent.deaths(individuals)
 
 # Uncomment me for debugging!!\
 run()
