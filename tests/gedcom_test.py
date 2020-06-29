@@ -4,7 +4,7 @@ sys.path.insert(0, '../src')
 import main
 from helpers import dates
 from modules import birth_date_check
-from modules import marriage_date_check, list_upcoming_dates, list_deceased, unique_id
+from modules import marriage_date_check, list_upcoming_dates, list_deceased, unique_id, list_recent
 import pytest
 from _pytest.compat import CaptureAndPassthroughIO
 from _pytest.compat import CaptureIO
@@ -124,3 +124,22 @@ def test_us36():
     assert dates.dateChecker("7 JUN 1000", -30, False) is False
     assert dates.dateChecker("10 DEC 2020", -30, False) is False
     assert dates.dateChecker("10 JUL 2020", -30, False) is False
+
+def test_us35(capsys):
+    list_recent.list_recent([["01", "Bob Thornton", "M", "18 FEB 2000", "20","N", "25 JUN 2020", "N/A", "02"],["01", "Hannah Montana", "F", "18 JUN 2020", "0",  "Y", "N/A", "N/A", "01"]])
+    
+    expected = "US36: RECENT DEATH: Bob Thornton died on JUN 25.\n" + "US35: RECENT BIRTH: Hannah Montana was born on JUN 18!\n"
+    captured = capsys.readouterr()
+    assert captured.out == expected
+    
+    list_recent.list_recent([["01", "Bob Thornton", "M", "18 JUN 2020", "20","N", "25 JUN 2020", "N/A", "02"]])
+    
+    expected =  "US36: RECENT DEATH: Bob Thornton died on JUN 25.\n" + "US35: RECENT BIRTH: Bob Thornton was born on JUN 18!\n"
+    captured = capsys.readouterr()
+    assert captured.out == expected
+    
+    list_recent.list_recent([["01", "Bob Thornton", "M", "18 FEB 2000", "20","Y", "N/A" "N/A", "02"],["02", "Hannah Montana", "F", "18 JUN 2000", "20",  "Y", "N/A", "N/A", "01"]])
+    
+    expected = ""
+    captured = capsys.readouterr()
+    assert captured.out == expected
