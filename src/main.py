@@ -189,7 +189,7 @@ def run():
 
     list_upcoming_dates.birthdays(individuals)
     list_upcoming_dates.anniversary(individuals, families)
-    list_recent.deaths(individuals)
+    list_recent.list_recent(individuals)
 
 # Uncomment me for debugging!!\
-run()
+# run()
