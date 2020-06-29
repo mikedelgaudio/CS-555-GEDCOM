@@ -11,7 +11,7 @@ from modules import list_upcoming_dates, marriage_date_check, birth_date_check, 
 
 
 def run():
-    f = open("./test.ged", "r")
+    f = open("../test.ged", "r")
     individuals = []
     families = []
     individual = ["N/A", "N/A", "N/A", "N/A",
@@ -192,4 +192,4 @@ def run():
     list_recent.list_recent(individuals)
 
 # Uncomment me for debugging!!\
-run()
+# run()
