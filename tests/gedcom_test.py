@@ -54,12 +54,13 @@ def test_us08():
     assert birth_date_check.birth_before_marriage_of_parents("12 APR 2030","12 APR 2030","N/A") is True
 
 def test_us09():
-    assert birth_date_check.birth_before_death_of_parents("18 NOV 1999","18 NOV 2019") is True
-    assert birth_date_check.birth_before_death_of_parents("18 NOV 1999","18 NOV 1999") is True
-    assert birth_date_check.birth_before_death_of_parents("18 NOV 2000","18 NOV 1999") is False
-    assert birth_date_check.birth_before_death_of_parents("18 DEC 1999","18 NOV 1999") is False
-    assert birth_date_check.birth_before_death_of_parents("25 NOV 1999","18 NOV 1999") is False
-    assert birth_date_check.birth_before_death_of_parents("12 APR 2030","N/A") is True
+    assert birth_date_check.birth_before_death_of_parents("18 NOV 1999","18 NOV 1999","18 NOV 2019") is True
+    assert birth_date_check.birth_before_death_of_parents("18 NOV 1999","18 NOV 2019","18 NOV 2010") is False
+    assert birth_date_check.birth_before_death_of_parents("18 NOV 1999","18 NOV 1999","18 NOV 1999") is False
+    assert birth_date_check.birth_before_death_of_parents("18 NOV 2000","18 NOV 2000","18 NOV 1999") is False
+    assert birth_date_check.birth_before_death_of_parents("18 DEC 1999","18 DEC 1999","18 NOV 1999") is False
+    assert birth_date_check.birth_before_death_of_parents("25 NOV 1999","25 NOV 1999","18 NOV 1999") is False
+    assert birth_date_check.birth_before_death_of_parents("12 APR 2030","12 APR 2030","N/A") is True
 
 def test_us42():
     assert dates.us42ValidDate("21 AUG 2019") is True
