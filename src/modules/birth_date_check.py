@@ -38,3 +38,19 @@ def birth_before_death(birth,death):
                 return False
     except ValueError:
         print("DATE PROVIDED IS INCORRECT FORMAT")
+
+def less_than_150_years(birth, death):
+    try:
+        if death == "N/A":
+            b_temp = datetime.datetime.strptime(birth, "%d %b %Y")
+            b = datetime.datetime(b_temp.year + 150, b_temp.month, b_temp.day)
+            return datetime.datetime.now() < b
+        else:
+            b = datetime.datetime.strptime(birth, "%d %b %Y")
+            d = datetime.datetime.strptime(death, "%d %b %Y")
+            if b > d:
+                return True
+            return ((d - b).days < 150*365)
+    except ValueError:
+        print("US07: DATE PROVIDED IS INCORRECT FORMAT")
+        return True
