@@ -5,7 +5,7 @@
 from Table import Table
 from helpers import ind, dates, fam, sorting
 import constants
-from modules import list_upcoming_dates, marriage_date_check, birth_date_check
+from modules import list_upcoming_dates, marriage_date_check, birth_date_check, list_deceased, unique_id, list_recent
 
 # Wrapped this in a run() function so that our pytest knows what to do
 
@@ -188,13 +188,26 @@ def run():
         if not marriage_date_check.marriage_divorce_date_comparison(s[2][constants.ffnIndex["MARR"]], s[2][constants.ffnIndex["DIV"]]):
             print("US04: ANAMOLY: Divorce must come after a marriage. Marriage ID: {0}".format(s[2][0]))
 
+    # US05: For each spouse, make sure their death dates are before their marriage dates. If not, print anamoly message.
+    for s in filter(lambda s: s[2][constants.ffnIndex["MARR"]] != "N/A", spouses):
+        if not marriage_date_check.marriage_before_death(s[0][constants.ifnIndex["DEAT"]], s[1][constants.ifnIndex["DEAT"]], s[2][1]):
+            print("US05: ANAMOLY: Marriage date cannot be after either spouse's death date. Marriage ID: {0}".format(s[2][0]))
+
+    # US06: For each divorced couple, make sure they are divorced BEFORE they have died
+    for s in filter(lambda couple: couple[2][constants.ffnIndex["DIV"]] != "N/A", spouses):
+        if not marriage_date_check.divorce_date_before_death(s[2][constants.ffnIndex["DIV"]], 
+        s[0][constants.ifnIndex["DEAT"]], s[1][constants.ifnIndex["DEAT"]]):
+            print("US06: ANAMOLY: Divorce date cannot be before either or both spouse's death date. Marriage ID: {0}".format(s[2][0]))
 
     #runs us01 and us42 on individuals and familes
     dates.dateHelper(individuals, families)
-
+    
+    list_deceased.us29ListDeceased(individuals)
+    unique_id.us22UniqueIds(individuals, families)
 
     list_upcoming_dates.birthdays(individuals)
     list_upcoming_dates.anniversary(individuals, families)
+    list_recent.list_recent(individuals)
 
 # Uncomment me for debugging!!\
 run()

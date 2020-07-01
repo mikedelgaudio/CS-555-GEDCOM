@@ -63,23 +63,33 @@ def dateHelper(individuals, families):
 
 
 
-def next30days(date):
+def dateChecker(date, time, annual):
     if(not us42ValidDate(date)):
         return False
     try:
         if(date == "N/A"):
             return False
+        elif(time ==0):
+            return True
+        
         today = datetime.datetime.now()
-        compare = today + datetime.timedelta(30)
+        compare = today + datetime.timedelta(time)
         day = date.split()[0]
         month = date.split()[1]
-        date = datetime.datetime(int(today.year), months[month], int(day))
-
-        if(compare >= date and today <= date):
-            return True
+        year = date.split()[2]
+        if(annual):
+            date = datetime.datetime(int(today.year), months[month], int(day))
+        else:
+            date = datetime.datetime(int(year),months[month], int(day))
+        if(time>0):
+            if(compare >= date and today <= date):
+                return True
 
         else:
-            return False
+            if(compare <= date and today >= date):
+                return True
+
+        return False
     except ValueError:
         return False
 
