@@ -170,6 +170,8 @@ def run():
             
     # US04: For each divorced couple, make sure they are divorced AFTER they are married
     for s in filter(lambda couple: couple[2][constants.ffnIndex["DIV"]] != "N/A", spouses):
+        if not marriage_date_check.marriage_divorce_date_comparison(s[2][constants.ffnIndex["MARR"]], s[2][constants.ffnIndex["DIV"]]):
+            print("US04: ANAMOLY: Divorce must come after a marriage. Marriage ID: {0}".format(s[2][0]))
 
     # US08: Children should be born after marriage of parents (and not more than 9 months after their divorce)
     for s in extfamily:
