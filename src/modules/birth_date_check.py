@@ -44,16 +44,20 @@ def birth_before_death(birth,death):
 
 #Children should be born after marriage of parents (and not more than 9 months after their divorce)
 def birth_before_marriage_of_parents(birth,mar,div):
-    m = datetime.datetime.strptime(mar, "%d %b %Y")
+    m = None
+    if mar != "N/A":
+        m = datetime.datetime.strptime(mar, "%d %b %Y")
     b = datetime.datetime.strptime(birth, "%d %b %Y")
     d = None
+    if m is None:
+        return False
     if div != "N/A":
         d = datetime.datetime.strptime(div, "%d %b %Y")
     if b >= m and d is None:
         return True
     elif b < m and d is None:
         return False
-    elif b > m and dates.diff90(b,d):
+    elif b >= m and dates.diff90(b,d):
         return True
     else:
         return False
@@ -69,7 +73,7 @@ def birth_before_death_of_parents(birth,mdeath,fdeath):
         fd = datetime.datetime.strptime(fdeath, "%d %b %Y")
     if md is None and fd is None:
         return True
-    if fd is None and md > b:
+    if fd is None and md >= b:
         return True
     if md is None:
         if dates.diff90(fd,b):
@@ -77,7 +81,7 @@ def birth_before_death_of_parents(birth,mdeath,fdeath):
         else:
             return False
     else:
-        if md > b:
+        if md >= b:
             if dates.diff90(fd,b):
                 return True
             else:
