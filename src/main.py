@@ -173,9 +173,10 @@ def run():
         if not birth_date_check.birth_before_marriage_of_parents(s[2][constants.ifnIndex["BIRT"]],s[3][constants.ffnIndex["MARR"]],s[3][constants.ffnIndex["DIV"]]):
             print("US08: ANAMOLY: Children should be born after parents marriage. Individual ID: {0}".format(s[2][0]))
 
-
     # US09: Child should be born before death of mother and before 9 months after death of father
-
+    for s in extfamily:
+        if not birth_date_check.birth_before_death_of_parents(s[2][constants.ifnIndex["BIRT"]],s[1][constants.ifnIndex["DEAT"]],s[0][constants.ifnIndex["DEAT"]]):
+            print("US09: ANAMOLY: Children should be born before parents death. Individual ID: {0}".format(s[2][0]))
 
     # For each spouse, make sure their death dates are before their marriage dates. If not, print anamoly message.
     for s in filter(lambda s: s[2][constants.ffnIndex["MARR"]] != "N/A", spouses):
