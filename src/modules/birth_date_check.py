@@ -52,5 +52,4 @@ def less_than_150_years(birth, death):
                 return True
             return ((d - b).days < 150*365)
     except ValueError:
-        print("US07: DATE PROVIDED IS INCORRECT FORMAT")
-        return True
+        pass
