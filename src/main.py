@@ -155,6 +155,9 @@ def run():
     # Create spouses list, the structure of each element in the lust is: [Husband Object, Wife Object, Family Object]
     spouses = fam.families_to_spouses_list(families, individuals)
 
+    # Creates list of parents with children
+    extfamily = fam.families_to_child_parent_list(families,individuals)
+
     # US02: Chck if birthday is before date of marriage
     for s in filter(lambda s: s[2][constants.ffnIndex["MARR"]] != "N/A", spouses):
         if not birth_date_check.birth_before_marriage(s[0][constants.ifnIndex["BIRT"]], s[1][constants.ifnIndex["BIRT"]], s[2][1]):
@@ -165,7 +168,22 @@ def run():
         if not birth_date_check.birth_before_death(s[constants.ifnIndex["BIRT"]],s[constants.ifnIndex["DEAT"]]):
             print("US03: ANAMOLY: Death cannot come before birth. Individual ID: {0}".format(s[0]))
 
-    # US04: For each divorced couple, make sure they are divorced AFTER they are married
+    # US08: Children should be born after marriage of parents (and not more than 9 months after their divorce)
+    for s in extfamily:
+        if not birth_date_check.birth_before_marriage_of_parents(s[2][constants.ifnIndex["BIRT"]],s[3][constants.ffnIndex["MARR"]],s[3][constants.ffnIndex["DIV"]]):
+            print("US08: ANAMOLY: Children should be born after parents marriage. Individual ID: {0}".format(s[2][0]))
+
+    # US09: Child should be born before death of mother and before 9 months after death of father
+    for s in extfamily:
+        if not birth_date_check.birth_before_death_of_parents(s[2][constants.ifnIndex["BIRT"]],s[1][constants.ifnIndex["DEAT"]],s[0][constants.ifnIndex["DEAT"]]):
+            print("US09: ANAMOLY: Children should be born before parents death. Individual ID: {0}".format(s[2][0]))
+
+    # For each spouse, make sure their death dates are before their marriage dates. If not, print anamoly message.
+    for s in filter(lambda s: s[2][constants.ffnIndex["MARR"]] != "N/A", spouses):
+        if not marriage_date_check.marriage_before_death(s[0][constants.ifnIndex["DEAT"]], s[1][constants.ifnIndex["DEAT"]], s[2][1]):
+            print("US05: ANAMOLY: Marriage date cannot be after either spouse's death date. Marriage ID: {0}".format(s[2][0]))
+
+    # For each divorced couple, make sure they are divorced AFTER they are married
     for s in filter(lambda s: s[2][constants.ffnIndex["DIV"]] != "N/A", spouses):
         if not marriage_date_check.marriage_divorce_date_comparison(s[2][constants.ffnIndex["MARR"]], s[2][constants.ffnIndex["DIV"]]):
             print("US04: ANAMOLY: Divorce must come after a marriage. Marriage ID: {0}".format(s[2][0]))
@@ -192,4 +210,4 @@ def run():
     list_recent.list_recent(individuals)
 
 # Uncomment me for debugging!!\
-# run()
+run()
