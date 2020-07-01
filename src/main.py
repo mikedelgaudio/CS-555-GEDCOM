@@ -155,6 +155,9 @@ def run():
     # Create spouses list, the structure of each element in the lust is: [Husband Object, Wife Object, Family Object]
     spouses = fam.families_to_spouses_list(families, individuals)
 
+    # Creates list of parents with children
+    extfamily = fam.families_to_child_parent_list(families,individuals)
+
     # US02: Chck if birthday is before date of marriage
     for s in filter(lambda s: s[2][constants.ffnIndex["MARR"]] != "N/A", spouses):
         if not birth_date_check.birth_before_marriage(s[0][constants.ifnIndex["BIRT"]], s[1][constants.ifnIndex["BIRT"]], s[2][1]):
@@ -164,6 +167,15 @@ def run():
     for s in individuals:
         if not birth_date_check.birth_before_death(s[constants.ifnIndex["BIRT"]],s[constants.ifnIndex["DEAT"]]):
             print("US03: ANAMOLY: Death cannot come before birth. Individual ID: {0}".format(s[0]))
+
+    # US08: Children should be born after marriage of parents (and not more than 9 months after their divorce)
+    for s in extfamily:
+        if not birth_date_check.birth_before_marriage_of_parents(s[2][constants.ifnIndex["BIRT"]],s[3][constants.ffnIndex["MARR"]],s[3][constants.ffnIndex["DIV"]]):
+            print("US08: ANAMOLY: Children should be born after parents marriage. Individual ID: {0}".format(s[2][0]))
+
+
+    # US09: Child should be born before death of mother and before 9 months after death of father
+
 
     # For each spouse, make sure their death dates are before their marriage dates. If not, print anamoly message.
     for s in filter(lambda s: s[2][constants.ffnIndex["MARR"]] != "N/A", spouses):
