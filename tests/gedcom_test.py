@@ -96,9 +96,9 @@ def test_us39():
     assert list_upcoming_dates.anniversary([["01", "Bob Thornton", "M", "18 FEB 2000", "20", "Y", "N/A", "N/A", "02"],["02", "Hannah Montana", "F", "18 FEB 2000", "20", "Y", "N/A", "N/A", "01"]],[["001", "30 JUN 2019", "N/A", "01",
                           "Bob Thornton", "02", "Hannah Montana", "N/A"]]) is True
     assert list_upcoming_dates.anniversary([["01", "Bob Thornton", "M", "18 FEB 2000", "20", "N", "19 FEB 2000", "N/A", "02"],["02", "Hannah Montana", "F", "18 FEB 2000", "20", "Y", "N/A", "N/A", "01"]],[["001", "30 JUN 2019", "N/A", "01",
-                          "Bob Thornton", "02", "Hannah Montana", "N/A"]]) is False
+                          "Bob Thornton", "02", "Hannah Montana", "N/A"]]) is True
     assert list_upcoming_dates.anniversary([["01", "Bob Thornton", "M", "18 FEB 2000", "20","Y", "N/A" "N/A", "02"],["02", "Hannah Montana", "F", "18 FEB 2000", "20",  "N", "19 FEB 2000", "N/A", "01"]],[["001", "30 JUN 2019", "N/A", "01",
-                          "Bob Thornton", "02", "Hannah Montana", "N/A"]]) is False
+                          "Bob Thornton", "02", "Hannah Montana", "N/A"]]) is True
     assert list_upcoming_dates.anniversary([["01", "Bob Thornton", "M", "18 FEB 2000", "20","Y", "N/A" "N/A", "02"],["02", "Hannah Montana", "F", "18 FEB 2000", "20",  "Y", "N/A", "N/A", "01"]],[["001", "30 JUN 2019", "31 JUN 2019", "01",
                           "Bob Thornton", "02", "Hannah Montana", "N/A"]]) is False
     
