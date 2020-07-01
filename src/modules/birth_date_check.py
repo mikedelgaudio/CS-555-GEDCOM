@@ -40,7 +40,7 @@ def birth_before_death(birth,death):
             else:
                 return False
     except ValueError:
-        print("DATE PROVIDED IS INCORRECT FORMAT")
+        return True
 
 def less_than_150_years(birth, death):
     try:
