@@ -67,27 +67,30 @@ def birth_before_marriage_of_parents(birth,mar,div):
 
 #Child should be born before death of mother and before 9 months after death of father
 def birth_before_death_of_parents(birth,mdeath,fdeath):
-    b = datetime.datetime.strptime(birth, "%d %b %Y")
-    md = None
-    fd = None
-    if mdeath != "N/A":
-        md = datetime.datetime.strptime(mdeath, "%d %b %Y")
-    if fdeath != "N/A":
-        fd = datetime.datetime.strptime(fdeath, "%d %b %Y")
-    if md is None and fd is None:
-        return True
-    if fd is None and md >= b:
-        return True
-    if md is None:
-        if dates.diff90(b,fd):
+    try:
+        b = datetime.datetime.strptime(birth, "%d %b %Y")
+        md = None
+        fd = None
+        if mdeath != "N/A":
+            md = datetime.datetime.strptime(mdeath, "%d %b %Y")
+        if fdeath != "N/A":
+            fd = datetime.datetime.strptime(fdeath, "%d %b %Y")
+        if md is None and fd is None:
             return True
-        else:
-            return False
-    else:
-        if md >= b:
+        if fd is None and md >= b:
+            return True
+        if md is None:
             if dates.diff90(b,fd):
                 return True
             else:
                 return False
         else:
-            return False
+            if md >= b:
+                if dates.diff90(b,fd):
+                    return True
+                else:
+                    return False
+            else:
+                return False
+    except ValueError:
+        print("DATE PROVIDED IS INCORRECT FORMAT")
