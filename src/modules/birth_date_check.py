@@ -76,13 +76,13 @@ def birth_before_death_of_parents(birth,mdeath,fdeath):
     if fd is None and md >= b:
         return True
     if md is None:
-        if dates.diff90(fd,b):
+        if dates.diff90(b,fd):
             return True
         else:
             return False
     else:
         if md >= b:
-            if dates.diff90(fd,b):
+            if dates.diff90(b,fd):
                 return True
             else:
                 return False
