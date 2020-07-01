@@ -49,14 +49,12 @@ def birth_before_marriage_of_parents(birth,mar,div):
     d = None
     if div != "N/A":
         d = datetime.datetime.strptime(div, "%d %b %Y")
-    if b > m:
-        if div is None:
-            return True
-        else:
-            if diff90(d,b):
-                return True
-            else:
-                return False
+    if b >= m and d is None:
+        return True
+    elif b < m and d is None:
+        return False
+    elif b > m and dates.diff90(b,d):
+        return True
     else:
         return False
 
@@ -74,13 +72,13 @@ def birth_before_death_of_parents(birth,mdeath,fdeath):
     if fd is None and md > b:
         return True
     if md is None:
-        if diff90(fd,b):
+        if dates.diff90(fd,b):
             return True
         else:
             return False
     else:
         if md > b:
-            if diff90(fd,b):
+            if dates.diff90(fd,b):
                 return True
             else:
                 return False

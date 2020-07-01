@@ -45,13 +45,12 @@ def test_us05():
     assert marriage_date_check.marriage_before_death("10 OCT 2010", "10 OCT 2010", "10 OCT 2010") is False
 
 def test_us08():
-    assert birth_date_check.birth_before_marriage_of_parents("18 NOV 1999","18 NOV 1999","18 NOV 2019") is True
-    assert birth_date_check.birth_before_marriage_of_parents("18 NOV 1999","18 NOV 2019","18 NOV 2010") is False
-    assert birth_date_check.birth_before_marriage_of_parents("18 NOV 1999","18 NOV 1999","18 NOV 1999") is False
-    assert birth_date_check.birth_before_marriage_of_parents("18 NOV 2000","18 NOV 2000","18 NOV 1999") is False
-    assert birth_date_check.birth_before_marriage_of_parents("18 DEC 1999","18 DEC 1999","18 NOV 1999") is False
-    assert birth_date_check.birth_before_marriage_of_parents("25 NOV 1999","25 NOV 1999","18 NOV 1999") is False
-    assert birth_date_check.birth_before_marriage_of_parents("12 APR 2030","12 APR 2030","N/A") is True
+    assert birth_date_check.birth_before_marriage_of_parents("18 NOV 1999","18 NOV 1998","18 NOV 2019") is True
+    assert birth_date_check.birth_before_marriage_of_parents("18 NOV 1999","18 NOV 2000","18 NOV 2019") is False
+    assert birth_date_check.birth_before_marriage_of_parents("18 NOV 1999","18 NOV 1997","18 NOV 1998") is False
+    assert birth_date_check.birth_before_marriage_of_parents("18 NOV 1999","18 NOV 1997","18 OCT 1999") is True
+    assert birth_date_check.birth_before_marriage_of_parents("18 NOV 1999","18 NOV 1998","N/A") is True
+    assert birth_date_check.birth_before_marriage_of_parents("18 NOV 1999","19 NOV 2000","N/A") is False
 
 def test_us09():
     assert birth_date_check.birth_before_death_of_parents("18 NOV 1999","18 NOV 1999","18 NOV 2019") is True
@@ -83,3 +82,6 @@ def test_us39():
                           "Bob Thornton", "02", "Hannah Montana", "N/A"]]) is False
     assert list_upcoming_dates.anniversary([["01", "Bob Thornton", "M", "18 FEB 2000", "20","Y", "N/A" "N/A", "02"],["02", "Hannah Montana", "F", "18 FEB 2000", "20",  "Y", "N/A", "N/A", "01"]],[["001", "30 JUN 2019", "31 JUN 2019", "01",
                           "Bob Thornton", "02", "Hannah Montana", "N/A"]]) is False
+
+test_us08()
+#test_us09()
