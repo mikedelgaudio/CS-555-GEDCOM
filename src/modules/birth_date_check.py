@@ -42,6 +42,21 @@ def birth_before_death(birth,death):
     except ValueError:
         return True
 
+def less_than_150_years(birth, death):
+    try:
+        if death == "N/A":
+            b_temp = datetime.datetime.strptime(birth, "%d %b %Y")
+            b = datetime.datetime(b_temp.year + 150, b_temp.month, b_temp.day)
+            return datetime.datetime.now() < b
+        else:
+            b = datetime.datetime.strptime(birth, "%d %b %Y")
+            d = datetime.datetime.strptime(death, "%d %b %Y")
+            if b > d:
+                return True
+            return ((d - b).days < 150*365)
+    except ValueError:
+        pass
+
 #Children should be born after marriage of parents (and not more than 9 months after their divorce)
 def birth_before_marriage_of_parents(birth,mar,div):
     try:

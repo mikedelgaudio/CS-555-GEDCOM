@@ -3,7 +3,7 @@
 # I pledge my honor that I have abided by the Stevens Honor System
 
 from Table import Table
-from helpers import ind, dates, fam, sorting
+from helpers import ind as Ind, dates, fam, sorting
 import constants
 from modules import list_upcoming_dates, marriage_date_check, birth_date_check, list_deceased, unique_id, list_recent
 
@@ -72,7 +72,7 @@ def run():
                         # Then find the full name of the individual using findIndividual
                         nameTag = tag + "NAME"
                         family[constants.ffnIndex[tag]] = arg
-                        family[constants.ffnIndex[nameTag]] = ind.findIndividual(
+                        family[constants.ffnIndex[nameTag]] = Ind.findIndividual(
                             arg, individuals)
 
                         firstf = True
@@ -97,7 +97,7 @@ def run():
                     if arg == "INDI":
                         if first:
 
-                            individual[constants.ifnIndex["AGE"]] = ind.ageCalculator(
+                            individual[constants.ifnIndex["AGE"]] = Ind.ageCalculator(
                                 individual[constants.ifnIndex["BIRT"]], individual[constants.ifnIndex["DEAT"]])
                             individuals += [individual]
                             individual = ["N/A", "N/A", "N/A", "N/A",
@@ -135,7 +135,7 @@ def run():
     individuals = sorting.sortById(individuals)
     families = sorting.sortById(families)
 
-    individuals = ind.fam_info_to_individual(individuals, families)
+    individuals = Ind.fam_info_to_individual(individuals, families)
 
     # Adds Both Lists to pretty table to be dispalyed
     for x in individuals:
@@ -167,6 +167,11 @@ def run():
     for s in individuals:
         if not birth_date_check.birth_before_death(s[constants.ifnIndex["BIRT"]],s[constants.ifnIndex["DEAT"]]):
             print("US03: ANAMOLY: Death cannot come before birth. Individual ID: {0}".format(s[0]))
+            
+    # US04: For each divorced couple, make sure they are divorced AFTER they are married
+    for s in filter(lambda couple: couple[2][constants.ffnIndex["DIV"]] != "N/A", spouses):
+        if not marriage_date_check.marriage_divorce_date_comparison(s[2][constants.ffnIndex["MARR"]], s[2][constants.ffnIndex["DIV"]]):
+            print("US04: ANAMOLY: Divorce must come after a marriage. Marriage ID: {0}".format(s[2][0]))
 
     # US08: Children should be born after marriage of parents (and not more than 9 months after their divorce)
     for s in extfamily:
@@ -189,7 +194,7 @@ def run():
             print("US04: ANAMOLY: Divorce must come after a marriage. Marriage ID: {0}".format(s[2][0]))
 
     # US05: For each spouse, make sure their death dates are before their marriage dates. If not, print anamoly message.
-    for s in filter(lambda s: s[2][constants.ffnIndex["MARR"]] != "N/A", spouses):
+    for s in filter(lambda couple: couple[2][constants.ffnIndex["MARR"]] != "N/A", spouses):
         if not marriage_date_check.marriage_before_death(s[0][constants.ifnIndex["DEAT"]], s[1][constants.ifnIndex["DEAT"]], s[2][1]):
             print("US05: ANAMOLY: Marriage date cannot be after either spouse's death date. Marriage ID: {0}".format(s[2][0]))
 
@@ -198,6 +203,11 @@ def run():
         if not marriage_date_check.divorce_date_before_death(s[2][constants.ffnIndex["DIV"]], 
         s[0][constants.ifnIndex["DEAT"]], s[1][constants.ifnIndex["DEAT"]]):
             print("US06: ANAMOLY: Divorce date cannot be before either or both spouse's death date. Marriage ID: {0}".format(s[2][0]))
+    
+    # US07: For each individual, make sure they are less than 150 years old
+    for ind in individuals:
+        if not birth_date_check.less_than_150_years(ind[constants.ifnIndex["BIRT"]], ind[constants.ifnIndex["DEAT"]]):
+            print("US07: ANAMOLY: Individual must be less than 150 years old. Individual ID: {0}".format(ind[0]))
 
     #runs us01 and us42 on individuals and familes
     dates.dateHelper(individuals, families)
