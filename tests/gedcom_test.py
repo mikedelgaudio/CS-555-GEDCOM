@@ -4,7 +4,7 @@ sys.path.insert(0, '../src')
 import main
 from helpers import dates
 from modules import birth_date_check
-from modules import marriage_date_check, list_upcoming_dates, list_deceased, unique_id, list_recent
+from modules import marriage_date_check, list_upcoming_dates, list_deceased, unique_id, list_recent, list_living_married
 import pytest
 from _pytest.compat import CaptureAndPassthroughIO
 from _pytest.compat import CaptureIO
@@ -167,6 +167,39 @@ def test_us35(capsys):
     assert captured.out == expected
     
     list_recent.list_recent([["01", "Bob Thornton", "M", "18 FEB 2000", "20","Y", "N/A" "N/A", "02"],["02", "Hannah Montana", "F", "18 JUN 2000", "20",  "Y", "N/A", "N/A", "01"]])
+    
+    expected = ""
+    captured = capsys.readouterr()
+    assert captured.out == expected
+    
+def test_us30(capsys):
+    ## Happy case
+    list_living_married.us30([["01", "Aerys /Targaryon/", "M", "18 FEB 2000", "20","TRUE", "N/A" "N/A", "02"],["01", "Rhaella /Targaryon/", "F", "18 FEB 2000", "20",  "TRUE", "N/A", "N/A", "01"]],
+                             [['@F5@', '10 JUL 2001', 'N/A', '@I8@', 'Aerys /Targaryon/', '@I7@', 'Rhaella /Targaryon/', '{@I2@ @I9@ @I10@}']]) 
+    
+    expected = "US30: ALIVE & MARRIED: Aerys /Targaryon/ and Rhaella /Targaryon/ are alive and married.\n"
+    captured = capsys.readouterr()
+    assert captured.out == expected
+    
+    ## Husband died
+    list_living_married.us30([["01", "Aerys /Targaryon/", "M", "18 FEB 2000", "20","FALSE", "N/A" "N/A", "02"],["01", "Rhaella /Targaryon/", "F", "18 FEB 2000", "20",  "TRUE", "N/A", "N/A", "01"]],
+                             [['@F5@', '10 JUL 2001', 'N/A', '@I8@', 'Aerys /Targaryon/', '@I7@', 'Rhaella /Targaryon/', '{@I2@ @I9@ @I10@}']]) 
+    
+    expected = ""
+    captured = capsys.readouterr()
+    assert captured.out == expected
+    
+    ## Wife died
+    list_living_married.us30([["01", "Aerys /Targaryon/", "M", "18 FEB 2000", "20","TRUE", "N/A" "N/A", "02"],["01", "Rhaella /Targaryon/", "F", "18 FEB 2000", "20",  "FALSE", "N/A", "N/A", "01"]],
+                             [['@F5@', '10 JUL 2001', 'N/A', '@I8@', 'Aerys /Targaryon/', '@I7@', 'Rhaella /Targaryon/', '{@I2@ @I9@ @I10@}']]) 
+    
+    expected = ""
+    captured = capsys.readouterr()
+    assert captured.out == expected
+    
+    ## Divorced
+    list_living_married.us30([["01", "Aerys /Targaryon/", "M", "18 FEB 2000", "20","TRUE", "N/A" "N/A", "02"],["01", "Rhaella /Targaryon/", "F", "18 FEB 2000", "20",  "TRUE", "N/A", "N/A", "01"]],
+                             [['@F5@', '10 JUL 2001', '21 AUG 2002', '@I8@', 'Aerys /Targaryon/', '@I7@', 'Rhaella /Targaryon/', '{@I2@ @I9@ @I10@}']]) 
     
     expected = ""
     captured = capsys.readouterr()
