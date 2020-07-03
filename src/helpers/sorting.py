@@ -18,7 +18,6 @@ def us28(individuals, families):
     lister = []
     ageList = []
     finalSortedList = []
-    finalNames = []
     for f in families:
         item = (f[7].replace("{", "").replace("}","").split())
         if(item == []):
@@ -29,9 +28,14 @@ def us28(individuals, families):
         finalSortedList.clear()
         for ID in item:
             for person in individuals:
+                
                 if(person[0] == ID):
                     lister.append(person)
-                    
+                
+            if(lister == []):
+                print("US28: ERROR: Family ID " + f[0] +" has a child ID " + ID + " that does not exist in individual table.")
+                #print(lister)
+
         ageList.clear()
         for child in lister:
             if(child[4] == "Invalid Date" or child[4] == "N/A"):
@@ -39,7 +43,6 @@ def us28(individuals, families):
                 continue
             ageList.append(child[4])
         
-       # print(ageList)
         ageList.sort()
         ageList.reverse()
         
@@ -48,7 +51,6 @@ def us28(individuals, families):
                 if(child[4] == age):
                     finalSortedList.append(child)
 
-                    
         #we now need to print all the children
         stringOfChildren = ""
         for child in finalSortedList:
