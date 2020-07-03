@@ -19,7 +19,6 @@ months = {"JAN": 1, "FEB": 2, "MAR": 3, "APR": 4, "MAY": 5, "JUN": 6,
 
 
 def ageCalculator(birthday, deathDate):
-    print(birthday)
     if(not dates.us42ValidDate(birthday) or not dates.us42ValidDate(deathDate)):
         return "Invalid Date"
     if birthday != "N/A" :
