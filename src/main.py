@@ -96,9 +96,7 @@ def run():
                     # Resets individual to default values
                     if arg == "INDI":
                         if first:
-
-                            individual[constants.ifnIndex["AGE"]] = Ind.ageCalculator(
-                                individual[constants.ifnIndex["BIRT"]], individual[constants.ifnIndex["DEAT"]])
+                            individual[constants.ifnIndex["AGE"]] = Ind.ageCalculator(individual[constants.ifnIndex["BIRT"]], individual[constants.ifnIndex["DEAT"]])
                             individuals += [individual]
                             individual = ["N/A", "N/A", "N/A", "N/A",
                                           "N/A", "TRUE", "N/A", "N/A", "N/A"]
@@ -129,6 +127,8 @@ def run():
     family[constants.ffnIndex["CHIL"]] = '{' + \
         ''.join(children).strip() + '}'
 
+    individual[constants.ifnIndex["AGE"]] = Ind.ageCalculator(individual[constants.ifnIndex["BIRT"]], individual[constants.ifnIndex["DEAT"]])
+                            
     individuals += [individual]
     families += [family]
 
