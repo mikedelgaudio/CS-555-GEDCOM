@@ -36,12 +36,12 @@ def ageCalculator(birthday, deathDate):
         today = datetime.datetime.now()
         birth = datetime.datetime(int(year), months[month], int(day))
         return today.year - birth.year - ((today.month, today.day) < (birth.month, birth.day))
+        
     else:
-        death = datetime.datetime(
-            int(deathyear), months[deathmonth], int(deathday))
+        death = datetime.datetime(int(deathyear), months[deathmonth], int(deathday))
         birth = datetime.datetime(int(year), months[month], int(day))
-
         return death.year - birth.year - ((death.month, death.day) < (birth.month, birth.day))
+        
 
 
 # Adds required family info to individuals table such as spouse or child id
