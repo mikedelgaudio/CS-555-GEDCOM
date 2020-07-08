@@ -2,6 +2,7 @@ import sys
 sys.path.insert(0, '../src')
 
 import main
+import datetime
 from helpers import dates, sorting
 from modules import birth_date_check
 from modules import marriage_date_check, list_upcoming_dates, list_deceased, unique_id, list_recent, list_living_married
@@ -94,18 +95,20 @@ def test_us42():
     assert dates.us42ValidDate("20 FEB 2000") is True
 
 def test_30dayhelp():
-    assert dates.dateChecker("7 JUL 2020", 30, True) is True
-    assert dates.dateChecker("7 JUL 1000", 30, True) is True
-    assert dates.dateChecker("10 DEC 2020", 30, True) is False
+    today = datetime.datetime.now()
+    assert dates.dateChecker((today + datetime.timedelta(25)).strftime("%d %b %Y").upper(), 30, True) is True
+    assert dates.dateChecker((today + datetime.timedelta(368)).strftime("%d %b %Y").upper(), 30, True) is True
+    assert dates.dateChecker((today + datetime.timedelta(200)).strftime("%d %b %Y").upper(), 30, True) is False
 
 def test_us39():
-    assert list_upcoming_dates.anniversary([["01", "Bob Thornton", "M", "18 FEB 2000", "20", "Y", "N/A", "N/A", "02"],["02", "Hannah Montana", "F", "18 FEB 2000", "20", "Y", "N/A", "N/A", "01"]],[["001", "30 JUN 2019", "N/A", "01",
+    today = datetime.datetime.now()
+    assert list_upcoming_dates.anniversary([["01", "Bob Thornton", "M", "18 FEB 2000", "20", "Y", "N/A", "N/A", "02"],["02", "Hannah Montana", "F", "18 FEB 2000", "20", "Y", "N/A", "N/A", "01"]],[["001", (today + datetime.timedelta(-361)).strftime("%d %b %Y").upper(), "N/A", "01",
                           "Bob Thornton", "02", "Hannah Montana", "N/A"]]) is True
-    assert list_upcoming_dates.anniversary([["01", "Bob Thornton", "M", "18 FEB 2000", "20", "N", "19 FEB 2000", "N/A", "02"],["02", "Hannah Montana", "F", "18 FEB 2000", "20", "Y", "N/A", "N/A", "01"]],[["001", "30 JUN 2019", "N/A", "01",
-                          "Bob Thornton", "02", "Hannah Montana", "N/A"]]) is True
-    assert list_upcoming_dates.anniversary([["01", "Bob Thornton", "M", "18 FEB 2000", "20","Y", "N/A" "N/A", "02"],["02", "Hannah Montana", "F", "18 FEB 2000", "20",  "N", "19 FEB 2000", "N/A", "01"]],[["001", "30 JUN 2019", "N/A", "01",
-                          "Bob Thornton", "02", "Hannah Montana", "N/A"]]) is True
-    assert list_upcoming_dates.anniversary([["01", "Bob Thornton", "M", "18 FEB 2000", "20","Y", "N/A" "N/A", "02"],["02", "Hannah Montana", "F", "18 FEB 2000", "20",  "Y", "N/A", "N/A", "01"]],[["001", "30 JUN 2019", "31 JUN 2019", "01",
+    assert list_upcoming_dates.anniversary([["01", "Bob Thornton", "M", "18 FEB 2000", "20", "N", "19 FEB 2000", "N/A", "02"],["02", "Hannah Montana", "F", "18 FEB 2000", "20", "Y", "N/A", "N/A", "01"]],[["001", (today + datetime.timedelta(-570)).strftime("%d %b %Y").upper(), "N/A", "01",
+                          "Bob Thornton", "02", "Hannah Montana", "N/A"]]) is False
+    assert list_upcoming_dates.anniversary([["01", "Bob Thornton", "M", "18 FEB 2000", "20","Y", "N/A" "N/A", "02"],["02", "Hannah Montana", "F", "18 FEB 2000", "20",  "N", "19 FEB 2000", "N/A", "01"]],[["001", (today + datetime.timedelta(-67)).strftime("%d %b %Y").upper(), "N/A", "01",
+                          "Bob Thornton", "02", "Hannah Montana", "N/A"]]) is False
+    assert list_upcoming_dates.anniversary([["01", "Bob Thornton", "M", "18 FEB 2000", "20","Y", "N/A" "N/A", "02"],["02", "Hannah Montana", "F", "18 FEB 2000", "20",  "Y", "N/A", "N/A", "01"]],[["001", (today + datetime.timedelta(-360)).strftime("%d %b %Y").upper(), (today + datetime.timedelta(-359)).strftime("%d %b %Y").upper(), "01",
                           "Bob Thornton", "02", "Hannah Montana", "N/A"]]) is False
     
 def test_us29(capsys):
@@ -148,25 +151,27 @@ def test_us22(capsys):
 
 
 def test_us36():
-    assert dates.dateChecker("7 JUN 2020", -30, False) is True
-    assert dates.dateChecker("7 JUN 1000", -30, False) is False
-    assert dates.dateChecker("10 DEC 2020", -30, False) is False
-    assert dates.dateChecker("10 JUL 2020", -30, False) is False
+    today = datetime.datetime.now()
+    assert dates.dateChecker((today + datetime.timedelta(-25)).strftime("%d %b %Y").upper(), -30, False) is True
+    assert dates.dateChecker((today + datetime.timedelta(-200005)).strftime("%d %b %Y").upper(), -30, False) is False
+    assert dates.dateChecker((today +datetime.timedelta(-125)).strftime("%d %b %Y").upper(), -30, False) is False
+    assert dates.dateChecker((today +datetime.timedelta(25)).strftime("%d %b %Y").upper(), -30, False) is False
 
 def test_us35(capsys):
-    list_recent.list_recent([["01", "Bob Thornton", "M", "18 FEB 2000", "20","N", "25 JUN 2020", "N/A", "02"],["01", "Hannah Montana", "F", "18 JUN 2020", "0",  "Y", "N/A", "N/A", "01"]])
+    today = datetime.datetime.now()
+    list_recent.list_recent([["01", "Bob Thornton", "M", "18 FEB 2000", "20","N", (today + datetime.timedelta(-20)).strftime("%d %b %Y").upper(), "N/A", "02"],["01", "Hannah Montana", "F", (today + datetime.timedelta(-18)).strftime("%d %b %Y").upper(), "0",  "Y", "N/A", "N/A", "01"]])
     
-    expected = "US36: RECENT DEATH: Bob Thornton died on JUN 25.\n" + "US35: RECENT BIRTH: Hannah Montana was born on JUN 18!\n"
+    expected = "US36: RECENT DEATH: Bob Thornton died on " + (today + datetime.timedelta(-20)).strftime("%b %d").upper() + ".\n" + "US35: RECENT BIRTH: Hannah Montana was born on " + (today + datetime.timedelta(-18)).strftime("%b %d").upper() + "!\n"
     captured = capsys.readouterr()
     assert captured.out == expected
     
-    list_recent.list_recent([["01", "Bob Thornton", "M", "18 JUN 2020", "20","N", "25 JUN 2020", "N/A", "02"]])
+    list_recent.list_recent([["01", "Bob Thornton", "M", (today + datetime.timedelta(-10)).strftime("%d %b %Y").upper(), "20","N", (today + datetime.timedelta(-5)).strftime("%d %b %Y").upper(), "N/A", "02"]])
     
-    expected =  "US36: RECENT DEATH: Bob Thornton died on JUN 25.\n" + "US35: RECENT BIRTH: Bob Thornton was born on JUN 18!\n"
+    expected =  "US36: RECENT DEATH: Bob Thornton died on "+(today + datetime.timedelta(-5)).strftime("%b %d").upper()+".\n" + "US35: RECENT BIRTH: Bob Thornton was born on " + (today + datetime.timedelta(-10)).strftime("%b %d").upper()+ "!\n"
     captured = capsys.readouterr()
     assert captured.out == expected
     
-    list_recent.list_recent([["01", "Bob Thornton", "M", "18 FEB 2000", "20","Y", "N/A" "N/A", "02"],["02", "Hannah Montana", "F", "18 JUN 2000", "20",  "Y", "N/A", "N/A", "01"]])
+    list_recent.list_recent([["01", "Bob Thornton", "M", (today + datetime.timedelta(-100)).strftime("%d %b %Y").upper(), "20","Y", "N/A" "N/A", "02"],["02", "Hannah Montana", "F", (today + datetime.timedelta(10)).strftime("%d %b %Y").upper(), "20",  "Y", "N/A", "N/A", "01"]])
     
     expected = ""
     captured = capsys.readouterr()
