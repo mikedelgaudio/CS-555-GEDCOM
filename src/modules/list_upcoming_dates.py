@@ -29,6 +29,8 @@ def anniversary(individuals, families):
                     month = x[1].split()[1]
                     
                     print("US39: ANNIV: " + husband + " and " + wife + "'s anniversary is on " + month + " " + day + "!")
+            else:
+                return False
         else:
             error += 1
     if error > 0:
