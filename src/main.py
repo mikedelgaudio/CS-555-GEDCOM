@@ -5,7 +5,7 @@
 from Table import Table
 from helpers import ind as Ind, dates, fam, sorting
 import constants
-from modules import list_upcoming_dates, marriage_date_check, birth_date_check, list_deceased, unique_id, list_recent, list_living_married
+from modules import list_upcoming_dates, marriage_date_check, birth_date_check, list_deceased, unique_id, list_recent, list_living_married, gender_check
 
 # Wrapped this in a run() function so that our pytest knows what to do
 
@@ -128,7 +128,7 @@ def run():
         ''.join(children).strip() + '}'
 
     individual[constants.ifnIndex["AGE"]] = Ind.ageCalculator(individual[constants.ifnIndex["BIRT"]], individual[constants.ifnIndex["DEAT"]])
-                            
+
     individuals += [individual]
     families += [family]
 
@@ -155,7 +155,7 @@ def run():
     # Create spouses list, the structure of each element in the lust is: [Husband Object, Wife Object, Family Object]
     spouses = fam.families_to_spouses_list(families, individuals)
 
-    # Creates list of parents with children
+    # Creates list of parents with children (Husb, Wife, Child, Fam)
     extfamily = fam.families_to_child_parent_list(families,individuals)
 
     # US02: Chck if birthday is before date of marriage
@@ -167,7 +167,7 @@ def run():
     for s in individuals:
         if not birth_date_check.birth_before_death(s[constants.ifnIndex["BIRT"]],s[constants.ifnIndex["DEAT"]]):
             print("US03: ANOMALY: Death cannot come before birth. Individual ID: {0}".format(s[0]))
-            
+
     # US04: For each divorced couple, make sure they are divorced AFTER they are married
     for s in filter(lambda couple: couple[2][constants.ffnIndex["DIV"]] != "N/A", spouses):
         if not marriage_date_check.marriage_divorce_date_comparison(s[2][constants.ffnIndex["MARR"]], s[2][constants.ffnIndex["DIV"]]):
@@ -203,11 +203,16 @@ def run():
         if not marriage_date_check.divorce_date_before_death(s[2][constants.ffnIndex["DIV"]],
         s[0][constants.ifnIndex["DEAT"]], s[1][constants.ifnIndex["DEAT"]]):
             print("US06: ANOMALY: Divorce date cannot be before either or both spouse's death date. Marriage ID: {0}".format(s[2][0]))
-    
+
     # US07: For each individual, make sure they are less than 150 years old
     for ind in individuals:
         if not birth_date_check.less_than_150_years(ind[constants.ifnIndex["BIRT"]], ind[constants.ifnIndex["DEAT"]]):
             print("US07: ANOMALY: Individual must be less than 150 years old. Individual ID: {0}".format(ind[0]))
+
+    # US21: Husband in family should be male and wife in family should be female
+    for s in spouses:
+        if not gender_check.husb_wife_gender(s[0][constants.ifnIndex["SEX"]],s[1][constants.ifnIndex["SEX"]]):
+            print("US21: ANOMALY: Husband and Wife Should have correct gender roles. Family ID: {0}".format(s[2][0]))
 
     #runs us01 and us42 on individuals and familes
     dates.dateHelper(individuals, families)
@@ -218,10 +223,10 @@ def run():
     list_upcoming_dates.birthdays(individuals)
     list_upcoming_dates.anniversary(individuals, families)
     list_recent.list_recent(individuals)
-    
+
     # US30: List living married
     list_living_married.us30(individuals, families)
-    
+
 
 # Uncomment me for debugging!!\
 run()
