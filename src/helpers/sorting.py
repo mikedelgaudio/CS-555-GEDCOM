@@ -12,3 +12,59 @@ def sortById(gedcomList):
                                    for c in re.split('([0-9]+)', key)]
     # returns a copy of the sorted list by index 0 which is the unique ID field
     return sorted(gedcomList, key=lambda x: alphanum_key(x[0]))
+
+
+def us28(individuals, families):
+    lister = []
+    ageList = []
+    finalSortedList = []
+    for f in families:
+        item = (f[7].replace("{", "").replace("}","").split())
+        if(item == []):
+            #if no children iterate over it
+            continue
+        
+        lister.clear()
+        finalSortedList.clear()
+        for ID in item:
+            for person in individuals:
+                
+                if(person[0] == ID):
+                    lister.append(person)
+                
+            if(lister == []):
+                print("US28: ERROR: Family ID " + f[0] +" has a child ID " + ID + " that does not exist in individual table.")
+                #print(lister)
+
+        ageList.clear()
+        for child in lister:
+            if(child[4] == "Invalid Date" or child[4] == "N/A"):
+                print("US28: ERROR: Cannot compare invalid dates or N/A for children in Family ID " + f[0])
+                continue
+            ageList.append(child[4])
+        
+        ageList.sort()
+        ageList.reverse()
+        
+        for age in ageList:
+            for child in lister:
+                if(child[4] == age):
+                    finalSortedList.append(child)
+
+        #we now need to print all the children
+        stringOfChildren = ""
+        for child in finalSortedList:
+            stringOfChildren += "AGE " + str(child[4]) + "--> " + child[0] + " " + child[1] + "; "
+        if(len(finalSortedList) == 0):
+            #if no children just iterate
+            continue
+        else:
+            print("US28: CHILDREN SORTED: Family ID " + f[0] + " has " + str(len(finalSortedList)) + " children sorted " + stringOfChildren)
+                
+ 
+            
+            
+        
+        
+                
+            
