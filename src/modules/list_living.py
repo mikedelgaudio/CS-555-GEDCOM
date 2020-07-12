@@ -23,9 +23,5 @@ def us31(individuals,families):
                         if(f[2] != "N/A"):
                             divorced = True
                             break;
-                # for f in families:
-                #     #
-                #     for child in f[7]:
-                #         if(child == i[0]):
                 if(not divorced):
                     print("US31: ALIVE & SINGLE: " + i[1] + " is over 30 and has never been married.")
