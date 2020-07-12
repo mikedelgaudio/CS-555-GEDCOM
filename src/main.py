@@ -224,6 +224,10 @@ def run():
     # US31: List Living Single
     list_living.us31(individuals,families)
     
+    # US28: Order siblings by age
+    sorting.us28(individuals, families)
+    
+    
 
 # Uncomment me for debugging!!\
 run()

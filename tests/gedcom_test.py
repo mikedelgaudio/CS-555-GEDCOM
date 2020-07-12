@@ -3,7 +3,7 @@ sys.path.insert(0, '../src')
 
 import main
 import datetime
-from helpers import dates
+from helpers import dates, sorting
 from modules import birth_date_check
 from modules import marriage_date_check, list_upcoming_dates, list_deceased, unique_id, list_recent, list_living
 import pytest
@@ -211,7 +211,6 @@ def test_us30(capsys):
     assert captured.out == expected
 
 
-
 def test_us31(capsys):
     ## Nobody is alive and single!
     list_living.us31([["01", "Aerys /Targaryon/", "M", "18 FEB 2000", "20","TRUE", "N/A", "N/A", "02"],["01", "Rhaella /Targaryon/", "F", "18 FEB 2000", "20",  "TRUE", "N/A", "N/A", "01"]],
@@ -243,5 +242,20 @@ def test_us31(capsys):
     list_living.us31([["01", "Aerys /Targaryon/", "M", "18 FEB 2000", "40","TRUE", "N/A", "N/A", "N/A"],["01", "Rhaella /Targaryon/", "F", "18 FEB 2000", "40",  "TRUE", "N/A", "N/A", "N/A"]],
                              [['@F5@', '10 JUL 2001', 'N/A', '@I8@', 'Father', '@I7@', 'Mother', '{@01@ @02@}']]) 
     expected = "US31: ALIVE & SINGLE: Aerys /Targaryon/ is over 30 and has never been married.\n" + "US31: ALIVE & SINGLE: Rhaella /Targaryon/ is over 30 and has never been married.\n"
+
+def test_us28(capsys):
+    #IDs that don't exist in table
+    sorting.us28([["01", "Aerys /Targaryon/", "M", "18 FEB 2000", "20","TRUE", "N/A" "N/A", "02"],["01", "Rhaella /Targaryon/", "F", "18 FEB 2000", "20",  "TRUE", "N/A", "N/A", "01"]],
+                             [['@F5@', '10 JUL 2001', '21 AUG 2002', '@I8@', 'Aerys /Targaryon/', '@I7@', 'Rhaella /Targaryon/', '{@I2@ @I9@ @I10@}']])
+    
+    expected = "US28: ERROR: Family ID @F5@ has a child ID @I2@ that does not exist in individual table.\nUS28: ERROR: Family ID @F5@ has a child ID @I9@ that does not exist in individual table.\nUS28: ERROR: Family ID @F5@ has a child ID @I10@ that does not exist in individual table.\n"
+    captured = capsys.readouterr()
+    assert captured.out == expected
+    
+    #IDs that exist in table
+    sorting.us28([["01", "Aerys /Targaryon/", "M", "18 FEB 2000", "20","TRUE", "N/A" "N/A", "02"],["@I9@", "Rhaella /Targaryon/", "F", "18 FEB 2000", "20",  "TRUE", "N/A", "N/A", "01"]],
+                             [['@F5@', '10 JUL 2001', '21 AUG 2002', '@I8@', 'Aerys /Targaryon/', '@I7@', 'Rhaella /Targaryon/', '{@I2@ @I9@ @I10@}']])
+    
+    expected = "US28: ERROR: Family ID @F5@ has a child ID @I2@ that does not exist in individual table.\nUS28: CHILDREN SORTED: Family ID @F5@ has 1 children sorted AGE 20--> @I9@ Rhaella /Targaryon/; \n"
     captured = capsys.readouterr()
     assert captured.out == expected
