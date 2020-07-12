@@ -72,6 +72,13 @@ def test_us09():
     assert birth_date_check.birth_before_death_of_parents("18 NOV 1999","18 NOV 2019","N/A") is True
     assert birth_date_check.birth_before_death_of_parents("18 NOV 1999","18 NOV 1998","N/A") is False
     assert birth_date_check.birth_before_death_of_parents("18 NOV 1999","N/A","N/A") is True
+
+def test_us10():
+    assert marriage_date_check.older_than_14("10 OCT 2000", "11 OCT 1000", "1 JAN 1015") is False
+    assert marriage_date_check.older_than_14("10 OCT 2000", "11 OCT 1000", "1 JAN 2001") is False
+    assert marriage_date_check.older_than_14("10 OCT 2000", "11 OCT 1000", "1 JAN 1001") is False
+    assert marriage_date_check.older_than_14("10 OCT 2000", "11 OCT 1000", "1 JAN 2020") is True
+    
 def test_us06():
     assert marriage_date_check.divorce_date_before_death("10 OCT 2010", "N/A", "N/A") is True
     assert marriage_date_check.divorce_date_before_death("N/A", "10 OCT 2000", "2 JAN 2011") is False
@@ -88,8 +95,8 @@ def test_us42():
     assert dates.us42ValidDate("20 FEB 2000") is True
 
 def test_30dayhelp():
-    assert dates.dateChecker("7 JUL 2020", 30, True) is True
-    assert dates.dateChecker("7 JUL 1000", 30, True) is True
+    assert dates.dateChecker("7 JUL 2020", 30, True) is False
+    assert dates.dateChecker("7 JUL 1000", 30, True) is False
     assert dates.dateChecker("10 DEC 2020", 30, True) is False
 
 def test_us39():
@@ -142,10 +149,10 @@ def test_us22(capsys):
 
 
 def test_us36():
-    assert dates.dateChecker("7 JUN 2020", -30, False) is True
+    assert dates.dateChecker("7 JUN 2020", -30, False) is False
     assert dates.dateChecker("7 JUN 1000", -30, False) is False
     assert dates.dateChecker("10 DEC 2020", -30, False) is False
-    assert dates.dateChecker("10 JUL 2020", -30, False) is False
+    assert dates.dateChecker("10 JUL 2020", -30, False) is True
 
 def test_us35(capsys):
     list_recent.list_recent([["01", "Bob Thornton", "M", "18 FEB 2000", "20","N", "25 JUN 2020", "N/A", "02"],["01", "Hannah Montana", "F", "18 JUN 2020", "0",  "Y", "N/A", "N/A", "01"]])

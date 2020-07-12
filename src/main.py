@@ -198,7 +198,10 @@ def run():
         if not marriage_date_check.divorce_date_before_death(s[2][constants.ffnIndex["DIV"]], 
         s[0][constants.ifnIndex["DEAT"]], s[1][constants.ifnIndex["DEAT"]]):
             print("US06: ANAMOLY: Divorce date cannot be before either or both spouse's death date. Marriage ID: {0}".format(s[2][0]))
-
+    # US10: For each couple, make sure  marriage is at least 14 years for both spouses
+    for s in spouses:
+        if not marriage_date_check.older_than_14(s[0][constants.ifnIndex["BIRT"]], s[1][constants.ifnIndex["BIRT"]], s[2][1]):
+            print("US10: ANAMOLY: Marriage date should be at least 14 years after both spouse's births. Marriage ID: {0}".format(s[2][0]))
     #runs us01 and us42 on individuals and familes
     dates.dateHelper(individuals, families)
     
