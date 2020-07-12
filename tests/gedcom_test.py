@@ -5,7 +5,7 @@ import main
 import datetime
 from helpers import dates
 from modules import birth_date_check
-from modules import marriage_date_check, list_upcoming_dates, list_deceased, unique_id, list_recent, list_living_married
+from modules import marriage_date_check, list_upcoming_dates, list_deceased, unique_id, list_recent, list_living
 import pytest
 from _pytest.compat import CaptureAndPassthroughIO
 from _pytest.compat import CaptureIO
@@ -179,7 +179,7 @@ def test_us35(capsys):
     
 def test_us30(capsys):
     ## Happy case
-    list_living_married.us30([["01", "Aerys /Targaryon/", "M", "18 FEB 2000", "20","TRUE", "N/A" "N/A", "02"],["01", "Rhaella /Targaryon/", "F", "18 FEB 2000", "20",  "TRUE", "N/A", "N/A", "01"]],
+    list_living.us30([["01", "Aerys /Targaryon/", "M", "18 FEB 2000", "20","TRUE", "N/A" "N/A", "02"],["01", "Rhaella /Targaryon/", "F", "18 FEB 2000", "20",  "TRUE", "N/A", "N/A", "01"]],
                              [['@F5@', '10 JUL 2001', 'N/A', '@I8@', 'Aerys /Targaryon/', '@I7@', 'Rhaella /Targaryon/', '{@I2@ @I9@ @I10@}']]) 
     
     expected = "US30: ALIVE & MARRIED: Aerys /Targaryon/ and Rhaella /Targaryon/ are alive and married.\n"
@@ -187,7 +187,7 @@ def test_us30(capsys):
     assert captured.out == expected
     
     ## Husband died
-    list_living_married.us30([["01", "Aerys /Targaryon/", "M", "18 FEB 2000", "20","FALSE", "N/A" "N/A", "02"],["01", "Rhaella /Targaryon/", "F", "18 FEB 2000", "20",  "TRUE", "N/A", "N/A", "01"]],
+    list_living.us30([["01", "Aerys /Targaryon/", "M", "18 FEB 2000", "20","FALSE", "N/A" "N/A", "02"],["01", "Rhaella /Targaryon/", "F", "18 FEB 2000", "20",  "TRUE", "N/A", "N/A", "01"]],
                              [['@F5@', '10 JUL 2001', 'N/A', '@I8@', 'Aerys /Targaryon/', '@I7@', 'Rhaella /Targaryon/', '{@I2@ @I9@ @I10@}']]) 
     
     expected = ""
@@ -195,7 +195,7 @@ def test_us30(capsys):
     assert captured.out == expected
     
     ## Wife died
-    list_living_married.us30([["01", "Aerys /Targaryon/", "M", "18 FEB 2000", "20","TRUE", "N/A" "N/A", "02"],["01", "Rhaella /Targaryon/", "F", "18 FEB 2000", "20",  "FALSE", "N/A", "N/A", "01"]],
+    list_living.us30([["01", "Aerys /Targaryon/", "M", "18 FEB 2000", "20","TRUE", "N/A" "N/A", "02"],["01", "Rhaella /Targaryon/", "F", "18 FEB 2000", "20",  "FALSE", "N/A", "N/A", "01"]],
                              [['@F5@', '10 JUL 2001', 'N/A', '@I8@', 'Aerys /Targaryon/', '@I7@', 'Rhaella /Targaryon/', '{@I2@ @I9@ @I10@}']]) 
     
     expected = ""
@@ -203,9 +203,45 @@ def test_us30(capsys):
     assert captured.out == expected
     
     ## Divorced
-    list_living_married.us30([["01", "Aerys /Targaryon/", "M", "18 FEB 2000", "20","TRUE", "N/A" "N/A", "02"],["01", "Rhaella /Targaryon/", "F", "18 FEB 2000", "20",  "TRUE", "N/A", "N/A", "01"]],
+    list_living.us30([["01", "Aerys /Targaryon/", "M", "18 FEB 2000", "20","TRUE", "N/A" "N/A", "02"],["01", "Rhaella /Targaryon/", "F", "18 FEB 2000", "20",  "TRUE", "N/A", "N/A", "01"]],
                              [['@F5@', '10 JUL 2001', '21 AUG 2002', '@I8@', 'Aerys /Targaryon/', '@I7@', 'Rhaella /Targaryon/', '{@I2@ @I9@ @I10@}']]) 
     
     expected = ""
+    captured = capsys.readouterr()
+    assert captured.out == expected
+
+
+
+def test_us31(capsys):
+    ## Nobody is alive and single!
+    list_living.us31([["01", "Aerys /Targaryon/", "M", "18 FEB 2000", "20","TRUE", "N/A", "N/A", "02"],["01", "Rhaella /Targaryon/", "F", "18 FEB 2000", "20",  "TRUE", "N/A", "N/A", "01"]],
+                             [['@F5@', '10 JUL 2001', 'N/A', '@I8@', 'Aerys /Targaryon/', '@I7@', 'Rhaella /Targaryon/', '{@I2@ @I9@ @I10@}']]) 
+    expected = ""
+    captured = capsys.readouterr()
+    assert captured.out == expected
+
+    ## Every single person is under 30
+    list_living.us31([["01", "Aerys /Targaryon/", "M", "18 FEB 2000", "20","TRUE", "N/A", "N/A", "N/A"],["01", "Rhaella /Targaryon/", "F", "18 FEB 2000", "20",  "TRUE", "N/A", "N/A", "N/A"]],
+                             [['@F5@', '10 JUL 2001', 'N/A', '@I8@', 'Father', '@I7@', 'Mother', '{@01@ @02@}']]) 
+    expected = ""
+    captured = capsys.readouterr()
+    assert captured.out == expected
+    ## single person died 
+    list_living.us31([["01", "Aerys /Targaryon/", "M", "18 FEB 2000", "40","FALSE", "N/A", "N/A", "N/A"],["01", "Rhaella /Targaryon/", "F", "18 FEB 2000", "20",  "TRUE", "N/A", "N/A", "N/A"]],
+                             [['@F5@', '10 JUL 2001', 'N/A', '@I8@', 'Father', '@I7@', 'Mother', '{@01@ @02@}']]) 
+    expected = ""
+    captured = capsys.readouterr()
+    assert captured.out == expected
+    ## Divorced
+    list_living.us31([["01", "Aerys /Targaryon/", "M", "18 FEB 2000", "40","TRUE", "N/A", "N/A", "N/A"],["01", "Rhaella /Targaryon/", "F", "18 FEB 2000", "40",  "TRUE", "N/A", "N/A", "N/A"]],
+                             [['@F5@', '10 JUL 2001', '11 JUL 2001', '@I8@', 'Aerys /Targaryon/', '@I7@', 'Rhaella /Targaryon/', '{@0112@ @0122@}']])
+    expected = ""
+    captured = capsys.readouterr()
+    assert captured.out == expected
+
+    ## Both Alive and Single over 30 
+    list_living.us31([["01", "Aerys /Targaryon/", "M", "18 FEB 2000", "40","TRUE", "N/A", "N/A", "N/A"],["01", "Rhaella /Targaryon/", "F", "18 FEB 2000", "40",  "TRUE", "N/A", "N/A", "N/A"]],
+                             [['@F5@', '10 JUL 2001', 'N/A', '@I8@', 'Father', '@I7@', 'Mother', '{@01@ @02@}']]) 
+    expected = "US31: ALIVE & SINGLE: Aerys /Targaryon/ is over 30 and has never been married.\n" + "US31: ALIVE & SINGLE: Rhaella /Targaryon/ is over 30 and has never been married.\n"
     captured = capsys.readouterr()
     assert captured.out == expected
