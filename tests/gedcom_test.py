@@ -73,6 +73,13 @@ def test_us09():
     assert birth_date_check.birth_before_death_of_parents("18 NOV 1999","18 NOV 2019","N/A") is True
     assert birth_date_check.birth_before_death_of_parents("18 NOV 1999","18 NOV 1998","N/A") is False
     assert birth_date_check.birth_before_death_of_parents("18 NOV 1999","N/A","N/A") is True
+
+def test_us10():
+    assert marriage_date_check.older_than_14("10 OCT 2000", "11 OCT 1000", "1 JAN 1015") is False
+    assert marriage_date_check.older_than_14("10 OCT 2000", "11 OCT 1000", "1 JAN 2001") is False
+    assert marriage_date_check.older_than_14("10 OCT 2000", "11 OCT 1000", "1 JAN 1001") is False
+    assert marriage_date_check.older_than_14("10 OCT 2000", "11 OCT 1000", "1 JAN 2020") is True
+    
 def test_us06():
     assert marriage_date_check.divorce_date_before_death("10 OCT 2010", "N/A", "N/A") is True
     assert marriage_date_check.divorce_date_before_death("N/A", "10 OCT 2000", "2 JAN 2011") is False
