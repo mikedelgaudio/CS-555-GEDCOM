@@ -222,6 +222,10 @@ def run():
     # US30: List living married
     list_living_married.us30(individuals, families)
     
+    # US28: Order siblings by age
+    sorting.us28(individuals, families)
+    
+    
 
 # Uncomment me for debugging!!\
 run()
