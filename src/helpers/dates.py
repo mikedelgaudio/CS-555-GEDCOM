@@ -71,7 +71,7 @@ def dateChecker(date, time, annual):
             return False
         elif(time ==0):
             return True
-        
+
         today = datetime.datetime.now()
         compare = today + datetime.timedelta(time)
         day = date.split()[0]
@@ -97,6 +97,22 @@ def diff90(date1,date2):
     diff = date2 - date1
     diffInMonths = int(diff.days)/30
     if diffInMonths > -9:
+        return True
+    else:
+        return False
+
+def diff60y(date1,date2):
+    diff = date2 - date1
+    diffInYears = int(diff.days)/365.25
+    if diffInYears > -60:
+        return True
+    else:
+        return False
+
+def diff80y(date1,date2):
+    diff = date2 - date1
+    diffInYears = int(diff.days)/365.25
+    if diffInYears > -80:
         return True
     else:
         return False
