@@ -165,7 +165,7 @@ def run():
     print("Families")
     print(constants.famTable)
 
-    # Create spouses list, the structure of each element in the lust is: [Husband Object, Wife Object, Family Object]
+    # Create spouses list, the structure of each element in the list is: [Husband Object, Wife Object, Family Object]
     spouses = fam.families_to_spouses_list(families, individuals)
 
     # Creates list of parents with children
@@ -221,7 +221,12 @@ def run():
     for s in spouses:
         if not marriage_date_check.older_than_14(s[0][constants.ifnIndex["BIRT"]], s[1][constants.ifnIndex["BIRT"]], s[2][1]):
             print("US10: ANAMOLY: Marriage date should be at least 14 years after both spouse's births. Marriage ID: {0}".format(s[2][0]))
-            
+    
+    # US11: No bigamy allowed, make sure for each married individual they have all but one marriage they're in that has divorce dates
+    for i in list(filter(lambda ind: ind[8] != "N/A", individuals)):
+        if not fam.bigomy_checker(list(filter(lambda f: f[3] == i[0] or f[5] == i[0], families))):
+            print("US11: ANAMOLY: Bigomy is not allowed. Individual ID: {0}".format(i[0]))
+
     # US07: For each individual, make sure they are less than 150 years old
     for ind in individuals:
         if not birth_date_check.less_than_150_years(ind[constants.ifnIndex["BIRT"]], ind[constants.ifnIndex["DEAT"]]):

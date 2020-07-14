@@ -42,3 +42,13 @@ def families_to_child_parent_list(families,individuals):
                 if i[0] == c or '{' + i[0] == c or i[0] + '}' == c:
                     extfamily += [[h,w,i,f]]
     return extfamily
+
+# Checks for bigomy, returns true if no bigomy found
+def bigomy_checker(list_of_marriages):
+    current_marriages = 0
+    for m in list_of_marriages:
+        if m[2] == "N/A": 
+            current_marriages += 1
+        if current_marriages > 1:
+            return False
+    return True
