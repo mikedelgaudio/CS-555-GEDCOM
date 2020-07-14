@@ -67,3 +67,13 @@ def divorce_date_before_death(divorce, death_1, death_2):
         return res
     except ValueError:
         print("divorce_date_before_death: DATE PROVIDED IS INCORRECT FORMAT")
+# Checks if marriage is at least 14 years of both birth dates
+def older_than_14(birth_date_1, birth_date_2, marriage_date):
+    try:
+        bd_1 = datetime.datetime.strptime(birth_date_1, "%d %b %Y")
+        bd_2 = datetime.datetime.strptime(birth_date_2, "%d %b %Y")
+        md = datetime.datetime.strptime(marriage_date, "%d %b %Y")
+        return (int((md - bd_1).days/365) >= 14 and int((md - bd_2).days/365) >= 14)
+    except ValueError:
+        print("older_than_14: DATE PROVIDED IS INCORRECT FORMAT")
+    
