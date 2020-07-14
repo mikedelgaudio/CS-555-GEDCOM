@@ -2,16 +2,19 @@
 # https://github.com/mikedelgaudio/CS-555-GEDCOM
 # I pledge my honor that I have abided by the Stevens Honor System
 
+import sqlite3 
 from Table import Table
-from helpers import ind as Ind, dates, fam, sorting
+from helpers import ind as Ind, dates, fam, sorting, database as db
 import constants
 from modules import list_upcoming_dates, marriage_date_check, birth_date_check, list_deceased, unique_id, list_recent, list_living_married, multiple_births
+
 
 # Wrapped this in a run() function so that our pytest knows what to do
 
 
 def run():
     f = open("../test.ged", "r")
+    conn = sqlite3.connect("../familytable.db")
     individuals = []
     families = []
     individual = ["N/A", "N/A", "N/A", "N/A",
@@ -144,6 +147,17 @@ def run():
     for x in families:
         constants.famTable.Add_Row(x)
 
+
+
+    if conn is not None:
+        cur = conn.cursor()
+        cur.execute(db.create_ind_table())
+        cur.execute(db.create_fam_table())
+        for i in individuals:
+            db.populate_ind(i, cur, conn)
+        for f in families:
+            db.populate_fam(f,cur, conn)
+  
     #############################################
     #                PRINT HERE                 #
     #############################################
@@ -225,14 +239,24 @@ def run():
     list_recent.list_recent(individuals)
     
     # US30: List living married
-    list_living_married.us30(individuals, families)
+    list_living.us30(individuals, families)
+    # US31: List Living Single
+    list_living.us31(individuals,families)
     
     # US28: Order siblings by age
     sorting.us28(individuals, families)
 
     multiple_births.us32_us14(individuals,families)
     
-    
+
+    # clear db at the end! 
+    sql = 'DELETE FROM individuals'
+    cur.execute(sql)
+    conn.commit()
+       
+    sql = 'DELETE FROM families'
+    cur.execute(sql)
+    conn.commit()
 
 # Uncomment me for debugging!!\
 run()
