@@ -161,7 +161,7 @@ def run():
     # US02: Chck if birthday is before date of marriage
     for s in filter(lambda s: s[2][constants.ffnIndex["MARR"]] != "N/A", spouses):
         if not birth_date_check.birth_before_marriage(s[0][constants.ifnIndex["BIRT"]], s[1][constants.ifnIndex["BIRT"]], s[2][1]):
-            print("US02: ANOMALY: Marraige cannot be before either spouse's birth date. Marriage ID: {0}".format(s[2][0]))
+            print("US02: ANOMALY: Marriage cannot be before either spouse's birth date. Marriage ID: {0}".format(s[2][0]))
 
     # US03: Check if death is before birth
     for s in individuals:
