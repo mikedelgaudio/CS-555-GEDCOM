@@ -3,7 +3,7 @@ sys.path.insert(0, '../src')
 
 import main
 import datetime
-from helpers import dates, sorting
+from helpers import dates, sorting, fam
 from modules import birth_date_check
 from modules import marriage_date_check, list_upcoming_dates, list_deceased, unique_id, list_recent, list_living
 import pytest
@@ -79,7 +79,16 @@ def test_us10():
     assert marriage_date_check.older_than_14("10 OCT 2000", "11 OCT 1000", "1 JAN 2001") is False
     assert marriage_date_check.older_than_14("10 OCT 2000", "11 OCT 1000", "1 JAN 1001") is False
     assert marriage_date_check.older_than_14("10 OCT 2000", "11 OCT 1000", "1 JAN 2020") is True
-    
+
+def test_us11():
+    assert fam.bigomy_checker([["", "", "N/A", "", "", "", "", ""], ["", "", "10 OCT 2000", "", "", "", "", ""], 
+    ["", "", "11 OCT 2001", "", "", "", "", ""]]) is True
+    assert fam.bigomy_checker([["", "", "N/A", "", "", "", "", ""], ["", "", "10 OCT 2000", "", "", "", "", ""], 
+    ["", "", "N/A", "", "", "", "", ""]]) is False
+    assert fam.bigomy_checker([["", "", "N/A", "", "", "", "", ""], ["", "", "N/A", "", "", "", "", ""], 
+    ["", "", "N/A", "", "", "", "", ""]]) is False
+    assert fam.bigomy_checker([["", "", "10 OCT 2020", "", "", "", "", ""], ["", "", "10 OCT 2000", "", "", "", "", ""], 
+    ["", "", "11 OCT 2001", "", "", "", "", ""]]) is True
 def test_us06():
     assert marriage_date_check.divorce_date_before_death("10 OCT 2010", "N/A", "N/A") is True
     assert marriage_date_check.divorce_date_before_death("N/A", "10 OCT 2000", "2 JAN 2011") is False
