@@ -5,7 +5,7 @@ import main
 import datetime
 from helpers import dates, sorting, fam
 from modules import birth_date_check
-from modules import marriage_date_check, list_upcoming_dates, list_deceased, unique_id, list_recent, list_living, gender_check
+from modules import marriage_date_check, list_upcoming_dates, list_deceased, unique_id, list_recent, list_living, gender_check, multiple_births
 import pytest
 from _pytest.compat import CaptureAndPassthroughIO
 from _pytest.compat import CaptureIO
@@ -286,5 +286,47 @@ def test_us28(capsys):
                              [['@F5@', '10 JUL 2001', '21 AUG 2002', '@I8@', 'Aerys /Targaryon/', '@I7@', 'Rhaella /Targaryon/', '{@I2@ @I9@ @I10@}']])
     
     expected = "US28: ERROR: Family ID @F5@ has a child ID @I2@ that does not exist in individual table.\nUS28: CHILDREN SORTED: Family ID @F5@ has 1 children sorted AGE 20--> @I9@ Rhaella /Targaryon/; \n"
+    captured = capsys.readouterr()
+    assert captured.out == expected
+
+
+def test_us32_us14(capsys):
+    ## no multiple births
+    multiple_births.us32_us14([["01", "Aerys /Targaryon/", "M", "20 FEB 2001", "20","TRUE", "N/A" "N/A", "N/A"],["02", "Berys /Targaryon/", "M", "18 FEB 2000", "20","TRUE", "N/A" "N/A", "N/A"]],[['@F5@', '10 JUL 2001', '21 AUG 2002', '@I8@', 'Aerys /Targaryon/', '@I7@', 'Rhaella /Targaryon/', '{01 02}']])
+
+    expected = ""
+    captured = capsys.readouterr()
+    assert captured.out == expected
+    #twins
+    multiple_births.us32_us14([["01", "Aerys /Targaryon/", "M", "20 FEB 2000", "20","TRUE", "N/A" "N/A", "N/A"],["02", "Berys /Targaryon/", "M", "20 FEB 2000", "20","TRUE", "N/A" "N/A", "N/A"]],[['@F5@', '10 JUL 2001', '21 AUG 2002', '@I8@', 'Aerys /Targaryon/', '@I7@', 'Rhaella /Targaryon/', '{01 02}']])
+
+    expected = "US32: Family @F5@ has twins!\n"
+    captured = capsys.readouterr()
+    assert captured.out == expected
+    #triplets
+    multiple_births.us32_us14([["01", "Aerys /Targaryon/", "M", "20 FEB 2000", "20","TRUE", "N/A" "N/A", "N/A"],["03", "Merys /Targaryon/", "M", "20 FEB 2000", "20","TRUE", "N/A" "N/A", "N/A"],["02", "Berys /Targaryon/", "M", "20 FEB 2000", "20","TRUE", "N/A" "N/A", "N/A"]],[['@F5@', '10 JUL 2001', '21 AUG 2002', '@I8@', 'Aerys /Targaryon/', '@I7@', 'Rhaella /Targaryon/', '{01 02 03}']])
+
+    expected = "US32: Family @F5@ has triplets!\n"
+    captured = capsys.readouterr()
+    assert captured.out == expected
+
+    #quadruplets
+    multiple_births.us32_us14([["01", "Aerys /Targaryon/", "M", "20 FEB 2000", "20","TRUE", "N/A" "N/A", "N/A"],["03", "Merys /Targaryon/", "M", "20 FEB 2000", "20","TRUE", "N/A" "N/A", "N/A"],["04", "Lerys /Targaryon/", "M", "20 FEB 2000", "20","TRUE", "N/A" "N/A", "N/A"],["05", "Ferys /Targaryon/", "M", "20 FEB 2003", "20","TRUE", "N/A" "N/A", "N/A"],["02", "Berys /Targaryon/", "M", "20 FEB 2000", "20","TRUE", "N/A" "N/A", "N/A"]],[['@F5@', '10 JUL 2001', '21 AUG 2002', '@I8@', 'Aerys /Targaryon/', '@I7@', 'Rhaella /Targaryon/', '{01 02 03 04 05}']])
+
+    expected = "US32: Family @F5@ has quadruplets!\n"
+    captured = capsys.readouterr()
+    assert captured.out == expected
+
+    #quintuplets
+    multiple_births.us32_us14([["01", "Aerys /Targaryon/", "M", "20 FEB 2000", "20","TRUE", "N/A" "N/A", "N/A"],["03", "Merys /Targaryon/", "M", "20 FEB 2000", "20","TRUE", "N/A" "N/A", "N/A"],["04", "Lerys /Targaryon/", "M", "20 FEB 2000", "20","TRUE", "N/A" "N/A", "N/A"],["05", "Ferys /Targaryon/", "M", "20 FEB 2000", "20","TRUE", "N/A" "N/A", "N/A"],["02", "Berys /Targaryon/", "M", "20 FEB 2000", "20","TRUE", "N/A" "N/A", "N/A"]],[['@F5@', '10 JUL 2001', '21 AUG 2002', '@I8@', 'Aerys /Targaryon/', '@I7@', 'Rhaella /Targaryon/', '{01 02 03 04 05}']])
+
+    expected = "US32: Family @F5@ has quintuplets!\n"
+    captured = capsys.readouterr()
+    assert captured.out == expected
+
+    # > 5 kids born at the same time
+    multiple_births.us32_us14([["01", "Aerys /Targaryon/", "M", "20 FEB 2000", "20","TRUE", "N/A" "N/A", "N/A"],["06", "OHNO /Targaryon/", "M", "20 FEB 2000", "20","TRUE", "N/A" "N/A", "N/A"],["03", "Merys /Targaryon/", "M", "20 FEB 2000", "20","TRUE", "N/A" "N/A", "N/A"],["04", "Lerys /Targaryon/", "M", "20 FEB 2000", "20","TRUE", "N/A" "N/A", "N/A"],["05", "Ferys /Targaryon/", "M", "20 FEB 2000", "20","TRUE", "N/A" "N/A", "N/A"],["02", "Berys /Targaryon/", "M", "20 FEB 2000", "20","TRUE", "N/A" "N/A", "N/A"]],[['@F5@', '10 JUL 2001', '21 AUG 2002', '@I8@', 'Aerys /Targaryon/', '@I7@', 'Rhaella /Targaryon/', '{01 02 03 04 05 06}']])
+
+    expected = "US14: ANOMALY: No more than 5 siblings should be born at the same time.\n"
     captured = capsys.readouterr()
     assert captured.out == expected

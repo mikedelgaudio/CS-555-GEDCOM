@@ -38,6 +38,7 @@ def us28(individuals, families):
 
         ageList.clear()
         for child in lister:
+          
             if(child[4] == "Invalid Date" or child[4] == "N/A"):
                 print("US28: ERROR: Cannot compare invalid dates or N/A for children in Family ID " + f[0])
                 continue
@@ -45,12 +46,12 @@ def us28(individuals, families):
         
         ageList.sort()
         ageList.reverse()
-        
         for age in ageList:
             for child in lister:
                 if(child[4] == age):
                     finalSortedList.append(child)
-
+                    lister.remove(child)
+        
         #we now need to print all the children
         stringOfChildren = ""
         for child in finalSortedList:
