@@ -165,7 +165,7 @@ def run():
     print(constants.indTable)
     print("Families")
     print(constants.famTable)
-
+    
     # Create spouses list, the structure of each element in the list is: [Husband Object, Wife Object, Family Object]
     spouses = fam.families_to_spouses_list(families, individuals)
 
