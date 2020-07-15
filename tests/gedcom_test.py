@@ -5,7 +5,7 @@ import main
 import datetime
 from helpers import dates, sorting, fam
 from modules import birth_date_check
-from modules import marriage_date_check, list_upcoming_dates, list_deceased, unique_id, list_recent, list_living, gender_check
+from modules import marriage_date_check, list_upcoming_dates, list_deceased, unique_id, list_recent, list_living, gender_check, multiple_births
 import pytest
 from _pytest.compat import CaptureAndPassthroughIO
 from _pytest.compat import CaptureIO
