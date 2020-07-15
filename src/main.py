@@ -6,7 +6,8 @@ import sqlite3
 from Table import Table
 from helpers import ind as Ind, dates, fam, sorting, database as db
 import constants
-from modules import list_upcoming_dates, marriage_date_check, birth_date_check, list_deceased, unique_id, list_recent, list_living
+from modules import list_upcoming_dates, marriage_date_check, birth_date_check, list_deceased, unique_id, list_recent, list_living, multiple_births
+
 
 # Wrapped this in a run() function so that our pytest knows what to do
 
@@ -249,6 +250,8 @@ def run():
     
     # US28: Order siblings by age
     sorting.us28(individuals, families)
+
+    multiple_births.us32_us14(individuals,families)
     
 
     # clear db at the end! 
