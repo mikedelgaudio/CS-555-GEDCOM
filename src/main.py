@@ -6,7 +6,7 @@ import sqlite3
 from Table import Table
 from helpers import ind as Ind, dates, fam, sorting, database as db
 import constants
-from modules import list_upcoming_dates, marriage_date_check, birth_date_check, list_deceased, unique_id, list_recent, list_living, multiple_births
+from modules import list_upcoming_dates, marriage_date_check, birth_date_check, list_deceased, unique_id, list_recent, list_living, multiple_births, gender_check
 
 
 # Wrapped this in a run() function so that our pytest knows what to do
@@ -245,7 +245,17 @@ def run():
             print(
                 "US07: ANOMALY: Individual must be less than 150 years old. Individual ID: {0}".format(ind[0]))
 
-    # runs us01 and us42 on individuals and familes
+    # US21: Husband in family should be male and wife in family should be female
+    for s in spouses:
+        if not gender_check.husb_wife_gender(s[0][constants.ifnIndex["SEX"]],s[1][constants.ifnIndex["SEX"]]):
+            print("US21: ANOMALY: Husband and Wife Should have correct gender roles. Family ID: {0}".format(s[2][0]))
+
+    # US12: Mother should be less than 60 years older than her children and father should be less than 80 years older than his children
+    for s in extfamily: #HWIF
+        if not birth_date_check.parents_too_old(s[2][constants.ifnIndex["BIRT"]],s[1][constants.ifnIndex["BIRT"]],s[0][constants.ifnIndex["BIRT"]]):
+            print("US12: ANOMALY: Father greater than 80 years older or mother greater than 60 years older than child. Family ID: {0}".format(s[3][0])," and Idividual ID: {0}".format(s[2][0]))
+
+    #runs us01 and us42 on individuals and familes
     dates.dateHelper(individuals, families)
 
     list_deceased.us29ListDeceased(individuals)
