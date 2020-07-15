@@ -17,12 +17,12 @@ def families_to_spouses_list(families, individuals):
             if h and w:
                 break
         if h == None or w == None:
-            print("continued")
             continue
         spouses += [[h, w, f]]
     return spouses
 
-def families_to_child_parent_list(families,individuals):
+
+def families_to_child_parent_list(families, individuals):
     extfamily = []
     for f in families:
         h = None
@@ -40,14 +40,16 @@ def families_to_child_parent_list(families,individuals):
         for c in child_id_list:
             for i in individuals:
                 if i[0] == c or '{' + i[0] == c or i[0] + '}' == c:
-                    extfamily += [[h,w,i,f]]
+                    extfamily += [[h, w, i, f]]
     return extfamily
 
 # Checks for bigomy, returns true if no bigomy found
+
+
 def bigomy_checker(list_of_marriages):
     current_marriages = 0
     for m in list_of_marriages:
-        if m[2] == "N/A": 
+        if m[2] == "N/A":
             current_marriages += 1
         if current_marriages > 1:
             return False
