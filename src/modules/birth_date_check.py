@@ -109,3 +109,16 @@ def birth_before_death_of_parents(birth,mdeath,fdeath):
                 return False
     except ValueError:
         return True
+
+#Mother should be less than 60 years older than her children and father should be less than 80 years older than his children
+def parents_too_old(birth,mbirth,fbirth):
+    try:
+        b = datetime.datetime.strptime(birth, "%d %b %Y")
+        mb = datetime.datetime.strptime(mbirth, "%d %b %Y")
+        fb = datetime.datetime.strptime(fbirth, "%d %b %Y")
+        if dates.diff60y(b,mb) and dates.diff80y(b,fb):
+            return True
+        else:
+            return False
+    except ValueError:
+        return True

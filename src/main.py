@@ -214,6 +214,11 @@ def run():
         if not gender_check.husb_wife_gender(s[0][constants.ifnIndex["SEX"]],s[1][constants.ifnIndex["SEX"]]):
             print("US21: ANOMALY: Husband and Wife Should have correct gender roles. Family ID: {0}".format(s[2][0]))
 
+    # US12: Mother should be less than 60 years older than her children and father should be less than 80 years older than his children
+    for s in extfamily: #HWIF
+        if not birth_date_check.parents_too_old(s[2][constants.ifnIndex["BIRT"]],s[1][constants.ifnIndex["BIRT"]],s[0][constants.ifnIndex["BIRT"]]):
+            print("US12: ANOMALY: Father greater than 80 years older or mother greater than 60 years older than child. Family ID: {0}".format(s[3][0])," and Idividual ID: {0}".format(s[2][0]))
+
     #runs us01 and us42 on individuals and familes
     dates.dateHelper(individuals, families)
 

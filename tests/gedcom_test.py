@@ -74,6 +74,12 @@ def test_us09():
     assert birth_date_check.birth_before_death_of_parents("18 NOV 1999","18 NOV 1998","N/A") is False
     assert birth_date_check.birth_before_death_of_parents("18 NOV 1999","N/A","N/A") is True
 
+def test_us12():
+    assert birth_date_check.parents_too_old("18 NOV 1999","18 NOV 1998","18 NOV 1998") is True
+    assert birth_date_check.parents_too_old("18 NOV 1999","18 NOV 1938","18 NOV 1998") is False
+    assert birth_date_check.parents_too_old("18 NOV 1999","18 NOV 1998","18 NOV 1918") is False
+    assert birth_date_check.parents_too_old("18 NOV 1999","18 NOV 1938","18 NOV 1918") is False
+
 def test_us21():
     assert gender_check.husb_wife_gender("M","F") is True
     assert gender_check.husb_wife_gender("F","F") is False
