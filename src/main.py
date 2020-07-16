@@ -204,6 +204,12 @@ def run():
         if (s % 2):
             if (fam.us17NoMarrriage2Child(extfamily[s]) == False):
                 print("US17: ANOMALY: Family {2} with parents {0} and {1} should not marry any of their children.".format(extfamily[s][0][0],extfamily[s][1][0],extfamily[s][3][0]))
+    
+    # US34 - List large age differences 
+    for s in range(len(extfamily)):
+        if (s % 2):
+            marriage_date_check.us34ListLargeAge(extfamily[s])
+            
 
     # US09: Child should be born before death of mother and before 9 months after death of father
     for s in extfamily:
@@ -263,6 +269,8 @@ def run():
     for s in extfamily: #HWIF
         if not birth_date_check.parents_too_old(s[2][constants.ifnIndex["BIRT"]],s[1][constants.ifnIndex["BIRT"]],s[0][constants.ifnIndex["BIRT"]]):
             print("US12: ANOMALY: Father greater than 80 years older or mother greater than 60 years older than child. Family ID: {0}".format(s[3][0])," and Idividual ID: {0}".format(s[2][0]))
+            
+    
 
     #runs us01 and us42 on individuals and familes
     dates.dateHelper(individuals, families)
