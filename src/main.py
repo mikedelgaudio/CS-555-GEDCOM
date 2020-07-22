@@ -165,12 +165,15 @@ def run():
     print(constants.indTable)
     print("Families")
     print(constants.famTable)
-    
+
     # Create spouses list, the structure of each element in the list is: [Husband Object, Wife Object, Family Object]
     spouses = fam.families_to_spouses_list(families, individuals)
 
     # Creates list of parents with children
     extfamily = fam.families_to_child_parent_list(families, individuals)
+
+    # Creates lists of siblings
+    siblings = fam.families_to_sibling_list(families, individuals)
 
     # US02: Chck if birthday is before date of marriage
     for s in filter(lambda s: s[2][constants.ffnIndex["MARR"]] != "N/A", spouses):

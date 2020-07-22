@@ -122,3 +122,16 @@ def parents_too_old(birth,mbirth,fbirth):
             return False
     except ValueError:
         return True
+
+def sibling_spacing(list_of_dates):
+    for d1 in list_of_dates:
+        for d2 in list_of_dates:
+            diff = d1 - d2
+            diffd = int(diff.days)
+            diffm = int(diff.days)/30
+            if diffd < 2:
+                return true
+            elif 8 > diffm > -8:
+                return false
+            else:
+                return true
