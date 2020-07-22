@@ -171,12 +171,15 @@ def run():
 
     # Creates list of parents with children
     extfamily = fam.families_to_child_parent_list(families, individuals)
+    
 
     # US02: Chck if birthday is before date of marriage
     for s in filter(lambda s: s[2][constants.ffnIndex["MARR"]] != "N/A", spouses):
         if not birth_date_check.birth_before_marriage(s[0][constants.ifnIndex["BIRT"]], s[1][constants.ifnIndex["BIRT"]], s[2][1]):
             print("US02: ANOMALY: Marraige cannot be before either spouse's birth date. Marriage ID: {0}".format(
                 s[2][0]))
+            
+ 
 
     # US03: Check if death is before birth
     for s in individuals:
@@ -195,6 +198,12 @@ def run():
         if not birth_date_check.birth_before_marriage_of_parents(s[2][constants.ifnIndex["BIRT"]], s[3][constants.ffnIndex["MARR"]], s[3][constants.ffnIndex["DIV"]]):
             print("US08: ANOMALY: Children should be born after parents marriage. Individual ID: {0}".format(
                 s[2][0]))
+         
+    # US17 - Parents should not marry any of their children
+    for s in range(len(extfamily)):
+        if (s % 2):
+            if (fam.us17NoMarrriage2Child(extfamily[s]) == False):
+                print("US17: ANOMALY: Family {2} with parents {0} and {1} should not marry any of their children.".format(extfamily[s][0][0],extfamily[s][1][0],extfamily[s][3][0]))
 
     # US09: Child should be born before death of mother and before 9 months after death of father
     for s in extfamily:
@@ -260,7 +269,8 @@ def run():
 
     list_deceased.us29ListDeceased(individuals)
     unique_id.us22UniqueIds(individuals, families)
-
+    
+   
     list_upcoming_dates.birthdays(individuals)
     list_upcoming_dates.anniversary(individuals, families)
     list_recent.list_recent(individuals)

@@ -330,3 +330,14 @@ def test_us32_us14(capsys):
     expected = "US14: ANOMALY: No more than 5 siblings should be born at the same time.\n"
     captured = capsys.readouterr()
     assert captured.out == expected
+    
+def test_us17():
+    #yes we are marrying children
+    assert fam.us17NoMarrriage2Child([['@I2@', 'Rhaegar /Targaryon/', 'F', '15 AUG 1780', 230, 'FALSE', '15 DEC 2010', '@F3@', '@F6@'], ['@I4@', 'Elia /Martell/', 'F', '11 MAY 1980', 18, 'FALSE', '10 OCT 1998', 'N/A', '@F1@'], ['@I4@', 'Elia /Martell/', 'F', '11 MAY 1980', 18, 'FALSE', '10 OCT 1998', 'N/A', '@F1@'], ['@F1@', '10 AUG 2000', '10 AUG 1999', '@I2@', 'Rhaegar /Targaryon/', '@I4@', 'Elia /Martell/', '{@I4@ @I5@}']]) is False
+    
+    #no marriage
+    assert fam.us17NoMarrriage2Child([['@I2@', 'Rhaegar /Targaryon/', 'F', '15 AUG 1780', 230, 'FALSE', '15 DEC 2010', '@F3@', '@F6@'], ['@I4@', 'Elia /Martell/', 'F', '11 MAY 1980', 18, 'FALSE', '10 OCT 1998', 'N/A', '@F1@'], ['@I4@', 'Elia /Martell/', 'F', '11 MAY 1980', 18, 'FALSE', '10 OCT 1998', 'N/A', '@F1@'], ['@F1@', '10 AUG 2000', '10 AUG 1999', '@I2@', 'Rhaegar /Targaryon/', '@I4@', 'Elia /Martell/', '{@I8@ @I5@}']]) is True 
+    
+    # cause an exception
+    assert fam.us17NoMarrriage2Child([['@I2@', 'Rhaegar /Targaryon/', 'F', '15 AUG 1780', 230, 'FALSE', '15 DEC 2010', '@F3@', '@F6@'], ['@F1@', '10 AUG 2000', '10 AUG 1999', '@I2@', 'Rhaegar /Targaryon/', '@I4@', 'Elia /Martell/', '{@I4@ @I5@}']]) is None
+    
