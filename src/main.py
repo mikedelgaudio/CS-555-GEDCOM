@@ -260,6 +260,35 @@ def run():
             print(
                 "US07: ANOMALY: Individual must be less than 150 years old. Individual ID: {0}".format(ind[0]))
 
+    # US19: First cousins should not marry
+    for ind in list(filter(lambda i: i[8] != "N/A", individuals)):
+        parents = list(filter(lambda i: ind[0] in i[2][7], spouses))
+        if parents == []:
+            continue
+        parents = parents[0]
+        aunts_and_uncles = list(filter(lambda i: (parents[0][0] in i[2][7]) or (parents[1][0] in i[2][7]), spouses))
+        if aunts_and_uncles == []:
+            continue
+        aunts_and_uncles = aunts_and_uncles[0][2][7]
+        cousins = []
+        c = list(filter(lambda i: (i[0][0] in aunts_and_uncles or i[1][0] in aunts_and_uncles) and i[0][0] != 
+        parents[0][0] and i[0][0] != parents[1][0] and i[1][0] != parents[0][0] and i[1][0] != parents[1][0], spouses))
+        if c == []:
+            continue
+        for i in c:
+            cousins += [i[2][7]]
+        s = []
+        for i in spouses:
+            if i[0][0] == ind[0]:
+                s.append(i[1][0])
+            elif i[1][0] == ind[0]:
+                s.append(i[0][0])
+        if s == []:
+            continue
+        res = fam.first_cousin_marriage_check(s, cousins)
+        if res is not None:
+            print("US19: ANOMALY: First Cousins should not marry. Individual ID: {0}; Cousin ID: {1}".format(ind[0], res))
+
     # US21: Husband in family should be male and wife in family should be female
     for s in spouses:
         if not gender_check.husb_wife_gender(s[0][constants.ifnIndex["SEX"]],s[1][constants.ifnIndex["SEX"]]):
