@@ -341,3 +341,24 @@ def test_us17():
     # cause an exception
     assert fam.us17NoMarrriage2Child([['@I2@', 'Rhaegar /Targaryon/', 'F', '15 AUG 1780', 230, 'FALSE', '15 DEC 2010', '@F3@', '@F6@'], ['@F1@', '10 AUG 2000', '10 AUG 1999', '@I2@', 'Rhaegar /Targaryon/', '@I4@', 'Elia /Martell/', '{@I4@ @I5@}']]) is None
     
+def test_us34(capsys):
+    #happy case
+    marriage_date_check.us34ListLargeAge([['@I2@', 'Rhaegar /Targaryon/', 'F', '15 AUG 1780', 230, 'FALSE', '15 DEC 2010', '@F3@', '@F6@'], ['@I4@', 'Elia /Martell/', 'F', '11 MAY 1980', 18, 'FALSE', '10 OCT 1998', 'N/A', '@F1@'], ['@I5@', 'Aegon /Targaryon/', 'M', '29 JUN 2005', 15, 'TRUE', 'N/A', '@F1@', 'N/A'], ['@F1@', '10 AUG 2000', '10 AUG 1999', '@I2@', 'Rhaegar /Targaryon/', '@I4@', 'Elia /Martell/', '{@I4@ @I5@}']])
+    expected = "US34: ANOMALY: Large age difference on family @F1@! @I2@ Rhaegar /Targaryon/ is more than twice as old as spouse @I4@ Elia /Martell/.\n"
+    captured = capsys.readouterr()
+    assert captured.out == expected
+    
+    #no results found
+    marriage_date_check.us34ListLargeAge([['@I16@', 'Aegon V /Targaryon/', 'M', '9 JUL 1950', -10, 'FALSE', '5 JUL 1941', 'N/A', '@F4@'], ['@I15@', 'Cersei /Targaryon/', 'F', '5 JUL 2021', -1, 'FALSE', '5 JUL 2020', 'N/A', '@F4@'], ['@I24@', 'Funcan /Targaryon/', 'M', '27 DEC 2003', 16, 'TRUE', 'N/A', '@F4@', 'N/A'], ['@F4@', '30 JUL 1959', 'N/A', '@I16@', 'Aegon V /Targaryon/', '@I15@', 'Cersei /Targaryon/', '{@I20@ @I21@ @I22@ @I23@ @I24@ @I25@}']])
+    expected = ""
+    captured = capsys.readouterr()
+    assert captured.out == expected
+    
+    #broken input
+    marriage_date_check.us34ListLargeAge([['@I16@', 'Aegon V /Targaryon/', 'M', '9 JUL 1950', -10, 'FALSE', '5 JUL 1941', 'N/A', '@F4@'], ['@I15@', 'Cersei /Targaryon/', 'F', '5 JUL 2021', -1, 'FALSE', '5 JUL 2020', 'N/A', '@F4@']])
+    expected = ""
+    captured = capsys.readouterr()
+    assert captured.out == expected
+    
+    
+    
