@@ -14,7 +14,7 @@ def families_to_spouses_list(families, individuals):
                 h = i
             elif w == None and i[0] == wife_id:
                 w = i
-            if h and w:
+            if h is not None and w is not None:
                 break
         if h == None or w == None:
             continue
@@ -78,3 +78,11 @@ def us17NoMarrriage2Child(familes):
     except Exception:
         pass
     
+# US19 - First cousins should not marry
+# Given a list of spouses and cousins of an individual, make sure none match, if they do then return them
+def first_cousin_marriage_check(spouses, cousins):
+    for s in spouses:
+        for c in cousins:
+            if s in c:
+                return s
+    return None
