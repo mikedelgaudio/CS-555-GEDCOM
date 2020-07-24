@@ -17,7 +17,10 @@ def return_children(ind, cur):
 def return_spouse(ind, cur):
     cur.execute("SELECT sex FROM individuals WHERE id=?", (ind,))
     gender = cur.fetchall()
-    gender = gender[0][0].replace("'", "")
+    if(gender != []):
+        gender = gender[0][0].replace("'", "")
+    else:
+        return "US20: ERROR: could not find gender for individual"
     cur.execute("SELECT spouse FROM individuals WHERE id=?", (ind,))
     spouse = cur.fetchall()
     spouse = spouse[0][0].replace("'", "")
