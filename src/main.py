@@ -6,7 +6,7 @@ import sqlite3
 from Table import Table
 from helpers import ind as Ind, dates, fam, sorting, database as db
 import constants
-from modules import list_upcoming_dates, marriage_date_check, birth_date_check, list_deceased, unique_id, list_recent, list_living, multiple_births, gender_check
+from modules import list_upcoming_dates, marriage_check, marriage_date_check, birth_date_check, list_deceased, unique_id, list_recent, list_living, multiple_births, gender_check
 
 
 # Wrapped this in a run() function so that our pytest knows what to do
@@ -192,49 +192,23 @@ def run():
         if not marriage_date_check.marriage_divorce_date_comparison(s[2][constants.ffnIndex["MARR"]], s[2][constants.ffnIndex["DIV"]]):
             print("US04: ANOMALY: Divorce must come after a marriage. Marriage ID: {0}".format(
                 s[2][0]))
-
-    # US08: Children should be born after marriage of parents (and not more than 9 months after their divorce)
-    for s in extfamily:
-        if not birth_date_check.birth_before_marriage_of_parents(s[2][constants.ifnIndex["BIRT"]], s[3][constants.ffnIndex["MARR"]], s[3][constants.ffnIndex["DIV"]]):
-            print("US08: ANOMALY: Children should be born after parents marriage. Individual ID: {0}".format(
-                s[2][0]))
-         
-    # US17 - Parents should not marry any of their children
-    for s in range(len(extfamily)):
-        if (s % 2):
-            if (fam.us17NoMarrriage2Child(extfamily[s]) == False):
-                print("US17: ANOMALY: Family {2} with parents {0} and {1} should not marry any of their children.".format(extfamily[s][0][0],extfamily[s][1][0],extfamily[s][3][0]))
-    
-    # US34 - List large age differences 
-    for s in range(len(extfamily)):
-        if (s % 2):
-            marriage_date_check.us34ListLargeAge(extfamily[s])
-            
-
-    # US09: Child should be born before death of mother and before 9 months after death of father
-    for s in extfamily:
-        if not birth_date_check.birth_before_death_of_parents(s[2][constants.ifnIndex["BIRT"]], s[1][constants.ifnIndex["DEAT"]], s[0][constants.ifnIndex["DEAT"]]):
-            print("US09: ANOMALY: Children should be born before parents death. Individual ID: {0}".format(
-                s[2][0]))
-
-    # For each spouse, make sure their death dates are before their marriage dates. If not, print anamoly message.
-    for s in filter(lambda s: s[2][constants.ffnIndex["MARR"]] != "N/A", spouses):
-        if not marriage_date_check.marriage_before_death(s[0][constants.ifnIndex["DEAT"]], s[1][constants.ifnIndex["DEAT"]], s[2][1]):
-            print("US05: ANOMALY: Marriage date cannot be after either spouse's death date. Marriage ID: {0}".format(
-                s[2][0]))
-
     # For each divorced couple, make sure they are divorced AFTER they are married
     for s in filter(lambda s: s[2][constants.ffnIndex["DIV"]] != "N/A", spouses):
         if not marriage_date_check.marriage_divorce_date_comparison(s[2][constants.ffnIndex["MARR"]], s[2][constants.ffnIndex["DIV"]]):
             print("US04: ANOMALY: Divorce must come after a marriage. Marriage ID: {0}".format(
                 s[2][0]))
 
-    # US05: For each spouse, make sure their death dates are before their marriage dates. If not, print anamoly message.
+     # US05: For each spouse, make sure their death dates are before their marriage dates. If not, print anamoly message.
     for s in filter(lambda couple: couple[2][constants.ffnIndex["MARR"]] != "N/A", spouses):
         if not marriage_date_check.marriage_before_death(s[0][constants.ifnIndex["DEAT"]], s[1][constants.ifnIndex["DEAT"]], s[2][1]):
             print("US05: ANOMALY: Marriage date cannot be after either spouse's death date. Marriage ID: {0}".format(
                 s[2][0]))
-
+    
+    # For each spouse, make sure their death dates are before their marriage dates. If not, print anamoly message.
+    for s in filter(lambda s: s[2][constants.ffnIndex["MARR"]] != "N/A", spouses):
+        if not marriage_date_check.marriage_before_death(s[0][constants.ifnIndex["DEAT"]], s[1][constants.ifnIndex["DEAT"]], s[2][1]):
+            print("US05: ANOMALY: Marriage date cannot be after either spouse's death date. Marriage ID: {0}".format(
+                s[2][0]))
     # US06: For each divorced couple, make sure they are divorced BEFORE they have died
     for s in filter(lambda couple: couple[2][constants.ffnIndex["DIV"]] != "N/A", spouses):
         if not marriage_date_check.divorce_date_before_death(s[2][constants.ffnIndex["DIV"]],
@@ -242,6 +216,28 @@ def run():
             print("US06: ANOMALY: Divorce date cannot be before either or both spouse's death date. Marriage ID: {0}".format(
                 s[2][0]))
 
+    # US07: For each individual, make sure they are less than 150 years old
+    for ind in individuals:
+        if not birth_date_check.less_than_150_years(ind[constants.ifnIndex["BIRT"]], ind[constants.ifnIndex["DEAT"]]):
+            print(
+                "US07: ANOMALY: Individual must be less than 150 years old. Individual ID: {0}".format(ind[0]))
+
+    # US08: Children should be born after marriage of parents (and not more than 9 months after their divorce)
+    for s in extfamily:
+        if not birth_date_check.birth_before_marriage_of_parents(s[2][constants.ifnIndex["BIRT"]], s[3][constants.ffnIndex["MARR"]], s[3][constants.ffnIndex["DIV"]]):
+            print("US08: ANOMALY: Children should be born after parents marriage. Individual ID: {0}".format(
+                s[2][0]))
+         
+    
+
+    # US09: Child should be born before death of mother and before 9 months after death of father
+    for s in extfamily:
+        if not birth_date_check.birth_before_death_of_parents(s[2][constants.ifnIndex["BIRT"]], s[1][constants.ifnIndex["DEAT"]], s[0][constants.ifnIndex["DEAT"]]):
+            print("US09: ANOMALY: Children should be born before parents death. Individual ID: {0}".format(
+                s[2][0]))
+
+
+   
     # US10: For each couple, make sure  marriage is at least 14 years for both spouses
     for s in spouses:
         if not marriage_date_check.older_than_14(s[0][constants.ifnIndex["BIRT"]], s[1][constants.ifnIndex["BIRT"]], s[2][1]):
@@ -254,12 +250,17 @@ def run():
             print(
                 "US11: ANOMALY: Bigomy is not allowed. Individual ID: {0}".format(i[0]))
 
-    # US07: For each individual, make sure they are less than 150 years old
-    for ind in individuals:
-        if not birth_date_check.less_than_150_years(ind[constants.ifnIndex["BIRT"]], ind[constants.ifnIndex["DEAT"]]):
-            print(
-                "US07: ANOMALY: Individual must be less than 150 years old. Individual ID: {0}".format(ind[0]))
-
+    # US12: Mother should be less than 60 years older than her children and father should be less than 80 years older than his children
+    for s in extfamily: #HWIF
+        if not birth_date_check.parents_too_old(s[2][constants.ifnIndex["BIRT"]],s[1][constants.ifnIndex["BIRT"]],s[0][constants.ifnIndex["BIRT"]]):
+            print("US12: ANOMALY: Father greater than 80 years older or mother greater than 60 years older than child. Family ID: {0}".format(s[3][0])," and Idividual ID: {0}".format(s[2][0]))
+           
+    # US17 - Parents should not marry any of their children
+    for s in range(len(extfamily)):
+        if (s % 2):
+            if (fam.us17NoMarrriage2Child(extfamily[s]) == False):
+                print("US17: ANOMALY: Family {2} with parents {0} and {1} should not marry any of their children.".format(extfamily[s][0][0],extfamily[s][1][0],extfamily[s][3][0]))
+    
     # US19: First cousins should not marry
     for ind in list(filter(lambda i: i[8] != "N/A", individuals)):
         parents = list(filter(lambda i: ind[0] in i[2][7], spouses))
@@ -289,38 +290,48 @@ def run():
         if res is not None:
             print("US19: ANOMALY: First Cousins should not marry. Individual ID: {0}; Cousin ID: {1}".format(ind[0], res))
 
+    #aunt / uncle marrying niece/nephew check
+    marriage_check.us20(individuals,families, cur)
+
     # US21: Husband in family should be male and wife in family should be female
     for s in spouses:
         if not gender_check.husb_wife_gender(s[0][constants.ifnIndex["SEX"]],s[1][constants.ifnIndex["SEX"]]):
             print("US21: ANOMALY: Husband and Wife Should have correct gender roles. Family ID: {0}".format(s[2][0]))
 
-    # US12: Mother should be less than 60 years older than her children and father should be less than 80 years older than his children
-    for s in extfamily: #HWIF
-        if not birth_date_check.parents_too_old(s[2][constants.ifnIndex["BIRT"]],s[1][constants.ifnIndex["BIRT"]],s[0][constants.ifnIndex["BIRT"]]):
-            print("US12: ANOMALY: Father greater than 80 years older or mother greater than 60 years older than child. Family ID: {0}".format(s[3][0])," and Idividual ID: {0}".format(s[2][0]))
-            
-    
-
-    #runs us01 and us42 on individuals and familes
-    dates.dateHelper(individuals, families)
-
-    list_deceased.us29ListDeceased(individuals)
+ 
     unique_id.us22UniqueIds(individuals, families)
     
+    # US28: Order siblings by age
+    sorting.us28(individuals, families)
+
+    list_deceased.us29ListDeceased(individuals)
+  
    
-    list_upcoming_dates.birthdays(individuals)
-    list_upcoming_dates.anniversary(individuals, families)
-    list_recent.list_recent(individuals)
 
     # US30: List living married
     list_living.us30(individuals, families)
     # US31: List Living Single
     list_living.us31(individuals, families)
 
-    # US28: Order siblings by age
-    sorting.us28(individuals, families)
+
 
     multiple_births.us32_us14(individuals, families)
+
+    # US34 - List large age differences 
+    for s in range(len(extfamily)):
+        if (s % 2):
+            marriage_date_check.us34ListLargeAge(extfamily[s])
+    
+    # US35-36 - list recent births and deaths
+    list_recent.list_recent(individuals)
+
+    # US38: list upcoming birthdays
+    list_upcoming_dates.birthdays(individuals)
+  
+    # US39: LIST UPCOMING ANNIVERSARY 
+    list_upcoming_dates.anniversary(individuals, families)
+        #runs us01 and us42 on individuals and familes
+    dates.dateHelper(individuals, families)
 
     # clear db at the end!
     sql = 'DELETE FROM individuals'
