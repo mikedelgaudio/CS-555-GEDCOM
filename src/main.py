@@ -257,9 +257,8 @@ def run():
            
     # US17 - Parents should not marry any of their children
     for s in range(len(extfamily)):
-        if (s % 2):
-            if (fam.us17NoMarrriage2Child(extfamily[s]) == False):
-                print("US17: ANOMALY: Family {2} with parents {0} and {1} should not marry any of their children.".format(extfamily[s][0][0],extfamily[s][1][0],extfamily[s][3][0]))
+        if (fam.us17NoMarrriage2Child(extfamily[s]) == False):
+            print("US17: ANOMALY: Family {2} with parents {0} and {1} should not marry any of their children.".format(extfamily[s][0][0],extfamily[s][1][0],extfamily[s][3][0]))
     
     # US19: First cousins should not marry
     for ind in list(filter(lambda i: i[8] != "N/A", individuals)):
@@ -319,8 +318,7 @@ def run():
 
     # US34 - List large age differences 
     for s in range(len(extfamily)):
-        if (s % 2):
-            marriage_date_check.us34ListLargeAge(extfamily[s])
+        marriage_date_check.us34ListLargeAge(extfamily[s])
     
     # US35-36 - list recent births and deaths
     list_recent.list_recent(individuals)

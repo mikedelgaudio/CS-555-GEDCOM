@@ -41,7 +41,8 @@ def families_to_child_parent_list(families, individuals):
             for i in individuals:
                 if i[0] == c or '{' + i[0] == c or i[0] + '}' == c:
                     extfamily += [[h, w, i, f]]
-    
+            break
+
     return extfamily
 
 # Checks for bigomy, returns true if no bigomy found
