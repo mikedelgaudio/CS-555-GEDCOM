@@ -96,6 +96,7 @@ def us34ListLargeAge(families):
             print(finalOutput)
         elif(wifeAge > husbandAge * 2):
             finalOutput += "{0} {1} is more than twice as old as spouse {2} {3}.".format(wifeID, wifeName, husbandID, husbandName)
+            print(finalOutput)
         else:
             pass
     
