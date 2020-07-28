@@ -1,17 +1,20 @@
 import sys
 sys.path.insert(0, '../src')
 
+import sqlite3
 import main
 import datetime
-from helpers import dates, sorting, fam
+from helpers import dates, sorting, fam, database as db
 from modules import birth_date_check
-from modules import marriage_date_check, list_upcoming_dates, list_deceased, unique_id, list_recent, list_living, gender_check, multiple_births
+from modules import marriage_date_check, marriage_check, list_upcoming_dates, list_deceased, unique_id, list_recent, list_living, gender_check, multiple_births
 import pytest
 from _pytest.compat import CaptureAndPassthroughIO
 from _pytest.compat import CaptureIO
 from _pytest.compat import TYPE_CHECKING
 from _pytest.config import Config
 from _pytest.fixtures import FixtureRequest
+
+
 
 def test_compile():
     # Can the program compile with no errors
@@ -343,3 +346,78 @@ def test_us32_us14(capsys):
     expected = "US14: ANOMALY: No more than 5 siblings should be born at the same time.\n"
     captured = capsys.readouterr()
     assert captured.out == expected
+
+def test_us17():
+    #yes we are marrying children
+    assert fam.us17NoMarrriage2Child([['@I2@', 'Rhaegar /Targaryon/', 'F', '15 AUG 1780', 230, 'FALSE', '15 DEC 2010', '@F3@', '@F6@'], ['@I4@', 'Elia /Martell/', 'F', '11 MAY 1980', 18, 'FALSE', '10 OCT 1998', 'N/A', '@F1@'], ['@I4@', 'Elia /Martell/', 'F', '11 MAY 1980', 18, 'FALSE', '10 OCT 1998', 'N/A', '@F1@'], ['@F1@', '10 AUG 2000', '10 AUG 1999', '@I2@', 'Rhaegar /Targaryon/', '@I4@', 'Elia /Martell/', '{@I4@ @I5@}']]) is False
+
+    #no marriage
+    assert fam.us17NoMarrriage2Child([['@I2@', 'Rhaegar /Targaryon/', 'F', '15 AUG 1780', 230, 'FALSE', '15 DEC 2010', '@F3@', '@F6@'], ['@I4@', 'Elia /Martell/', 'F', '11 MAY 1980', 18, 'FALSE', '10 OCT 1998', 'N/A', '@F1@'], ['@I4@', 'Elia /Martell/', 'F', '11 MAY 1980', 18, 'FALSE', '10 OCT 1998', 'N/A', '@F1@'], ['@F1@', '10 AUG 2000', '10 AUG 1999', '@I2@', 'Rhaegar /Targaryon/', '@I4@', 'Elia /Martell/', '{@I8@ @I5@}']]) is True
+
+    # cause an exception
+    assert fam.us17NoMarrriage2Child([['@I2@', 'Rhaegar /Targaryon/', 'F', '15 AUG 1780', 230, 'FALSE', '15 DEC 2010', '@F3@', '@F6@'], ['@F1@', '10 AUG 2000', '10 AUG 1999', '@I2@', 'Rhaegar /Targaryon/', '@I4@', 'Elia /Martell/', '{@I4@ @I5@}']]) is None
+
+def test_us34(capsys):
+    #husb's older case
+    marriage_date_check.us34ListLargeAge([['@I2@', 'Rhaegar /Targaryon/', 'F', '15 AUG 1780', 230, 'FALSE', '15 DEC 2010', '@F3@', '@F6@'], ['@I4@', 'Elia /Martell/', 'F', '11 MAY 1980', 18, 'FALSE', '10 OCT 1998', 'N/A', '@F1@'], ['@I5@', 'Aegon /Targaryon/', 'M', '29 JUN 2005', 15, 'TRUE', 'N/A', '@F1@', 'N/A'], ['@F1@', '10 AUG 2000', '10 AUG 1999', '@I2@', 'Rhaegar /Targaryon/', '@I4@', 'Elia /Martell/', '{@I4@ @I5@}']])
+    expected = "US34: ANOMALY: Large age difference on family @F1@! @I2@ Rhaegar /Targaryon/ is more than twice as old as spouse @I4@ Elia /Martell/.\n"
+    captured = capsys.readouterr()
+    assert captured.out == expected
+
+    #madam's older
+    marriage_date_check.us34ListLargeAge([['@I16@', 'Aegon V /Targaryon/', 'M', '9 JUL 1950', -10, 'FALSE', '5 JUL 1941', 'N/A', '@F4@'], ['@I15@', 'Cersei /Targaryon/', 'F', '5 JUL 2021', -1, 'FALSE', '5 JUL 2020', 'N/A', '@F4@'], ['@I24@', 'Funcan /Targaryon/', 'M', '27 DEC 2003', 16, 'TRUE', 'N/A', '@F4@', 'N/A'], ['@F4@', '30 JUL 1959', 'N/A', '@I16@', 'Aegon V /Targaryon/', '@I15@', 'Cersei /Targaryon/', '{@I20@ @I21@ @I22@ @I23@ @I24@ @I25@}']])
+    expected = "US34: ANOMALY: Large age difference on family @F4@! @I15@ Cersei /Targaryon/ is more than twice as old as spouse @I16@ Aegon V /Targaryon/.\n"
+    captured = capsys.readouterr()
+    assert captured.out == expected
+
+    #broken input
+    marriage_date_check.us34ListLargeAge([['@I16@', 'Aegon V /Targaryon/', 'M', '9 JUL 1950', -10, 'FALSE', '5 JUL 1941', 'N/A', '@F4@'], ['@I15@', 'Cersei /Targaryon/', 'F', '5 JUL 2021', -1, 'FALSE', '5 JUL 2020', 'N/A', '@F4@']])
+    expected = ""
+    captured = capsys.readouterr()
+    assert captured.out == expected
+
+def test_us20(capsys):
+    # yes i am marrying niece/nephew
+    ind = [['@I2@', 'Rhaegar /Targaryon/', 'M', '15 AUG 1780', 230, 'FALSE', '15 DEC 2010', '@F3@', '@F1@'], ['@I4@', 'Elia /Martell/', 'F', '11 MAY 1980', 18, 'FALSE', '10 OCT 1998', 'N/A', '@F1@'],
+            ['@I6@', 'brother dad', 'M', '11 MAY 1980', 18, 'FALSE', '10 OCT 1998', '@F1@', '@F5@'],
+             ['@I27@', 'sister wife', 'F', '11 MAY 1980', 18, 'FALSE', '10 OCT 1998', 'N/A', '@F5@'],
+             ['@I5@', 'uncle', 'M', '11 MAY 1980', 18, 'FALSE', '10 OCT 1998', '@F1@', '@F10@'],
+             ['06', 'niece', 'F', '11 MAY 1980', 18, 'FALSE', '10 OCT 1998', '@F5@', '@F10@']]
+    fam = [['@F1@', '10 AUG 2000', '10 AUG 1999', '@I2@', 'Rhaegar /Targaryon/', '@I4@', 'Elia /Martell/', '{@I6@ @I5@}'],
+            ['@F5@', '10 JUL 2001', '21 AUG 2002', '@I6@', 'brother dad', '@I27@', 'sister wife', '{06}'],
+            ['@F10@', '10 JUL 2001', '21 AUG 2002', '@I5@', 'uncle', '06', 'niece', 'N/A']]
+    conn = sqlite3.connect("../familytable.db")
+
+    if conn is not None:
+        cur = conn.cursor()
+        cur.execute(db.create_ind_table())
+        cur.execute(db.create_fam_table())
+        for i in ind:
+            db.populate_ind(i, cur, conn)
+        for f in fam:
+            db.populate_fam(f, cur, conn)
+
+
+    marriage_check.us20(ind, fam, cur)
+
+    expected = "US20: ANOMALY: Family @F10@ -> @I5@ should NOT marry their niece/nephew 06.\n"
+    captured = capsys.readouterr()
+    assert captured.out == expected
+
+
+    cur.execute("DELETE FROM families WHERE id=?", ("@F10@",))
+
+    marriage_check.us20(ind, fam, cur)
+
+    expected = ""
+    captured = capsys.readouterr()
+    assert captured.out == expected
+
+     # clear db at the end!
+    sql = 'DELETE FROM individuals'
+    cur.execute(sql)
+    conn.commit()
+
+    sql = 'DELETE FROM families'
+    cur.execute(sql)
+    conn.commit()

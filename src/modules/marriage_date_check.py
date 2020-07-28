@@ -76,4 +76,30 @@ def older_than_14(birth_date_1, birth_date_2, marriage_date):
         return (int((md - bd_1).days/365) >= 14 and int((md - bd_2).days/365) >= 14)
     except ValueError:
         print("older_than_14: DATE PROVIDED IS INCORRECT FORMAT")
+        
+import constants
+# US34 - List large age differences 
+#List all couples who were married when the older spouse was more than twice as old as the younger spouse
+def us34ListLargeAge(families):
+    try:
+        husbandID = families[3][constants.ffnIndex["HUSB"]] 
+        wifeID = families[3][constants.ffnIndex["WIFE"]] 
+        husbandAge = families[0][constants.ifnIndex["AGE"]] 
+        husbandName = families[0][constants.ifnIndex["NAME"]] 
+        wifeAge = families[1][constants.ifnIndex["AGE"]] 
+        wifeName = families[1][constants.ifnIndex["NAME"]] 
+        familyID = families[3][0] 
+        
+        finalOutput = "US34: ANOMALY: Large age difference on family {0}! ".format(familyID)
+        if(husbandAge > wifeAge * 2):
+            finalOutput += "{0} {1} is more than twice as old as spouse {2} {3}.".format(husbandID, husbandName, wifeID, wifeName)
+            print(finalOutput)
+        elif(wifeAge > husbandAge * 2):
+            finalOutput += "{0} {1} is more than twice as old as spouse {2} {3}.".format(wifeID, wifeName, husbandID, husbandName)
+            print(finalOutput)
+        else:
+            pass
+    
+    except Exception:
+        pass
     
