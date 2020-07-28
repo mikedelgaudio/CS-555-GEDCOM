@@ -259,7 +259,16 @@ def run():
     for s in range(len(extfamily)):
         if (fam.us17NoMarrriage2Child(extfamily[s]) == False):
             print("US17: ANOMALY: Family {2} with parents {0} and {1} should not marry any of their children.".format(extfamily[s][0][0],extfamily[s][1][0],extfamily[s][3][0]))
-    
+    # US18: Siblings should not marry
+    for ind in list(filter(lambda i: i[8] != "N/A", individuals)):
+        parents = list(filter(lambda i: ind[0] in i[2][7], spouses))
+        if parents == []:
+            continue
+        parents = parents[0]
+        siblings = parents[2][7]
+        res = fam.siblings_marriage_check(ind[0], filter(lambda i: i[0][0] == ind[0] or i[1][0] == ind[0], spouses), siblings)
+        if res:
+            print("US18: ANOMALY: Siblings should not marry. Individual ID: {0}; Sibling ID: {1}".format(ind[0], res))
     # US19: First cousins should not marry
     for ind in list(filter(lambda i: i[8] != "N/A", individuals)):
         parents = list(filter(lambda i: ind[0] in i[2][7], spouses))

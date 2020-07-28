@@ -83,6 +83,18 @@ def test_us12():
     assert birth_date_check.parents_too_old("18 NOV 1999","18 NOV 1998","18 NOV 1918") is False
     assert birth_date_check.parents_too_old("18 NOV 1999","18 NOV 1938","18 NOV 1918") is False
 
+def test_us18():
+    assert fam.siblings_marriage_check("a", [[["a"], ["a1"]], [["a"], ["b"]], [["a"], ["c"]]], "{ x y z }") is None
+    assert fam.siblings_marriage_check("a", [[["a"], ["a1"]], [["a"], ["b"]], [["a"], ["c"]]], "{ x b z }") is "b"
+    assert fam.siblings_marriage_check("a", [[["a"], ["a1"]], [["a"], ["b"]], [["a"], ["c"]]], "{ x y c }") is "c"
+    assert fam.siblings_marriage_check("a", [[["a"], ["a1"]], [["a"], ["b"]], [["a"], ["c"]]], "{ a1 y c }") is "a1"
+    assert fam.siblings_marriage_check("a", [[["a"], ["a1"]], [["a"], ["b"]], [["a"], ["c"]]], "{ }") is None
+
+def test_us19():
+    assert fam.first_cousin_marriage_check(["a", "b", "c"], "{ x y z }") is None
+    assert fam.first_cousin_marriage_check(["a", "b", "c"], "{ a y z }") is "a"
+    assert fam.first_cousin_marriage_check(["a", "b", "c"], "{ x y b }") is "b"
+    assert fam.first_cousin_marriage_check(["a", "b", "c"], "{ }") is None
 def test_us21():
     assert gender_check.husb_wife_gender("M","F") is True
     assert gender_check.husb_wife_gender("F","F") is False

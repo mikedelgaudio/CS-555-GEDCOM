@@ -78,7 +78,19 @@ def us17NoMarrriage2Child(familes):
         return True
     except Exception:
         pass
-    
+
+# US18 - Siblings should not marry
+# Given a list of spouses and siblings, make sure none match, if they do return them
+def siblings_marriage_check(ind, spouses, siblings):
+    for s in spouses:
+        if s[0][0] == ind:
+            if s[1][0] in siblings:
+                return s[1][0]
+        else:
+            if s[0][0] in siblings:
+                return s[0][0]
+    return None
+                        
 # US19 - First cousins should not marry
 # Given a list of spouses and cousins of an individual, make sure none match, if they do then return them
 def first_cousin_marriage_check(spouses, cousins):
