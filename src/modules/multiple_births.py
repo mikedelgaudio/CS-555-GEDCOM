@@ -2,7 +2,7 @@ from collections import Counter
 multBirths = {2: "twins!", 3:"triplets!", 4: "quadruplets!", 5: "quintuplets!" }
 
 def us32_us14(individuals, families):
-   
+
     for f in families:
         ages = []
         str = f[7].replace('{','')
@@ -23,5 +23,12 @@ def us32_us14(individuals, families):
                 elif (ages[age]> 5):
                     print("US14: ANOMALY: No more than 5 siblings should be born at the same time.")
 
-
-
+# There should be fewer than 15 siblings in a family
+def fewer_than_15_siblings(sibling_list):
+    i = 0
+    for s in sibling_list:
+        i = i+1
+    if (i > 15):
+        return False
+    else:
+        return True

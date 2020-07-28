@@ -266,6 +266,14 @@ def run():
                 IDlist.append(i[0])
             print("US13 ANOMALY: Siblings born too close together and are not twins/triplets/etc. Sibling ID's: {0}".format(IDlist))
 
+    # US15: There should be fewer than 15 siblings in a family
+    for s in siblings:
+        if not multiple_births.fewer_than_15_siblings(s):
+            IDlist = []
+            for i in s:
+                IDlist.append(i[0])
+            print("US15 ANOMALY: More than 15 siblings in a family. Sibling ID's: {0}".format(IDlist))
+
     #runs us01 and us42 on individuals and familes
     dates.dateHelper(individuals, families)
 

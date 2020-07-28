@@ -89,6 +89,10 @@ def test_us13():
     assert birth_date_check.sibling_spacing(["18 NOV 1999","17 OCT 1999","18 NOV 1918"]) is False
     assert birth_date_check.sibling_spacing(["18 NOV 1999","18 NOV 1938","18 NOV 1918","18 NOV 1999","18 NOV 1938","18 NOV 1918","18 NOV 1999","18 NOV 1938","18 NOV 1918"]) is True
 
+def test_us15():
+    assert multiple_births.fewer_than_15_siblings(["sibling1","sibling2"]) is True
+    assert multiple_births.fewer_than_15_siblings(["sibling1","sibling2","sibling3","sibling4","sibling5","sibling6","sibling7","sibling8","sibling9","sibling10","sibling11","sibling12","sibling13","sibling14","sibling15","sibling16"]) is False
+
 def test_us21():
     assert gender_check.husb_wife_gender("M","F") is True
     assert gender_check.husb_wife_gender("F","F") is False
