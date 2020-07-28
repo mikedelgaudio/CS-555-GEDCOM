@@ -80,6 +80,15 @@ def test_us12():
     assert birth_date_check.parents_too_old("18 NOV 1999","18 NOV 1998","18 NOV 1918") is False
     assert birth_date_check.parents_too_old("18 NOV 1999","18 NOV 1938","18 NOV 1918") is False
 
+def test_us13():
+    assert birth_date_check.sibling_spacing(["18 NOV 1999","18 NOV 1938","18 NOV 1918"]) is True
+    assert birth_date_check.sibling_spacing(["18 NOV 1999","18 NOV 1999","18 NOV 1918"]) is True
+    assert birth_date_check.sibling_spacing(["18 NOV 1999","19 NOV 1999","18 NOV 1918"]) is True
+    assert birth_date_check.sibling_spacing(["18 NOV 1999","17 NOV 1999","18 NOV 1918"]) is True
+    assert birth_date_check.sibling_spacing(["18 NOV 1999","17 NOV 1999","19 NOV 1999"]) is False
+    assert birth_date_check.sibling_spacing(["18 NOV 1999","17 OCT 1999","18 NOV 1918"]) is False
+    assert birth_date_check.sibling_spacing(["18 NOV 1999","18 NOV 1938","18 NOV 1918","18 NOV 1999","18 NOV 1938","18 NOV 1918","18 NOV 1999","18 NOV 1938","18 NOV 1918"]) is True
+
 def test_us21():
     assert gender_check.husb_wife_gender("M","F") is True
     assert gender_check.husb_wife_gender("F","F") is False
@@ -94,13 +103,13 @@ def test_us10():
     assert marriage_date_check.older_than_14("10 OCT 2000", "11 OCT 1000", "1 JAN 2020") is True
 
 def test_us11():
-    assert fam.bigomy_checker([["", "", "N/A", "", "", "", "", ""], ["", "", "10 OCT 2000", "", "", "", "", ""], 
+    assert fam.bigomy_checker([["", "", "N/A", "", "", "", "", ""], ["", "", "10 OCT 2000", "", "", "", "", ""],
     ["", "", "11 OCT 2001", "", "", "", "", ""]]) is True
-    assert fam.bigomy_checker([["", "", "N/A", "", "", "", "", ""], ["", "", "10 OCT 2000", "", "", "", "", ""], 
+    assert fam.bigomy_checker([["", "", "N/A", "", "", "", "", ""], ["", "", "10 OCT 2000", "", "", "", "", ""],
     ["", "", "N/A", "", "", "", "", ""]]) is False
-    assert fam.bigomy_checker([["", "", "N/A", "", "", "", "", ""], ["", "", "N/A", "", "", "", "", ""], 
+    assert fam.bigomy_checker([["", "", "N/A", "", "", "", "", ""], ["", "", "N/A", "", "", "", "", ""],
     ["", "", "N/A", "", "", "", "", ""]]) is False
-    assert fam.bigomy_checker([["", "", "10 OCT 2020", "", "", "", "", ""], ["", "", "10 OCT 2000", "", "", "", "", ""], 
+    assert fam.bigomy_checker([["", "", "10 OCT 2020", "", "", "", "", ""], ["", "", "10 OCT 2000", "", "", "", "", ""],
     ["", "", "11 OCT 2001", "", "", "", "", ""]]) is True
 def test_us06():
     assert marriage_date_check.divorce_date_before_death("10 OCT 2010", "N/A", "N/A") is True
@@ -209,32 +218,32 @@ def test_us35(capsys):
 def test_us30(capsys):
     ## Happy case
     list_living.us30([["01", "Aerys /Targaryon/", "M", "18 FEB 2000", "20","TRUE", "N/A" "N/A", "02"],["01", "Rhaella /Targaryon/", "F", "18 FEB 2000", "20",  "TRUE", "N/A", "N/A", "01"]],
-                             [['@F5@', '10 JUL 2001', 'N/A', '@I8@', 'Aerys /Targaryon/', '@I7@', 'Rhaella /Targaryon/', '{@I2@ @I9@ @I10@}']]) 
-    
+                             [['@F5@', '10 JUL 2001', 'N/A', '@I8@', 'Aerys /Targaryon/', '@I7@', 'Rhaella /Targaryon/', '{@I2@ @I9@ @I10@}']])
+
     expected = "US30: ALIVE & MARRIED: Aerys /Targaryon/ and Rhaella /Targaryon/ are alive and married.\n"
     captured = capsys.readouterr()
     assert captured.out == expected
 
     ## Husband died
     list_living.us30([["01", "Aerys /Targaryon/", "M", "18 FEB 2000", "20","FALSE", "N/A" "N/A", "02"],["01", "Rhaella /Targaryon/", "F", "18 FEB 2000", "20",  "TRUE", "N/A", "N/A", "01"]],
-                             [['@F5@', '10 JUL 2001', 'N/A', '@I8@', 'Aerys /Targaryon/', '@I7@', 'Rhaella /Targaryon/', '{@I2@ @I9@ @I10@}']]) 
-    
+                             [['@F5@', '10 JUL 2001', 'N/A', '@I8@', 'Aerys /Targaryon/', '@I7@', 'Rhaella /Targaryon/', '{@I2@ @I9@ @I10@}']])
+
     expected = ""
     captured = capsys.readouterr()
     assert captured.out == expected
 
     ## Wife died
     list_living.us30([["01", "Aerys /Targaryon/", "M", "18 FEB 2000", "20","TRUE", "N/A" "N/A", "02"],["01", "Rhaella /Targaryon/", "F", "18 FEB 2000", "20",  "FALSE", "N/A", "N/A", "01"]],
-                             [['@F5@', '10 JUL 2001', 'N/A', '@I8@', 'Aerys /Targaryon/', '@I7@', 'Rhaella /Targaryon/', '{@I2@ @I9@ @I10@}']]) 
-    
+                             [['@F5@', '10 JUL 2001', 'N/A', '@I8@', 'Aerys /Targaryon/', '@I7@', 'Rhaella /Targaryon/', '{@I2@ @I9@ @I10@}']])
+
     expected = ""
     captured = capsys.readouterr()
     assert captured.out == expected
 
     ## Divorced
     list_living.us30([["01", "Aerys /Targaryon/", "M", "18 FEB 2000", "20","TRUE", "N/A" "N/A", "02"],["01", "Rhaella /Targaryon/", "F", "18 FEB 2000", "20",  "TRUE", "N/A", "N/A", "01"]],
-                             [['@F5@', '10 JUL 2001', '21 AUG 2002', '@I8@', 'Aerys /Targaryon/', '@I7@', 'Rhaella /Targaryon/', '{@I2@ @I9@ @I10@}']]) 
-    
+                             [['@F5@', '10 JUL 2001', '21 AUG 2002', '@I8@', 'Aerys /Targaryon/', '@I7@', 'Rhaella /Targaryon/', '{@I2@ @I9@ @I10@}']])
+
     expected = ""
     captured = capsys.readouterr()
     assert captured.out == expected
@@ -243,20 +252,20 @@ def test_us30(capsys):
 def test_us31(capsys):
     ## Nobody is alive and single!
     list_living.us31([["01", "Aerys /Targaryon/", "M", "18 FEB 2000", "20","TRUE", "N/A", "N/A", "02"],["01", "Rhaella /Targaryon/", "F", "18 FEB 2000", "20",  "TRUE", "N/A", "N/A", "01"]],
-                             [['@F5@', '10 JUL 2001', 'N/A', '@I8@', 'Aerys /Targaryon/', '@I7@', 'Rhaella /Targaryon/', '{@I2@ @I9@ @I10@}']]) 
+                             [['@F5@', '10 JUL 2001', 'N/A', '@I8@', 'Aerys /Targaryon/', '@I7@', 'Rhaella /Targaryon/', '{@I2@ @I9@ @I10@}']])
     expected = ""
     captured = capsys.readouterr()
     assert captured.out == expected
 
     ## Every single person is under 30
     list_living.us31([["01", "Aerys /Targaryon/", "M", "18 FEB 2000", "20","TRUE", "N/A", "N/A", "N/A"],["01", "Rhaella /Targaryon/", "F", "18 FEB 2000", "20",  "TRUE", "N/A", "N/A", "N/A"]],
-                             [['@F5@', '10 JUL 2001', 'N/A', '@I8@', 'Father', '@I7@', 'Mother', '{@01@ @02@}']]) 
+                             [['@F5@', '10 JUL 2001', 'N/A', '@I8@', 'Father', '@I7@', 'Mother', '{@01@ @02@}']])
     expected = ""
     captured = capsys.readouterr()
     assert captured.out == expected
-    ## single person died 
+    ## single person died
     list_living.us31([["01", "Aerys /Targaryon/", "M", "18 FEB 2000", "40","FALSE", "N/A", "N/A", "N/A"],["01", "Rhaella /Targaryon/", "F", "18 FEB 2000", "20",  "TRUE", "N/A", "N/A", "N/A"]],
-                             [['@F5@', '10 JUL 2001', 'N/A', '@I8@', 'Father', '@I7@', 'Mother', '{@01@ @02@}']]) 
+                             [['@F5@', '10 JUL 2001', 'N/A', '@I8@', 'Father', '@I7@', 'Mother', '{@01@ @02@}']])
     expected = ""
     captured = capsys.readouterr()
     assert captured.out == expected
@@ -267,24 +276,24 @@ def test_us31(capsys):
     captured = capsys.readouterr()
     assert captured.out == expected
 
-    ## Both Alive and Single over 30 
+    ## Both Alive and Single over 30
     list_living.us31([["01", "Aerys /Targaryon/", "M", "18 FEB 2000", "40","TRUE", "N/A", "N/A", "N/A"],["01", "Rhaella /Targaryon/", "F", "18 FEB 2000", "40",  "TRUE", "N/A", "N/A", "N/A"]],
-                             [['@F5@', '10 JUL 2001', 'N/A', '@I8@', 'Father', '@I7@', 'Mother', '{@01@ @02@}']]) 
+                             [['@F5@', '10 JUL 2001', 'N/A', '@I8@', 'Father', '@I7@', 'Mother', '{@01@ @02@}']])
     expected = "US31: ALIVE & SINGLE: Aerys /Targaryon/ is over 30 and has never been married.\n" + "US31: ALIVE & SINGLE: Rhaella /Targaryon/ is over 30 and has never been married.\n"
 
 def test_us28(capsys):
     #IDs that don't exist in table
     sorting.us28([["01", "Aerys /Targaryon/", "M", "18 FEB 2000", "20","TRUE", "N/A" "N/A", "02"],["01", "Rhaella /Targaryon/", "F", "18 FEB 2000", "20",  "TRUE", "N/A", "N/A", "01"]],
                              [['@F5@', '10 JUL 2001', '21 AUG 2002', '@I8@', 'Aerys /Targaryon/', '@I7@', 'Rhaella /Targaryon/', '{@I2@ @I9@ @I10@}']])
-    
+
     expected = "US28: ERROR: Family ID @F5@ has a child ID @I2@ that does not exist in individual table.\nUS28: ERROR: Family ID @F5@ has a child ID @I9@ that does not exist in individual table.\nUS28: ERROR: Family ID @F5@ has a child ID @I10@ that does not exist in individual table.\n"
     captured = capsys.readouterr()
     assert captured.out == expected
-    
+
     #IDs that exist in table
     sorting.us28([["01", "Aerys /Targaryon/", "M", "18 FEB 2000", "20","TRUE", "N/A" "N/A", "02"],["@I9@", "Rhaella /Targaryon/", "F", "18 FEB 2000", "20",  "TRUE", "N/A", "N/A", "01"]],
                              [['@F5@', '10 JUL 2001', '21 AUG 2002', '@I8@', 'Aerys /Targaryon/', '@I7@', 'Rhaella /Targaryon/', '{@I2@ @I9@ @I10@}']])
-    
+
     expected = "US28: ERROR: Family ID @F5@ has a child ID @I2@ that does not exist in individual table.\nUS28: CHILDREN SORTED: Family ID @F5@ has 1 children sorted AGE 20--> @I9@ Rhaella /Targaryon/; \n"
     captured = capsys.readouterr()
     assert captured.out == expected

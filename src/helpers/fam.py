@@ -39,7 +39,7 @@ def families_to_child_parent_list(families, individuals):
                 break
         for c in child_id_list:
             for i in individuals:
-                if i[0] == c or '{' + i[0] == c or i[0] + '}' == c or '{' + i[0] +'}' == c:
+                if i[0] == c or '{' + i[0] == c or i[0] + '}' == c:
                     extfamily += [[h, w, i, f]]
     return extfamily
 

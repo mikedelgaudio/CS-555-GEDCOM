@@ -123,15 +123,24 @@ def parents_too_old(birth,mbirth,fbirth):
     except ValueError:
         return True
 
+#Birth dates of siblings should be more than 8 months apart or less than 2 days apart (twins may be born one day apart, e.g. 11:59 PM and 12:02 AM the following calendar day)
 def sibling_spacing(list_of_dates):
-    for d1 in list_of_dates:
-        for d2 in list_of_dates:
-            diff = d1 - d2
-            diffd = int(diff.days)
-            diffm = int(diff.days)/30
-            if diffd < 2:
-                return true
-            elif 8 > diffm > -8:
-                return false
-            else:
-                return true
+    try:
+        list_of_actual_dates = []
+        for d in list_of_dates:
+            dd = datetime.datetime.strptime(d[3], "%d %b %Y")
+            list_of_actual_dates.append(dd)
+        for d1 in list_of_actual_dates:
+            for d2 in list_of_actual_dates:
+                diff = d1 - d2
+                diffd = int(diff.days)
+                diffm = int(diff.days)/30
+                if diffd < 2:
+                    continue
+                elif 8 > diffm > -8:
+                    return False
+                else:
+                    continue
+        return True
+    except ValueError:
+        return True

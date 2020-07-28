@@ -258,6 +258,14 @@ def run():
         if not birth_date_check.parents_too_old(s[2][constants.ifnIndex["BIRT"]],s[1][constants.ifnIndex["BIRT"]],s[0][constants.ifnIndex["BIRT"]]):
             print("US12: ANOMALY: Father greater than 80 years older or mother greater than 60 years older than child. Family ID: {0}".format(s[3][0])," and Idividual ID: {0}".format(s[2][0]))
 
+    # US13: Birth dates of siblings should be more than 8 months apart or less than 2 days apart (twins may be born one day apart, e.g. 11:59 PM and 12:02 AM the following calendar day)
+    for s in siblings:
+        if not birth_date_check.sibling_spacing(s):
+            IDlist = []
+            for i in s:
+                IDlist.append(i[0])
+            print("US13 ANOMALY: Siblings born too close together and are not twins/triplets/etc. Sibling ID's: {0}".format(IDlist))
+
     #runs us01 and us42 on individuals and familes
     dates.dateHelper(individuals, families)
 
