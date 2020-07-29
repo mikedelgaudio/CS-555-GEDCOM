@@ -104,13 +104,13 @@ def test_us10():
     assert marriage_date_check.older_than_14("10 OCT 2000", "11 OCT 1000", "1 JAN 2020") is True
 
 def test_us11():
-    assert fam.bigomy_checker([["", "", "N/A", "", "", "", "", ""], ["", "", "10 OCT 2000", "", "", "", "", ""], 
+    assert fam.bigomy_checker([["", "", "N/A", "", "", "", "", ""], ["", "", "10 OCT 2000", "", "", "", "", ""],
     ["", "", "11 OCT 2001", "", "", "", "", ""]]) is True
-    assert fam.bigomy_checker([["", "", "N/A", "", "", "", "", ""], ["", "", "10 OCT 2000", "", "", "", "", ""], 
+    assert fam.bigomy_checker([["", "", "N/A", "", "", "", "", ""], ["", "", "10 OCT 2000", "", "", "", "", ""],
     ["", "", "N/A", "", "", "", "", ""]]) is False
-    assert fam.bigomy_checker([["", "", "N/A", "", "", "", "", ""], ["", "", "N/A", "", "", "", "", ""], 
+    assert fam.bigomy_checker([["", "", "N/A", "", "", "", "", ""], ["", "", "N/A", "", "", "", "", ""],
     ["", "", "N/A", "", "", "", "", ""]]) is False
-    assert fam.bigomy_checker([["", "", "10 OCT 2020", "", "", "", "", ""], ["", "", "10 OCT 2000", "", "", "", "", ""], 
+    assert fam.bigomy_checker([["", "", "10 OCT 2020", "", "", "", "", ""], ["", "", "10 OCT 2000", "", "", "", "", ""],
     ["", "", "11 OCT 2001", "", "", "", "", ""]]) is True
 def test_us06():
     assert marriage_date_check.divorce_date_before_death("10 OCT 2010", "N/A", "N/A") is True
@@ -219,32 +219,32 @@ def test_us35(capsys):
 def test_us30(capsys):
     ## Happy case
     list_living.us30([["01", "Aerys /Targaryon/", "M", "18 FEB 2000", "20","TRUE", "N/A" "N/A", "02"],["01", "Rhaella /Targaryon/", "F", "18 FEB 2000", "20",  "TRUE", "N/A", "N/A", "01"]],
-                             [['@F5@', '10 JUL 2001', 'N/A', '@I8@', 'Aerys /Targaryon/', '@I7@', 'Rhaella /Targaryon/', '{@I2@ @I9@ @I10@}']]) 
-    
+                             [['@F5@', '10 JUL 2001', 'N/A', '@I8@', 'Aerys /Targaryon/', '@I7@', 'Rhaella /Targaryon/', '{@I2@ @I9@ @I10@}']])
+
     expected = "US30: ALIVE & MARRIED: Aerys /Targaryon/ and Rhaella /Targaryon/ are alive and married.\n"
     captured = capsys.readouterr()
     assert captured.out == expected
 
     ## Husband died
     list_living.us30([["01", "Aerys /Targaryon/", "M", "18 FEB 2000", "20","FALSE", "N/A" "N/A", "02"],["01", "Rhaella /Targaryon/", "F", "18 FEB 2000", "20",  "TRUE", "N/A", "N/A", "01"]],
-                             [['@F5@', '10 JUL 2001', 'N/A', '@I8@', 'Aerys /Targaryon/', '@I7@', 'Rhaella /Targaryon/', '{@I2@ @I9@ @I10@}']]) 
-    
+                             [['@F5@', '10 JUL 2001', 'N/A', '@I8@', 'Aerys /Targaryon/', '@I7@', 'Rhaella /Targaryon/', '{@I2@ @I9@ @I10@}']])
+
     expected = ""
     captured = capsys.readouterr()
     assert captured.out == expected
 
     ## Wife died
     list_living.us30([["01", "Aerys /Targaryon/", "M", "18 FEB 2000", "20","TRUE", "N/A" "N/A", "02"],["01", "Rhaella /Targaryon/", "F", "18 FEB 2000", "20",  "FALSE", "N/A", "N/A", "01"]],
-                             [['@F5@', '10 JUL 2001', 'N/A', '@I8@', 'Aerys /Targaryon/', '@I7@', 'Rhaella /Targaryon/', '{@I2@ @I9@ @I10@}']]) 
-    
+                             [['@F5@', '10 JUL 2001', 'N/A', '@I8@', 'Aerys /Targaryon/', '@I7@', 'Rhaella /Targaryon/', '{@I2@ @I9@ @I10@}']])
+
     expected = ""
     captured = capsys.readouterr()
     assert captured.out == expected
 
     ## Divorced
     list_living.us30([["01", "Aerys /Targaryon/", "M", "18 FEB 2000", "20","TRUE", "N/A" "N/A", "02"],["01", "Rhaella /Targaryon/", "F", "18 FEB 2000", "20",  "TRUE", "N/A", "N/A", "01"]],
-                             [['@F5@', '10 JUL 2001', '21 AUG 2002', '@I8@', 'Aerys /Targaryon/', '@I7@', 'Rhaella /Targaryon/', '{@I2@ @I9@ @I10@}']]) 
-    
+                             [['@F5@', '10 JUL 2001', '21 AUG 2002', '@I8@', 'Aerys /Targaryon/', '@I7@', 'Rhaella /Targaryon/', '{@I2@ @I9@ @I10@}']])
+
     expected = ""
     captured = capsys.readouterr()
     assert captured.out == expected
@@ -253,20 +253,20 @@ def test_us30(capsys):
 def test_us31(capsys):
     ## Nobody is alive and single!
     list_living.us31([["01", "Aerys /Targaryon/", "M", "18 FEB 2000", "20","TRUE", "N/A", "N/A", "02"],["01", "Rhaella /Targaryon/", "F", "18 FEB 2000", "20",  "TRUE", "N/A", "N/A", "01"]],
-                             [['@F5@', '10 JUL 2001', 'N/A', '@I8@', 'Aerys /Targaryon/', '@I7@', 'Rhaella /Targaryon/', '{@I2@ @I9@ @I10@}']]) 
+                             [['@F5@', '10 JUL 2001', 'N/A', '@I8@', 'Aerys /Targaryon/', '@I7@', 'Rhaella /Targaryon/', '{@I2@ @I9@ @I10@}']])
     expected = ""
     captured = capsys.readouterr()
     assert captured.out == expected
 
     ## Every single person is under 30
     list_living.us31([["01", "Aerys /Targaryon/", "M", "18 FEB 2000", "20","TRUE", "N/A", "N/A", "N/A"],["01", "Rhaella /Targaryon/", "F", "18 FEB 2000", "20",  "TRUE", "N/A", "N/A", "N/A"]],
-                             [['@F5@', '10 JUL 2001', 'N/A', '@I8@', 'Father', '@I7@', 'Mother', '{@01@ @02@}']]) 
+                             [['@F5@', '10 JUL 2001', 'N/A', '@I8@', 'Father', '@I7@', 'Mother', '{@01@ @02@}']])
     expected = ""
     captured = capsys.readouterr()
     assert captured.out == expected
-    ## single person died 
+    ## single person died
     list_living.us31([["01", "Aerys /Targaryon/", "M", "18 FEB 2000", "40","FALSE", "N/A", "N/A", "N/A"],["01", "Rhaella /Targaryon/", "F", "18 FEB 2000", "20",  "TRUE", "N/A", "N/A", "N/A"]],
-                             [['@F5@', '10 JUL 2001', 'N/A', '@I8@', 'Father', '@I7@', 'Mother', '{@01@ @02@}']]) 
+                             [['@F5@', '10 JUL 2001', 'N/A', '@I8@', 'Father', '@I7@', 'Mother', '{@01@ @02@}']])
     expected = ""
     captured = capsys.readouterr()
     assert captured.out == expected
@@ -277,24 +277,24 @@ def test_us31(capsys):
     captured = capsys.readouterr()
     assert captured.out == expected
 
-    ## Both Alive and Single over 30 
+    ## Both Alive and Single over 30
     list_living.us31([["01", "Aerys /Targaryon/", "M", "18 FEB 2000", "40","TRUE", "N/A", "N/A", "N/A"],["01", "Rhaella /Targaryon/", "F", "18 FEB 2000", "40",  "TRUE", "N/A", "N/A", "N/A"]],
-                             [['@F5@', '10 JUL 2001', 'N/A', '@I8@', 'Father', '@I7@', 'Mother', '{@01@ @02@}']]) 
+                             [['@F5@', '10 JUL 2001', 'N/A', '@I8@', 'Father', '@I7@', 'Mother', '{@01@ @02@}']])
     expected = "US31: ALIVE & SINGLE: Aerys /Targaryon/ is over 30 and has never been married.\n" + "US31: ALIVE & SINGLE: Rhaella /Targaryon/ is over 30 and has never been married.\n"
 
 def test_us28(capsys):
     #IDs that don't exist in table
     sorting.us28([["01", "Aerys /Targaryon/", "M", "18 FEB 2000", "20","TRUE", "N/A" "N/A", "02"],["01", "Rhaella /Targaryon/", "F", "18 FEB 2000", "20",  "TRUE", "N/A", "N/A", "01"]],
                              [['@F5@', '10 JUL 2001', '21 AUG 2002', '@I8@', 'Aerys /Targaryon/', '@I7@', 'Rhaella /Targaryon/', '{@I2@ @I9@ @I10@}']])
-    
+
     expected = "US28: ERROR: Family ID @F5@ has a child ID @I2@ that does not exist in individual table.\nUS28: ERROR: Family ID @F5@ has a child ID @I9@ that does not exist in individual table.\nUS28: ERROR: Family ID @F5@ has a child ID @I10@ that does not exist in individual table.\n"
     captured = capsys.readouterr()
     assert captured.out == expected
-    
+
     #IDs that exist in table
     sorting.us28([["01", "Aerys /Targaryon/", "M", "18 FEB 2000", "20","TRUE", "N/A" "N/A", "02"],["@I9@", "Rhaella /Targaryon/", "F", "18 FEB 2000", "20",  "TRUE", "N/A", "N/A", "01"]],
                              [['@F5@', '10 JUL 2001', '21 AUG 2002', '@I8@', 'Aerys /Targaryon/', '@I7@', 'Rhaella /Targaryon/', '{@I2@ @I9@ @I10@}']])
-    
+
     expected = "US28: ERROR: Family ID @F5@ has a child ID @I2@ that does not exist in individual table.\nUS28: CHILDREN SORTED: Family ID @F5@ has 1 children sorted AGE 20--> @I9@ Rhaella /Targaryon/; \n"
     captured = capsys.readouterr()
     assert captured.out == expected
@@ -340,45 +340,59 @@ def test_us32_us14(capsys):
     expected = "US14: ANOMALY: No more than 5 siblings should be born at the same time.\n"
     captured = capsys.readouterr()
     assert captured.out == expected
-    
+
 def test_us17():
     #yes we are marrying children
     assert fam.us17NoMarrriage2Child([['@I2@', 'Rhaegar /Targaryon/', 'F', '15 AUG 1780', 230, 'FALSE', '15 DEC 2010', '@F3@', '@F6@'], ['@I4@', 'Elia /Martell/', 'F', '11 MAY 1980', 18, 'FALSE', '10 OCT 1998', 'N/A', '@F1@'], ['@I4@', 'Elia /Martell/', 'F', '11 MAY 1980', 18, 'FALSE', '10 OCT 1998', 'N/A', '@F1@'], ['@F1@', '10 AUG 2000', '10 AUG 1999', '@I2@', 'Rhaegar /Targaryon/', '@I4@', 'Elia /Martell/', '{@I4@ @I5@}']]) is False
-    
+
     #no marriage
-    assert fam.us17NoMarrriage2Child([['@I2@', 'Rhaegar /Targaryon/', 'F', '15 AUG 1780', 230, 'FALSE', '15 DEC 2010', '@F3@', '@F6@'], ['@I4@', 'Elia /Martell/', 'F', '11 MAY 1980', 18, 'FALSE', '10 OCT 1998', 'N/A', '@F1@'], ['@I4@', 'Elia /Martell/', 'F', '11 MAY 1980', 18, 'FALSE', '10 OCT 1998', 'N/A', '@F1@'], ['@F1@', '10 AUG 2000', '10 AUG 1999', '@I2@', 'Rhaegar /Targaryon/', '@I4@', 'Elia /Martell/', '{@I8@ @I5@}']]) is True 
-    
+    assert fam.us17NoMarrriage2Child([['@I2@', 'Rhaegar /Targaryon/', 'F', '15 AUG 1780', 230, 'FALSE', '15 DEC 2010', '@F3@', '@F6@'], ['@I4@', 'Elia /Martell/', 'F', '11 MAY 1980', 18, 'FALSE', '10 OCT 1998', 'N/A', '@F1@'], ['@I4@', 'Elia /Martell/', 'F', '11 MAY 1980', 18, 'FALSE', '10 OCT 1998', 'N/A', '@F1@'], ['@F1@', '10 AUG 2000', '10 AUG 1999', '@I2@', 'Rhaegar /Targaryon/', '@I4@', 'Elia /Martell/', '{@I8@ @I5@}']]) is True
+
     # cause an exception
     assert fam.us17NoMarrriage2Child([['@I2@', 'Rhaegar /Targaryon/', 'F', '15 AUG 1780', 230, 'FALSE', '15 DEC 2010', '@F3@', '@F6@'], ['@F1@', '10 AUG 2000', '10 AUG 1999', '@I2@', 'Rhaegar /Targaryon/', '@I4@', 'Elia /Martell/', '{@I4@ @I5@}']]) is None
-    
+
 def test_us34(capsys):
     #husb's older case
     marriage_date_check.us34ListLargeAge([['@I2@', 'Rhaegar /Targaryon/', 'F', '15 AUG 1780', 230, 'FALSE', '15 DEC 2010', '@F3@', '@F6@'], ['@I4@', 'Elia /Martell/', 'F', '11 MAY 1980', 18, 'FALSE', '10 OCT 1998', 'N/A', '@F1@'], ['@I5@', 'Aegon /Targaryon/', 'M', '29 JUN 2005', 15, 'TRUE', 'N/A', '@F1@', 'N/A'], ['@F1@', '10 AUG 2000', '10 AUG 1999', '@I2@', 'Rhaegar /Targaryon/', '@I4@', 'Elia /Martell/', '{@I4@ @I5@}']])
     expected = "US34: ANOMALY: Large age difference on family @F1@! @I2@ Rhaegar /Targaryon/ is more than twice as old as spouse @I4@ Elia /Martell/.\n"
     captured = capsys.readouterr()
     assert captured.out == expected
-    
+
     #madam's older
     marriage_date_check.us34ListLargeAge([['@I16@', 'Aegon V /Targaryon/', 'M', '9 JUL 1950', -10, 'FALSE', '5 JUL 1941', 'N/A', '@F4@'], ['@I15@', 'Cersei /Targaryon/', 'F', '5 JUL 2021', -1, 'FALSE', '5 JUL 2020', 'N/A', '@F4@'], ['@I24@', 'Funcan /Targaryon/', 'M', '27 DEC 2003', 16, 'TRUE', 'N/A', '@F4@', 'N/A'], ['@F4@', '30 JUL 1959', 'N/A', '@I16@', 'Aegon V /Targaryon/', '@I15@', 'Cersei /Targaryon/', '{@I20@ @I21@ @I22@ @I23@ @I24@ @I25@}']])
     expected = "US34: ANOMALY: Large age difference on family @F4@! @I15@ Cersei /Targaryon/ is more than twice as old as spouse @I16@ Aegon V /Targaryon/.\n"
     captured = capsys.readouterr()
     assert captured.out == expected
-    
+
     #broken input
     marriage_date_check.us34ListLargeAge([['@I16@', 'Aegon V /Targaryon/', 'M', '9 JUL 1950', -10, 'FALSE', '5 JUL 1941', 'N/A', '@F4@'], ['@I15@', 'Cersei /Targaryon/', 'F', '5 JUL 2021', -1, 'FALSE', '5 JUL 2020', 'N/A', '@F4@']])
     expected = ""
     captured = capsys.readouterr()
     assert captured.out == expected
 
+def test_us13():
+    assert birth_date_check.sibling_spacing(["18 NOV 1999","18 NOV 1938","18 NOV 1918"]) is True
+    assert birth_date_check.sibling_spacing(["18 NOV 1999","18 NOV 1999","18 NOV 1918"]) is True
+    assert birth_date_check.sibling_spacing(["18 NOV 1999","19 NOV 1999","18 NOV 1918"]) is True
+    assert birth_date_check.sibling_spacing(["18 NOV 1999","17 NOV 1999","18 NOV 1918"]) is True
+    assert birth_date_check.sibling_spacing(["18 NOV 1999","17 NOV 1999","19 NOV 1999"]) is False
+    assert birth_date_check.sibling_spacing(["18 NOV 1999","17 OCT 1999","18 NOV 1918"]) is False
+    assert birth_date_check.sibling_spacing(["18 NOV 1999","18 NOV 1938","18 NOV 1918","18 NOV 1999","18 NOV 1938","18 NOV 1918","18 NOV 1999","18 NOV 1938","18 NOV 1918"]) is True
+
+def test_us15():
+    assert multiple_births.fewer_than_15_siblings(["sibling1","sibling2"]) is True
+    assert multiple_births.fewer_than_15_siblings(["sibling1","sibling2","sibling3","sibling4","sibling5","sibling6","sibling7","sibling8","sibling9","sibling10","sibling11","sibling12","sibling13","sibling14","sibling15","sibling16"]) is False
+
+
 def test_us20(capsys):
     # yes i am marrying niece/nephew
     ind = [['@I2@', 'Rhaegar /Targaryon/', 'M', '15 AUG 1780', 230, 'FALSE', '15 DEC 2010', '@F3@', '@F1@'], ['@I4@', 'Elia /Martell/', 'F', '11 MAY 1980', 18, 'FALSE', '10 OCT 1998', 'N/A', '@F1@'],
             ['@I6@', 'brother dad', 'M', '11 MAY 1980', 18, 'FALSE', '10 OCT 1998', '@F1@', '@F5@'],
              ['@I27@', 'sister wife', 'F', '11 MAY 1980', 18, 'FALSE', '10 OCT 1998', 'N/A', '@F5@'],
-             ['@I5@', 'uncle', 'M', '11 MAY 1980', 18, 'FALSE', '10 OCT 1998', '@F1@', '@F10@'], 
+             ['@I5@', 'uncle', 'M', '11 MAY 1980', 18, 'FALSE', '10 OCT 1998', '@F1@', '@F10@'],
              ['06', 'niece', 'F', '11 MAY 1980', 18, 'FALSE', '10 OCT 1998', '@F5@', '@F10@']]
-    fam = [['@F1@', '10 AUG 2000', '10 AUG 1999', '@I2@', 'Rhaegar /Targaryon/', '@I4@', 'Elia /Martell/', '{@I6@ @I5@}'], 
-            ['@F5@', '10 JUL 2001', '21 AUG 2002', '@I6@', 'brother dad', '@I27@', 'sister wife', '{06}'], 
+    fam = [['@F1@', '10 AUG 2000', '10 AUG 1999', '@I2@', 'Rhaegar /Targaryon/', '@I4@', 'Elia /Martell/', '{@I6@ @I5@}'],
+            ['@F5@', '10 JUL 2001', '21 AUG 2002', '@I6@', 'brother dad', '@I27@', 'sister wife', '{06}'],
             ['@F10@', '10 JUL 2001', '21 AUG 2002', '@I5@', 'uncle', '06', 'niece', 'N/A']]
     conn = sqlite3.connect("../familytable.db")
 

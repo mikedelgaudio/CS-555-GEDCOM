@@ -66,15 +66,15 @@ def us17NoMarrriage2Child(familes):
         children = familes[3][constants.ffnIndex["CHIL"]]
         dad = familes[3][constants.ffnIndex["HUSB"]]
         mom = familes[3][constants.ffnIndex["WIFE"]]
-        
+
         #remove { } and seperate the children in a list
         sepListOfChildren = (children.replace("{", "").replace("}","").split())
-        
+
         for child in sepListOfChildren:
             if(child == dad or child == mom):
                 #The child was also the mom or dad
                 return False
-            
+
         return True
     except Exception:
         pass
@@ -99,3 +99,17 @@ def first_cousin_marriage_check(spouses, cousins):
             if s in c:
                 return s
     return None
+
+# US19 - First cousins should not marry
+def families_to_sibling_list(families,individuals):
+    siblings = []
+    allsiblings = []
+    for f in families:
+        child_id_list = f[7].split()
+        for c in child_id_list:
+            for i in individuals:
+                if i[0] == c or '{' + i[0] == c or i[0] + '}' == c or '{' + i[0] +'}' == c:
+                    siblings += [i]
+        allsiblings += [siblings]
+        siblings = []
+    return allsiblings
