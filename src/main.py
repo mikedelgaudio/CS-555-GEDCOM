@@ -174,7 +174,7 @@ def run():
 
 
     # Creates lists of siblings
-    siblings = fam.families_to_sibling_list(families, individuals)
+    sibs = fam.families_to_sibling_list(families, individuals)
 
     # US02: Chck if birthday is before date of marriage
     for s in filter(lambda s: s[2][constants.ffnIndex["MARR"]] != "N/A", spouses):
@@ -262,7 +262,7 @@ def run():
     for s in range(len(extfamily)):
         if (fam.us17NoMarrriage2Child(extfamily[s]) == False):
             print("US17: ANOMALY: Family {2} with parents {0} and {1} should not marry any of their children.".format(extfamily[s][0][0],extfamily[s][1][0],extfamily[s][3][0]))
-    
+
     # US18: Siblings should not marry
     for ind in list(filter(lambda i: i[8] != "N/A", individuals)):
         parents = list(filter(lambda i: ind[0] in i[2][7], spouses))
@@ -306,20 +306,16 @@ def run():
     #aunt / uncle marrying niece/nephew check
     marriage_check.us20(individuals,families, cur)
 
-
     # US13: Birth dates of siblings should be more than 8 months apart or less than 2 days apart (twins may be born one day apart, e.g. 11:59 PM and 12:02 AM the following calendar day)
-    for s in siblings:
-        list_of_birthdays = []
-        for x in s:
-            list_of_birthdays.append(x[constants.ifnIndex["BIRT"]])
-        if not birth_date_check.sibling_spacing(list_of_birthdays):
+    for s in sibs:
+        if not birth_date_check.sibling_spacing(s):
             IDlist = []
             for i in s:
                 IDlist.append(i[0])
             print("US13 ANOMALY: Siblings born too close together and are not twins/triplets/etc. Sibling ID's: {0}".format(IDlist))
 
     # US15: There should be fewer than 15 siblings in a family
-    for s in siblings:
+    for s in sibs:
         if not multiple_births.fewer_than_15_siblings(s):
             IDlist = []
             for i in s:

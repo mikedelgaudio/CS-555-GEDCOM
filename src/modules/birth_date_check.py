@@ -128,7 +128,11 @@ def sibling_spacing(list_of_dates):
     try:
         list_of_actual_dates = []
         for d in list_of_dates:
-            dd = datetime.datetime.strptime(d, "%d %b %Y")
+            if isinstance(d, list):
+                date = d[3]
+            else:
+                date = d
+            dd = datetime.datetime.strptime(date, "%d %b %Y")
             list_of_actual_dates.append(dd)
         for d1 in list_of_actual_dates:
             for d2 in list_of_actual_dates:
