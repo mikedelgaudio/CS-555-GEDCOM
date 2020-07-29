@@ -71,7 +71,7 @@ def us17NoMarrriage2Child(familes):
         
         for child in sepListOfChildren:
             if(child == dad or child == mom):
-                #The child was also the mom or dad
+                #The child was also th e mom or dad
                 return False
             
         return True
