@@ -128,15 +128,15 @@ def sibling_spacing(list_of_dates):
     try:
         list_of_actual_dates = []
         for d in list_of_dates:
-            dd = datetime.datetime.strptime(d[3], "%d %b %Y")
+            dd = datetime.datetime.strptime(d, "%d %b %Y")
             list_of_actual_dates.append(dd)
         for d1 in list_of_actual_dates:
             for d2 in list_of_actual_dates:
                 diff = d1 - d2
                 diffd = int(diff.days)
                 diffm = int(diff.days)/30
-                if diffd < 2:
-                    continue
+                if diffd <= 1:
+                    pass
                 elif 8 > diffm > -8:
                     return False
                 else:

@@ -298,7 +298,10 @@ def run():
 
     # US13: Birth dates of siblings should be more than 8 months apart or less than 2 days apart (twins may be born one day apart, e.g. 11:59 PM and 12:02 AM the following calendar day)
     for s in siblings:
-        if not birth_date_check.sibling_spacing(s):
+        list_of_birthdays = []
+        for x in s:
+            list_of_birthdays.append(x[constants.ifnIndex["BIRT"]])
+        if not birth_date_check.sibling_spacing(list_of_birthdays):
             IDlist = []
             for i in s:
                 IDlist.append(i[0])
