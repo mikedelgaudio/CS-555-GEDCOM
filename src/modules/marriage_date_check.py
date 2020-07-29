@@ -41,6 +41,7 @@ def marriage_divorce_date_comparison(marriage_date, divorce_date):
         if m >= d:
             return False
         else:
+            print("hello")
             return True
 
     except ValueError:
