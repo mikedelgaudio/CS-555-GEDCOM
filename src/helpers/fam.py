@@ -17,7 +17,7 @@ def families_to_spouses_list(families, individuals):
             if h and w:
                 break
         if h == None or w == None:
-            print("continued")
+            print("cont inued")
             continue
         spouses += [[h, w, f]]
     return spouses
