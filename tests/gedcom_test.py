@@ -8,11 +8,6 @@ from helpers import dates, sorting, fam, database as db
 from modules import birth_date_check
 from modules import marriage_date_check, marriage_check, list_upcoming_dates, list_deceased, unique_id, list_recent, list_living, gender_check, multiple_births
 import pytest
-from _pytest.compat import CaptureAndPassthroughIO
-from _pytest.compat import CaptureIO
-from _pytest.compat import TYPE_CHECKING
-from _pytest.config import Config
-from _pytest.fixtures import FixtureRequest
 
 
 
