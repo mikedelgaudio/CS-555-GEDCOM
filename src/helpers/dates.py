@@ -33,53 +33,86 @@ def us42ValidDate(date):
     except ValueError:
         return False
 
-        
+
 def dateHelper(individuals, families):
     for i in range(len(individuals)):
         if(us01DateAfterCurrentDate(individuals[i][3]) == False):
             print("US01: ERROR: " + individuals[i][0] +" "+ individuals[i][1] + " cannot have birthday " + individuals[i][3] + " after current date.")
         if( us01DateAfterCurrentDate(individuals[i][6]) == False ):
             print("US01: ERROR: " + individuals[i][0] +" "+ individuals[i][1] + " cannot have death date " + individuals[i][6] + " after current date.")
-            
+
         if ( us42ValidDate(individuals[i][3]) == False):
             print("US42: ERROR: " + individuals[i][0] +" "+ individuals[i][1] + " has an invalid birthday of " + individuals[i][3] +".")
         if ( us42ValidDate(individuals[i][6]) == False):
             print("US42: ERROR: " + individuals[i][0] +" "+ individuals[i][1] + " has an invalid death date of " + individuals[i][6] +".")
-            
+
     for j in range(len(families)):
-        
+
         if (us01DateAfterCurrentDate(families[j][1]) == False):
             print("US01: ERROR: Family ID " + families[j][0] +" cannot have a marriage date " + families[j][1] + " after current date.")
         if (us42ValidDate(families[j][2]) == False):
             print("US01: ERROR: Family ID " + families[j][0] +" cannot have a divorce date " + families[j][2] + " after current date.")
-            
+
         if (us42ValidDate(families[j][1]) == False):
             print("US42: ERROR: Family ID " + families[j][0] +" has an invalid marriage date of " + families[j][1])
         if (us42ValidDate(families[j][2]) == False):
             print("US42: ERROR: Family ID " + families[j][0] +" has an invalid divorce date of " + families[j][2])
-            
-        
-        
 
 
 
-def next30days(date):
+
+
+
+def dateChecker(date, time, annual):
     if(not us42ValidDate(date)):
         return False
     try:
         if(date == "N/A"):
             return False
-        today = datetime.datetime.now()
-        compare = today + datetime.timedelta(30)
-        day = date.split()[0]
-        month = date.split()[1]
-        date = datetime.datetime(int(today.year), months[month], int(day))
-        
-        if(compare >= date and today <= date):
+        elif(time ==0):
             return True
 
+        today = datetime.datetime.now()
+        compare = today + datetime.timedelta(time)
+        day = date.split()[0]
+        month = date.split()[1]
+        year = date.split()[2]
+        if(annual):
+            date = datetime.datetime(int(today.year), months[month], int(day))
         else:
-            return False
+            date = datetime.datetime(int(year),months[month], int(day))
+        if(time>0):
+            if(compare >= date and today <= date):
+                return True
+
+        else:
+            if(compare <= date and today >= date):
+                return True
+
+        return False
     except ValueError:
         return False
 
+def diff90(date1,date2):
+    diff = date2 - date1
+    diffInMonths = int(diff.days)/30
+    if diffInMonths > -9:
+        return True
+    else:
+        return False
+
+def diff60y(date1,date2):
+    diff = date2 - date1
+    diffInYears = int(diff.days)/365.25
+    if diffInYears > -60:
+        return True
+    else:
+        return False
+
+def diff80y(date1,date2):
+    diff = date2 - date1
+    diffInYears = int(diff.days)/365.25
+    if diffInYears > -80:
+        return True
+    else:
+        return False
